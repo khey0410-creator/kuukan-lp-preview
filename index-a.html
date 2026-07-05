@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kuukan ｜ その不調に、名前がないだけ。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- 既存踏襲: Typekit(din-2014 / linotype-didot)＋Shippori Mincho -->
+<link rel="stylesheet" href="https://use.typekit.net/ogu1wio.css" />
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     kuukan LP mock — Step A (token layer + FV + 共感 + 追従CTA)
+     SPEC v4 準拠。差し色は --brass のみ。暗→明の縦トーン。
+     ============================================================ */
+  :root{
+    /* --- color tokens (SPEC §2) --- */
+    --ink-deep:#2b221c;      /* FV 最暗 */
+    --sepia:#3a2e26;         /* 焦げ茶 */
+    --sepia-soft:#4d4034;    /* 移行の中間(暗側) */
+    --warm-mid:#8c8377;      /* 移行の中間 */
+    --warm-gray:#c9c5be;     /* 本文背景 */
+    --warm-gray-hi:#d6d2cb;  /* 本文背景(明) */
+    --charcoal:#2e2a26;      /* 明背景上の文字 */
+    --charcoal-soft:#5c554d; /* 補助文字 */
+    --cream:#f5f2ec;         /* 暗背景上の文字 */
+    --cream-dim:rgba(245,242,236,.66);
+    --brass:#b08d57;         /* 唯一のアクセント */
+
+    /* --- type --- */
+    --mincho:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+    /* 既存踏襲: 本文もShippori Mincho(明朝)。ラテン見出し=din-2014 / ラテン装飾=Didot */
+    --gothic:"Shippori Mincho","Hiragino Kaku Gothic ProN","Yu Gothic",serif;
+    --label:din-2014,"Helvetica Neue",Arial,sans-serif;
+    --didot:linotype-didot,"Playfair Display",Georgia,serif;
+
+    --cta-h:64px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--gothic);
+    color:var(--charcoal);
+    background:var(--ink-deep);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.9;
+    letter-spacing:.02em;
+    /* 追従CTA分の余白 */
+    padding-bottom:calc(var(--cta-h) + env(safe-area-inset-bottom));
+  }
+  ::selection{background:var(--brass);color:var(--cream)}
+
+  .wrap{max-width:680px;margin:0 auto;padding-left:26px;padding-right:26px}
+
+  /* eyebrow(ラテン/ラベル) */
+  .eyebrow{
+    font-family:var(--label);      /* din-2014(既存踏襲のラテンラベル) */
+    font-weight:400;
+    font-size:11px;
+    letter-spacing:.42em;
+    text-transform:uppercase;
+  }
+
+  /* ============================================================
+     ① FV — 縦組みシグネチャ
+     ============================================================ */
+  .fv{
+    position:relative;
+    background:var(--ink-deep);
+    color:var(--cream);
+  }
+  /* 動画バンド(上部・占拠しすぎない) */
+  .fv__media{
+    position:relative;
+    height:52vh;min-height:330px;max-height:560px;
+    overflow:hidden;background:#1a120c;
+  }
+  /* 見出し帯(動画の下・sepia。②共感へ繋ぐ) */
+  .fv__body{
+    background:linear-gradient(180deg,#1a120c 0%, var(--sepia) 55%, var(--sepia) 100%);
+    padding:12px 0 54px;text-align:center;
+  }
+  /* FV動画(kuukan PV縦_2 → kuukan-fv.mp4) */
+  .fv__video{
+    position:absolute;inset:0;z-index:0;
+    width:100%;height:100%;object-fit:cover;
+    background:#1a120c;
+  }
+  /* 可読性スクリム: 上/右を落として白文字を担保しつつ、下端は②のsepiaへ繋ぐ */
+  .fv__scrim{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(22,16,11,.58) 0%, rgba(22,16,11,.14) 24%,
+      rgba(22,16,11,.10) 60%, rgba(26,18,12,.94) 100%);
+  }
+  .fv__top{
+    position:absolute;top:0;left:0;right:0;z-index:2;
+    padding-top:calc(env(safe-area-inset-top) + 22px);
+  }
+  .fv__brand{color:var(--cream);opacity:.9;text-transform:none} /* kuukanは小文字を維持 */
+
+  .fv__stage{
+    position:relative;z-index:2;
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:8px 0 20px;
+  }
+  /* 真鍮の細い縦ヘアライン */
+  .fv__rule{
+    width:1px;align-self:stretch;
+    margin:34px 0;
+    background:linear-gradient(180deg, transparent, var(--brass) 22%, var(--brass) 78%, transparent);
+    opacity:.85;
+  }
+  .fv__headline{
+    font-family:var(--mincho);
+    font-weight:400;
+    font-size:clamp(31px,9vw,46px);
+    line-height:1.58;
+    letter-spacing:.12em;
+    text-align:center;
+    color:var(--cream);
+    margin-bottom:26px;
+  }
+  .fv__headline .em{color:var(--brass)}
+
+  .fv__foot{
+    position:relative;z-index:2;
+    /* 追従CTAの高さ分を確保してリード/Scrollが隠れないように */
+    padding-bottom:calc(var(--cta-h) + 26px);
+  }
+  .fv__lead{
+    font-family:var(--mincho);
+    font-size:15px;
+    line-height:2;
+    color:var(--cream-dim);
+    letter-spacing:.04em;
+    text-shadow:0 1px 18px rgba(14,9,6,.55);
+  }
+  .fv__lead b{color:var(--cream);font-weight:500}
+  .fv__scroll{
+    margin-top:28px;
+    display:inline-flex;align-items:center;gap:10px;
+    color:var(--cream-dim);font-family:var(--label);
+    font-size:10px;letter-spacing:.36em;text-transform:uppercase;
+  }
+  .fv__scroll::before{
+    content:"";width:26px;height:1px;background:var(--brass);
+    animation:pull 2.4s ease-in-out infinite;
+    transform-origin:left;
+  }
+  @keyframes pull{0%,100%{transform:scaleX(.4);opacity:.5}50%{transform:scaleX(1);opacity:1}}
+
+  /* ============================================================
+     ② 共感 × 投資 — 焦げ茶→グレーへ抜ける
+     ============================================================ */
+  .empathy{
+    /* [A-brown] FV(セピア)と地続き→一木へ連続 */
+    background:linear-gradient(180deg, #3a2e26 0%, #3a2e26 90%, #3d3129 100%);
+    padding:84px 0 76px;
+  }
+  .empathy .eyebrow{color:#cba76a;font-size:18px;font-weight:700;letter-spacing:.24em}
+  .empathy__h{
+    font-family:var(--mincho);
+    font-weight:500;
+    font-size:clamp(23px,6.6vw,31px);
+    line-height:1.62;
+    letter-spacing:.05em;
+    margin:16px 0 28px;
+    /* 上部(暗)ではcream、下地はグレーなので中間色で両立 */
+    color:var(--cream);
+  }
+  .empathy__body p{
+    font-size:15.5px;
+    line-height:1.75;
+    color:var(--cream-dim);
+    margin-bottom:17px;
+    letter-spacing:.01em;
+  }
+  /* [A-brown] 暗地なので白系 */
+  .empathy__body .turn{
+    font-family:var(--mincho);
+    font-size:17px;
+    line-height:1.8;
+    color:var(--cream);
+  }
+  .empathy__body .turn b{
+    color:var(--brass);
+    font-weight:500;
+    font-style:normal;
+  }
+
+  /* ============================================================
+     ③〜⑩ body sections(暗→明の"明"側へ段階的に上げる)
+     ============================================================ */
+  .sec{padding:clamp(46px,8vw,72px) 0}
+  /* [A-brown] 茶色ゾーンを一木まで延長。以降は明ランプ */
+  .sec--g1{background:linear-gradient(180deg,#3d3129 0,#4a3c31 calc(100% - 48px),#6a5848 100%)} /* ③ 茶(下端の余白で中間茶へ) */
+  /* 一木の文字を白系に反転 */
+  .sec--g1 .sec__label{color:#cba76a}
+  .sec--g1 .sec__h,.sec--g1 .ichiki__name,.sec--g1 .ichiki__career-label,.sec--g1 .ichiki__timeline .dur{color:var(--cream)}
+  .sec--g1 .sec__lead,.sec--g1 .ichiki__bio,.sec--g1 .ichiki__name .en,.sec--g1 .ichiki__stat span,.sec--g1 .ichiki__timeline .role,.sec--g1 .ichiki__quote{color:var(--cream-dim)}
+  .sec--g1 .ichiki__stat b,.sec--g1 .ichiki__role{color:#cba76a}
+  .sec--g1 .ichiki__tags li{color:var(--cream);border-color:rgba(203,167,106,.55)}
+  .sec--g1 .ichiki__career{border-top-color:rgba(245,242,236,.18)}
+  .sec--g1 .ichiki__timeline li{border-top-color:rgba(245,242,236,.14)}
+  .sec--g1 .ichiki__timeline li:last-child{border-bottom-color:rgba(245,242,236,.14)}
+  .sec--g1 .ichiki__career-label::before{background:var(--brass)}
+  .sec--g2{background:linear-gradient(180deg,#6a5848 0,#dbd4c8 48px,#dbd4c8 100%)} /* ④ 上端の余白で明へ抜ける */
+  .sec--g3{background:linear-gradient(180deg,#dbd4c8 0 66%,#e3dccf 100%)} /* ⑤ */
+  .sec--g4{background:linear-gradient(180deg,#e3dccf 0 66%,#eae3d6 100%)} /* Trial */
+  .sec--t1{background:linear-gradient(180deg,#eae3d6 0 66%,#f0e9dd 100%)} /* Voice */
+  .sec--l1{background:linear-gradient(180deg,#f0e9dd 0 66%,#f5efe5 100%)} /* 流れ */
+  .sec--l2{background:linear-gradient(180deg,#f5efe5 0 66%,#f9f4eb 100%)} /* FAQ */
+  .sec--l3{background:#f9f4eb} /* 追伸 */
+
+  .sec__label{font-family:var(--label);color:var(--gold-dark,#9c7c40);font-size:18px;font-weight:700;
+    letter-spacing:.28em;text-transform:uppercase;display:block;margin-bottom:24px}
+  .sec__h{font-family:var(--mincho);font-weight:500;font-size:clamp(22px,5.9vw,30px);
+    line-height:1.58;letter-spacing:.02em;color:var(--charcoal);margin-bottom:20px}
+  .sec__lead{font-size:15px;line-height:1.72;color:var(--charcoal);margin-bottom:14px;letter-spacing:0}
+  .sec__note{font-size:11.5px;line-height:1.75;color:var(--charcoal-soft);margin-top:26px}
+
+  /* ③ 一木 */
+  .ichiki__photo{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 28%;display:block;margin-bottom:30px}
+  .ichiki__name{font-family:var(--mincho);font-size:21px;color:var(--charcoal);margin-bottom:4px}
+  .ichiki__name .en{font-family:var(--label);font-size:11px;letter-spacing:.16em;color:var(--charcoal-soft);margin-left:10px;text-transform:uppercase}
+  .ichiki__role{font-family:var(--label);font-size:10px;letter-spacing:.26em;color:var(--brass);text-transform:uppercase;display:block;margin-bottom:20px}
+  .ichiki__bio{font-size:14px;line-height:1.75;color:var(--charcoal);margin-bottom:24px}
+  .ichiki__quote{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);border-left:2px solid var(--brass);padding-left:20px}
+  /* 経歴・資格 — 「数字」「資格」「経歴」を意味ごとに塊分け */
+  .ichiki__career{margin:8px 0 30px;border-top:1px solid rgba(46,42,38,.16);padding-top:26px}
+  .ichiki__career-label{font-family:var(--label);font-size:14px;font-weight:700;letter-spacing:.16em;
+    color:var(--charcoal);display:inline-flex;align-items:center;gap:11px;margin:0 0 22px}
+  .ichiki__career-label::before{content:"";width:22px;height:2px;background:var(--brass)}
+  .ichiki__career-label.mt{margin-top:32px}
+
+  /* ①数字スタッツ(整体歴/施術実績) */
+  .ichiki__stats{display:flex;gap:34px;margin-bottom:8px}
+  .ichiki__stat b{display:block;font-family:var(--label);font-weight:400;
+    font-size:36px;letter-spacing:.01em;line-height:1;color:var(--brass)}
+  .ichiki__stat span{display:block;font-size:11.5px;color:var(--charcoal-soft);margin-top:8px;letter-spacing:.03em}
+
+  /* ②資格タグ */
+  .ichiki__tags{list-style:none;display:flex;flex-wrap:wrap;gap:9px}
+  .ichiki__tags li{font-family:var(--label);font-size:13.5px;font-weight:500;letter-spacing:.02em;color:var(--charcoal);
+    border:1px solid rgba(176,141,87,.65);padding:9px 16px}
+
+  /* ③経歴タイムライン(役職を時系列で) */
+  .ichiki__timeline{display:flex;flex-direction:column}
+  .ichiki__timeline li{display:flex;gap:18px;padding:14px 0;border-top:1px solid rgba(46,42,38,.14)}
+  .ichiki__timeline li:last-child{border-bottom:1px solid rgba(46,42,38,.14)}
+  .ichiki__timeline .dur{font-family:var(--label);font-size:14px;font-weight:700;color:var(--charcoal);min-width:60px;flex:none;padding-top:1px}
+  .ichiki__timeline .role{font-size:14px;line-height:1.5;color:var(--charcoal)}
+
+  /* ④ method */
+  /* メソッド導入: 坐禅画像を薄く敷いた上に文章を載せる */
+  .method__hero{position:relative;margin:0 -26px 20px;padding:48px 26px 40px;overflow:hidden}
+  .method__hero::before{content:"";position:absolute;inset:0;z-index:0;
+    background:url("img/fv-incense.jpg") center/cover no-repeat;opacity:.42}
+  .method__hero::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(211,204,192,.4) 0%, rgba(215,208,196,.5) 100%)}
+  .method__hero>*{position:relative;z-index:2}
+  .method__hero .sec__h{margin-bottom:18px}
+  .method__hero-lead{margin-bottom:0}
+
+  .mstep{display:flex;gap:18px;align-items:flex-start;padding:26px 0;border-top:1px solid rgba(46,42,38,.15)}
+  .mstep:last-of-type{border-bottom:1px solid rgba(46,42,38,.15)}
+  .mstep__num{font-family:var(--label);font-size:13px;letter-spacing:.05em;color:var(--brass);padding-top:3px;min-width:24px}
+  .mstep__head{display:flex;align-items:baseline;gap:13px;margin-bottom:6px}
+  .mstep__en{font-family:var(--label);font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--charcoal-soft)}
+  .mstep__ja{font-family:var(--mincho);font-size:18px;color:var(--charcoal)}
+  .mstep__desc{font-size:13.5px;line-height:1.8;color:var(--charcoal)}
+  .method__close{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);margin-top:22px}
+
+  /* ⑤ menu */
+  .mitem{margin-bottom:36px}
+  .mitem__img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;margin-bottom:15px}
+  .mitem__ja{font-family:var(--mincho);font-size:18px;color:var(--charcoal)}
+  .mitem__en{font-family:var(--label);font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--charcoal-soft);margin-left:12px}
+  .mitem__desc{font-size:13.5px;line-height:1.9;color:var(--charcoal);margin-top:9px}
+  .menu__close{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);margin-top:8px}
+
+  /* ⑥ voice — 高級感カード(属性を先に提示) */
+  .vquote{position:relative;background:rgba(255,255,255,.45);border:1px solid rgba(46,42,38,.1);
+    padding:26px 26px 30px;margin-bottom:14px;box-shadow:0 10px 34px rgba(46,42,38,.06)}
+  .vquote__who{font-family:var(--label);font-size:14.5px;font-weight:700;letter-spacing:.1em;color:var(--charcoal);
+    display:flex;align-items:center;gap:10px;
+    padding-bottom:15px;margin-bottom:18px;border-bottom:1px solid rgba(176,141,87,.4)}
+  .vquote__who::before{content:"\201C";font-family:var(--didot);font-style:italic;font-size:26px;
+    line-height:1;color:var(--brass);flex:none}
+  .vquote p{font-family:var(--mincho);font-size:14.5px;line-height:1.75;color:var(--charcoal);position:relative}
+
+  /* ⑦ flow — 縦タイムライン図解(スマホ最適) */
+  .fstep{position:relative;padding:0 0 30px 56px;min-height:36px}
+  .fstep:last-of-type{padding-bottom:0}
+  /* 連結線(真鍮) */
+  .fstep::before{content:"";position:absolute;left:17.5px;top:34px;bottom:0;width:1px;background:rgba(176,141,87,.4)}
+  .fstep:last-of-type::before{display:none}
+  /* 番号ノード(丸) */
+  .fstep__num{position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--brass);background:#f3ede2;
+    display:flex;align-items:center;justify-content:center;z-index:1;
+    font-family:var(--label);font-size:12px;color:var(--brass)}
+  .fstep>div{padding-top:5px}
+  .fstep__t{font-family:var(--mincho);font-size:15.5px;color:var(--charcoal);display:block;margin-bottom:5px}
+  .fstep__d{font-size:13px;line-height:1.75;color:var(--charcoal-soft)}
+
+  /* ⑧ faq */
+  .qa{border-top:1px solid rgba(46,42,38,.16)}
+  .qa:last-of-type{border-bottom:1px solid rgba(46,42,38,.16)}
+  .qa summary{list-style:none;cursor:pointer;padding:20px 34px 20px 26px;position:relative;
+    font-family:var(--mincho);font-size:15px;color:var(--charcoal)}
+  .qa summary::-webkit-details-marker{display:none}
+  .qa summary .qmark{font-family:var(--label);color:var(--brass);margin-right:12px;font-size:13px}
+  .qa summary::after{content:"+";position:absolute;right:6px;top:17px;color:var(--brass);font-size:20px;font-family:var(--label)}
+  .qa[open] summary::after{content:"–"}
+  .qa__a{padding:0 26px 24px 44px;font-size:13.5px;line-height:1.8;color:var(--charcoal)}
+
+  /* ⑨ offer */
+  /* コラージュ: 左=受付(大) / 右=マシン室+館内(中2分割) */
+  .offer__collage{display:grid;grid-template-columns:1.3fr 1fr;gap:4px;margin-bottom:26px;height:280px}
+  .offer__collage img{width:100%;height:100%;object-fit:cover;display:block}
+  .offer__collage .split{display:grid;grid-template-rows:1fr 1fr;gap:4px;height:100%}
+  .offer__collage .gc-recep-tall{object-position:22% center} /* 受付ネオンを縦に */
+  .offer__collage .gc-recep-in{object-position:90% center}   /* 受付奥のジム側 */
+
+  /* GYM CONCEPT特典(オファー直下・独立バナー) */
+  .offer__facility{display:flex;align-items:center;gap:14px;background:rgba(176,141,87,.1);
+    border:1px solid rgba(176,141,87,.4);padding:16px 18px;margin-bottom:16px}
+  .offer__facility b{font-family:var(--mincho);font-size:14.5px;color:var(--charcoal);font-weight:500}
+  .offer__facility span{display:block;font-family:var(--label);font-size:10.5px;letter-spacing:.05em;
+    color:var(--charcoal-soft);margin-top:4px}
+
+  /* 希少性(価格ボックスの上・独立バナー) */
+  .offer__scarcity{border:1px solid rgba(46,42,38,.22);border-left:3px solid var(--brass);
+    padding:16px 18px;margin-bottom:16px;background:rgba(255,255,255,.3)}
+  .offer__scarcity-tag{font-family:var(--label);font-size:14.5px;letter-spacing:.08em;color:var(--charcoal);
+    display:block;margin-bottom:10px;font-weight:700}
+  .offer__scarcity p{font-size:13px;line-height:1.8;color:var(--charcoal)}
+
+  /* オファーを焦げ茶ダークカードで主役化(CTAと統一) */
+  .offer__box{border:1px solid rgba(203,167,106,.45);padding:30px 24px;background:#3a2e26;box-shadow:0 18px 46px rgba(26,18,12,.32)}
+  .offer__box .offer__ttl,.offer__box .offer__now,.offer__box .offer__now-l,.offer__box .offer__bonus{color:var(--cream)}
+  .offer__box .offer__sub,.offer__box .offer__incl,.offer__box .offer__fine,.offer__box .offer__through,.offer__box .offer__now-t{color:var(--cream-dim)}
+  .offer__box .offer__price{border-color:rgba(245,242,236,.18)}
+  .offer__box .offer__now b,.offer__box .offer__bonus b{color:#e8c47c}
+  .offer__ttl{font-family:var(--mincho);font-size:16px;color:var(--charcoal);margin-bottom:6px}
+  .offer__sub{font-size:13px;line-height:1.7;color:var(--charcoal-soft);margin-bottom:18px}
+  .offer__incl{font-size:12.5px;line-height:1.75;color:var(--charcoal);margin-bottom:20px}
+  .offer__price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:16px 0;border-top:1px solid rgba(46,42,38,.15);border-bottom:1px solid rgba(46,42,38,.15)}
+  .offer__through{font-family:var(--label);text-decoration:line-through;color:var(--charcoal-soft);font-size:14px}
+  .offer__now{font-family:var(--mincho);font-size:15px;color:var(--charcoal)}
+  .offer__now b{font-size:27px;color:var(--brass);font-weight:600;margin:0 2px}
+  .offer__bonus{font-size:13px;line-height:1.7;color:var(--charcoal);margin:18px 0 10px}
+  .offer__bonus b{color:var(--brass);font-weight:500}
+  .offer__fine{font-family:var(--label);font-size:10.5px;letter-spacing:.03em;color:var(--charcoal-soft)}
+
+  /* ⑩ ps */
+  .ps__h{font-family:var(--mincho);font-weight:500;font-size:clamp(20px,5.4vw,26px);line-height:1.7;color:var(--charcoal);margin-bottom:24px}
+  .ps__b{font-size:14.5px;line-height:1.9;color:var(--charcoal)}
+  /* 追伸: お香をダークに沈めた締め(白文字) */
+  .sec--ps{position:relative;background:var(--ink-deep);overflow:hidden;text-align:center}
+  .sec--ps::before{content:"";position:absolute;inset:0;z-index:0;
+    background:url("img/fv-incense.jpg") center/cover no-repeat}
+  .sec--ps::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(26,18,12,.78) 0%, rgba(26,18,12,.62) 45%, rgba(26,18,12,.8) 100%)}
+  .sec--ps .wrap{position:relative;z-index:2}
+  .sec--ps .sec__label{color:#cba76a}
+  .sec--ps .ps__h{color:var(--cream)}
+  .sec--ps .ps__b{color:var(--cream-dim)}
+  .sec--ps .ps__b b,.sec--ps .ps__h{color:var(--cream)}
+
+  /* ============================================================
+     追従CTA(常時) — 唯一のCTA
+     ============================================================ */
+  /* [B] 焦げ茶ソリッドCTA＋金文字 */
+  .sticky-cta{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:#3a2e26;
+    border-top:1px solid rgba(203,167,106,.45);
+    padding:0 16px calc(env(safe-area-inset-bottom));
+    box-shadow:0 -10px 30px rgba(20,15,11,.34);
+  }
+  .sticky-cta a{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    height:var(--cta-h);
+    color:#dcb87f;
+    text-decoration:none;
+    font-family:var(--gothic);
+    font-weight:500;
+    font-size:15px;
+    letter-spacing:.06em;
+  }
+  .sticky-cta .price{
+    font-size:12.5px;letter-spacing:.04em;opacity:.78;font-weight:400;
+  }
+  .sticky-cta a:focus-visible{outline:2px solid #dcb87f;outline-offset:-6px}
+
+  /* ============================================================
+     motion — スクロールフェード程度のみ
+     ============================================================ */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+    .fv__scroll::before{animation:none}
+  }
+
+  /* ============================================================
+     POLISH — 磨き込み(ヘッダー/構造装置/Didot/価格ヒーロー)
+     ============================================================ */
+  /* FVロゴ(既存ブランド・ダーク上は反転で白に) */
+  .fv__logo{height:30px;width:auto;display:block;filter:brightness(0) invert(1);opacity:.92}
+
+  /* 全eyebrowに真鍮の導線 — 構造装置を統一 */
+  .eyebrow,.sec__label{display:inline-flex;align-items:center;gap:16px}
+  .eyebrow::before,.sec__label::before{content:"";width:34px;height:1px;background:var(--brass);opacity:.85;flex:none}
+
+  /* 見出しの品位(トラッキング/行間を締める) */
+  .sec__h{letter-spacing:.03em;line-height:1.56}
+
+  /* ④ メソッド: Didotイタリック数字で"順番"を格上げ */
+  .mstep{gap:22px;align-items:baseline;padding:20px 0}
+  .mstep__num{font-family:var(--label);font-weight:400;font-size:26px;color:var(--brass);letter-spacing:.02em;min-width:48px;line-height:.9}
+  .mstep__en{letter-spacing:.3em}
+
+  /* ⑤ menu: Didot番号 */
+  .mitem__no{font-family:var(--label);font-size:18px;font-weight:600;color:var(--brass);margin-right:14px;letter-spacing:.02em;vertical-align:1px}
+
+  /* ⑨ offer: 価格をヒーローに */
+  .offer__price{flex-direction:column;align-items:flex-start;gap:7px;padding:20px 0}
+  .offer__through{font-size:13px;letter-spacing:.05em}
+  .offer__now{font-size:15px;display:flex;align-items:baseline;gap:11px}
+  .offer__now b{font-family:var(--mincho);font-size:42px;line-height:1;font-weight:600;letter-spacing:.01em;margin:0}
+
+  /* FV: リード下の余白を確保(切れ防止) */
+  .fv__foot{padding-bottom:calc(var(--cta-h) + 40px)}
+
+  /* fix: FVロゴを左上へ(flex itemの縮み対策) */
+  .fv__top{width:100%}
+
+  /* fix: 価格の各要素を塊で折り返す(縦割れ防止) */
+  .offer__now{flex-wrap:wrap}
+  .offer__now-l{white-space:nowrap;font-size:15px}
+  .offer__now-t{white-space:nowrap;font-size:13px;color:var(--charcoal-soft)}
+  .offer__now b{white-space:nowrap}
+</style>
+</head>
+<body>
+
+  <!-- ① FV ---------------------------------------------------->
+  <header class="fv">
+    <div class="fv__media">
+      <video class="fv__video" autoplay muted loop playsinline preload="auto" poster="img/fv-seitai.jpg">
+        <source src="video/kuukan-fv.mp4" type="video/mp4" />
+      </video>
+      <div class="fv__scrim" aria-hidden="true"></div>
+      <div class="fv__top wrap">
+        <img class="fv__logo" src="img/横_kuukan_logo_0130.png" alt="kuukan — 麻布のコンディショニングサロン" />
+      </div>
+    </div>
+
+    <div class="fv__body">
+      <div class="wrap">
+        <h1 class="fv__headline">その不調に、<br><span class="em">名前</span>がないだけ。</h1>
+        <p class="fv__lead">
+          病院に行くほどじゃない。<br>でも、<b>本調子でもない。</b><br>
+          その&ldquo;なんとなく&rdquo;には、<br>ちゃんと理由があります。
+        </p>
+        <div class="fv__scroll">Scroll</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ② 共感 × 投資 ------------------------------------------->
+  <section class="empathy">
+    <div class="wrap">
+      <span class="eyebrow reveal">Your body is the capital</span>
+      <h2 class="empathy__h reveal">時間も、お金も、<br />ぜんぶ「体」が生んでいる。</h2>
+      <div class="empathy__body">
+        <p class="reveal">仕事のスキルにも、美容にも、学びにも投資してきた。マッサージも、整体も、ジムも、サウナも、一通り試した。</p>
+        <p class="reveal">でも——その場では軽くなるのに、数日で戻る。かけたお金と時間の割に、コンディションが根本的に変わらない。</p>
+        <p class="reveal">それもそのはず。多くのケアは、その日をしのぐためのもので、&ldquo;なぜ不調が起きるのか&rdquo;には、手をつけていないからです。</p>
+        <p class="turn reveal">いちばん大事な資本なのに、<b>いちばんちゃんと向き合えていない。</b>それが、自分の「体」かもしれません。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 一木(信頼の核) --------------------------------------->
+  <section class="sec sec--g1">
+    <div class="wrap">
+      <span class="sec__label reveal">The Practitioner</span>
+      <h2 class="sec__h reveal">その体を、最初から最後まで、<br>一人の手で。</h2>
+      <p class="sec__lead reveal">「なぜ不調が起きるのか」に手をつけるには、体を部分で診ていては届きません。姿勢も、呼吸も、巡りも、ぜんぶ繋がっているからです。</p>
+      <img class="ichiki__photo reveal" src="img/ichiki-b.jpg" alt="kuukan 代表 一木勇太" loading="lazy">
+      <p class="ichiki__name reveal">一木 勇太<span class="en">Yuta Ichiki</span></p>
+      <span class="ichiki__role reveal">代表</span>
+      <p class="ichiki__bio reveal">整体歴17年。これまで2万人以上の体と向き合ってきました。鍼灸師・柔道整復師の国家資格を取得後、整骨院の院長として5年、パーソナルジムの店長として5年。2025年には禅療法士を取得。ほぐす整体、鍛えるトレーニング、巡らせる鍼灸——ふつうは別々の人が担うこれらを、一人で診られる。だから体を分けず、不調の&ldquo;理由&rdquo;そのものにアプローチできます。</p>
+      <div class="ichiki__career reveal">
+        <div class="ichiki__stats">
+          <div class="ichiki__stat"><b>17</b><span>整体歴（年）</span></div>
+          <div class="ichiki__stat"><b>20,000+</b><span>施術実績（のべ）</span></div>
+        </div>
+
+        <span class="ichiki__career-label mt">保有資格</span>
+        <ul class="ichiki__tags">
+          <li>鍼灸師（国家資格）</li>
+          <li>柔道整復師（国家資格）</li>
+          <li>禅療法士（2025年取得）</li>
+        </ul>
+
+        <span class="ichiki__career-label mt">経歴</span>
+        <ul class="ichiki__timeline">
+          <li><span class="dur">5年</span><span class="role">整骨院 院長</span></li>
+          <li><span class="dur">5年</span><span class="role">パーソナルジム 店長</span></li>
+        </ul>
+      </div>
+      <blockquote class="ichiki__quote reveal">かつて私自身、心身が限界を迎えた時期がありました。体を動かし、呼吸と姿勢が変わると、心にも静けさが戻ってくる。その実感が、kuukanの原点です。ここは、ただ鍛える場所ではなく、体を通して自分を取り戻す場所でありたいと思っています。</blockquote>
+    </div>
+  </section>
+
+  <!-- ④ メソッド ---------------------------------------------->
+  <section class="sec sec--g2">
+    <div class="wrap">
+      <div class="method__hero reveal">
+        <span class="sec__label">Method</span>
+        <h2 class="sec__h">その不調には、順番がある。</h2>
+        <p class="sec__lead method__hero-lead">健康のベースは、運動・食事・睡眠。誰もが知っている当たり前のことです。でも、それを続けても本調子にならない人には、理由があります。土台となる体そのものが、ちゃんと働ける状態になっていない。kuukanは、その土台を3つの順番で立て直します。</p>
+      </div>
+      <div class="reveal">
+        <div class="mstep">
+          <span class="mstep__num">01</span>
+          <div><div class="mstep__head"><span class="mstep__ja">姿勢</span><span class="mstep__en">Structure</span></div>
+            <p class="mstep__desc">まず、姿勢と筋肉の歪みを立て直す。体に余計な負荷がかかり続ける状態を、断つ。</p></div>
+        </div>
+        <div class="mstep">
+          <span class="mstep__num">02</span>
+          <div><div class="mstep__head"><span class="mstep__ja">呼吸</span><span class="mstep__en">Breath</span></div>
+            <p class="mstep__desc">次に、呼吸を深め、酸素をしっかり取り込む。浅い呼吸のままでは、体は回復に向かえない。</p></div>
+        </div>
+        <div class="mstep">
+          <span class="mstep__num">03</span>
+          <div><div class="mstep__head"><span class="mstep__ja">血流</span><span class="mstep__en">Flow</span></div>
+            <p class="mstep__desc">そして、血流を巡らせ、循環を最適化する。</p></div>
+        </div>
+      </div>
+      <p class="method__close reveal">体に負荷をかけ続けない。すると、血流がめぐる。めぐる血流が、コンディションをつくり、その先の肌や表情まで変えていく。&ldquo;なんとなく不調&rdquo;の正体は、たいていこの土台の不全です。だから、その場しのぎでは戻る。順番に立て直すから、変化が続く。</p>
+    </div>
+  </section>
+
+  <!-- ⑤ 手法(5メニュー) -------------------------------------->
+  <section class="sec sec--g3">
+    <div class="wrap">
+      <span class="sec__label reveal">Menu</span>
+      <p class="sec__lead reveal">「姿勢→呼吸→血流」を、あなたの状態に合わせて組み合わせます。</p>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/m-seitai.jpg" alt="整体" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">01</span>整体<span class="mitem__en">Seitai</span></div>
+        <p class="mitem__desc">骨格・筋膜の歪みを丁寧に読み取り、手技で全身のバランスを立て直す。</p>
+      </div>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/method-training.jpg" alt="トレーニング" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">02</span>トレーニング<span class="mitem__en">Training</span></div>
+        <p class="mitem__desc">立て直した体を&ldquo;使える体&rdquo;へ。姿勢改善・体幹強化を軸にした、無理のないファンクショナルトレーニング。</p>
+      </div>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/m-acupuncture.jpg" alt="鍼灸" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">03</span>鍼灸<span class="mitem__en">Acupuncture</span></div>
+        <p class="mitem__desc">経絡・ツボへ的確にアプローチ。自律神経の調整と自然治癒力の活性化を促す。</p>
+      </div>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/m-heat.jpg" alt="温熱" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">04</span>温熱<span class="mitem__en">Heat Therapy</span></div>
+        <p class="mitem__desc">遠赤外線やホットストーンの温熱療法。深部体温を上げ、血流・巡りをサポート。</p>
+      </div>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/m-zen.jpg" alt="坐禅" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">05</span>坐禅<span class="mitem__en">Zen Meditation</span></div>
+        <p class="mitem__desc">呼吸と姿勢を整え、思考の波を静める。施術後の体で行う坐禅は、より深い集中と内省の時間を。</p>
+      </div>
+      <p class="menu__close reveal">すべてを毎回やるわけではありません。一人で全工程を診られるからこそ、その日のあなたに必要な組み合わせを、一貫して設計できます。</p>
+    </div>
+  </section>
+
+  <!-- Trial オファー(Voiceの上) ------------------------------->
+  <section class="sec sec--g4" id="offer">
+    <div class="wrap">
+      <span class="sec__label reveal">Trial</span>
+      <h2 class="sec__h reveal">まずは、不調の&ldquo;理由&rdquo;を知ることから。</h2>
+
+      <div class="offer__scarcity reveal">
+        <span class="offer__scarcity-tag">今だけの空き枠</span>
+        <p>完全予約制のため、普段は空き枠に限りがあります。今期は新規の方を若干名のみご案内。岩盤ベッド30分の特典は、今期の体験の方限定です。</p>
+      </div>
+
+      <div class="offer__box reveal">
+        <p class="offer__ttl">初回体験セッション（90分）</p>
+        <p class="offer__sub">姿勢矯正トレーニング × 全身整体（60分）＋《今だけ》岩盤ベッド 30分</p>
+        <p class="offer__incl">含む：カウンセリング／姿勢チェック／整体 × トレーニング／岩盤ベッド／セルフケア指導</p>
+        <div class="offer__price">
+          <span class="offer__through">通常 ¥15,000</span>
+          <span class="offer__now"><span class="offer__now-l">初回体験</span><b class="js-price">¥5,000</b><span class="offer__now-t">（税込）</span></span>
+        </div>
+        <p class="offer__bonus">特典：さらに、当日ご入会で <b>登録料 ¥10,000 ＋ 入会金 ¥20,000 → ¥0</b></p>
+        <p class="offer__fine">完全予約制／手ぶらOK（着替え・シューズ・水完備）</p>
+      </div>
+
+      <div class="offer__facility reveal">
+        <div>
+          <b>会員は GYM CONCEPT 通い放題</b>
+          <span>9:00–23:00</span>
+        </div>
+      </div>
+
+      <div class="offer__collage reveal">
+        <img class="gc-recep-tall" src="img/gym-reception.jpg" alt="GYM CONCEPT 受付" loading="lazy">
+        <div class="split">
+          <img src="img/gym-machines.jpg" alt="GYM CONCEPT マシンルーム" loading="lazy">
+          <img src="img/gym-room.jpg" alt="GYM CONCEPT マシンエリア" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑥ Voice ------------------------------------------------->
+  <section class="sec sec--t1">
+    <div class="wrap">
+      <span class="sec__label reveal">Voice</span>
+      <div class="vquote reveal">
+        <span class="vquote__who">50代・男性</span>
+        <p>長年の反り腰で、歩くのもつらい時期がありました。整体とトレーニングを続けるうちに、歩くのが楽に。趣味のゴルフのスイングも安定しました。表面だけでなく、根本から変わっていく実感があります。</p>
+      </div>
+      <div class="vquote reveal">
+        <span class="vquote__who">40代・女性</span>
+        <p>4年以上、通っています。一人ひとりに合わせたメニューを丁寧に組んでくれるので、毎回きちんと変化を感じられる。鍼も整体もトレーニングも受けられるトータルケアは、ここでしか得られない価値だと思います。</p>
+      </div>
+      <div class="vquote reveal">
+        <span class="vquote__who">30代・女性</span>
+        <p>2年以上、続けています。姿勢が変わって、長年の肩こりが楽になりました。何より一木さんの人柄があるから、無理なく通い続けられています。</p>
+      </div>
+      <div class="vquote reveal">
+        <span class="vquote__who">30代・男性</span>
+        <p>坐骨神経痛に悩んでいましたが、的確な施術で楽になりました。朝早くから夜遅くまで開いているので、忙しくても通い続けられるのが助かっています。</p>
+      </div>
+      <p class="sec__note reveal">※体験談は個人の感想であり、効果を保証するものではありません。</p>
+    </div>
+  </section>
+
+  <!-- ⑦ 流れ(初回90分) -------------------------------------->
+  <section class="sec sec--l1">
+    <div class="wrap">
+      <span class="sec__label reveal">First Visit</span>
+      <h2 class="sec__h reveal">初回の90分で、やること。</h2>
+      <div class="reveal">
+        <div class="fstep"><span class="fstep__num">01</span><div><span class="fstep__t">ご予約</span></div></div>
+        <div class="fstep"><span class="fstep__num">02</span><div><span class="fstep__t">カウンセリング</span></div></div>
+        <div class="fstep"><span class="fstep__num">03</span><div><span class="fstep__t">姿勢チェック</span><span class="fstep__d">体の&ldquo;現在地&rdquo;と、不調の理由を確認</span></div></div>
+        <div class="fstep"><span class="fstep__num">04</span><div><span class="fstep__t">姿勢矯正トレーニング × 全身整体</span><span class="fstep__d">あなた専用のプログラムで</span></div></div>
+        <div class="fstep"><span class="fstep__num">05</span><div><span class="fstep__t">岩盤ベッド（30分）</span><span class="fstep__d">温めて巡らせ、整った状態を仕上げる</span></div></div>
+        <div class="fstep"><span class="fstep__num">06</span><div><span class="fstep__t">セルフケア指導</span><span class="fstep__d">自宅でできることまで持ち帰れる</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑧ FAQ --------------------------------------------------->
+  <section class="sec sec--l2">
+    <div class="wrap">
+      <span class="sec__label reveal">FAQ</span>
+      <div class="reveal">
+        <details class="qa"><summary><span class="qmark">Q</span>痛くないですか？</summary><p class="qa__a">状態に合わせて力加減を調整します。強い痛みを伴う施術は行いません。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>運動が苦手でも大丈夫ですか？</summary><p class="qa__a">今の体の状態に合わせて、無理のない範囲から始めます。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>何を着ていけばいいですか？</summary><p class="qa__a">動きやすい服装で。お着替えのご用意もあるので、お仕事帰りでもそのままどうぞ。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>どのくらいの頻度で通えばいいですか？</summary><p class="qa__a">目安は週1回〜月2回。状態と目標に合わせてご提案します。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>その日だけで変化はありますか？</summary><p class="qa__a">多くの方が施術後に体の軽さを感じますが、本来の変化は土台を重ねるほど現れます。だからこそ、続けやすい環境を用意しています。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>予約は必要ですか？</summary><p class="qa__a">完全予約制です。空き枠には限りがあります。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑩ 追伸 -------------------------------------------------->
+  <section class="sec sec--l3">
+    <div class="wrap">
+      <span class="sec__label reveal">Postscript</span>
+      <h2 class="ps__h reveal">&ldquo;なんとなく&rdquo;のまま、何年が過ぎましたか</h2>
+      <p class="ps__b reveal">その不調は、放っておいても消えません。理由がある以上、向き合えば変えられます。体だけは、先延ばしにした分だけ、取り戻すのに時間がかかります。<br><br>まず90分。自分の体の&ldquo;理由&rdquo;を、確かめにきてください。</p>
+    </div>
+  </section>
+
+  <!-- 追従CTA(唯一) ------------------------------------------->
+  <nav class="sticky-cta">
+    <a href="https://cl.gyms.jp/trial/CC4774539643/?clear_all=1" target="_blank" rel="noopener" aria-label="初回体験を予約する 90分 5000円">
+      初回体験を予約する
+      <span class="price">90分 ／ <span class="js-price">¥5,000</span></span>
+    </a>
+  </nav>
+
+  <script>
+    // 価格の一元管理(SPEC §6 {{TRIAL_PRICE}}) — ここ1箇所で全反映
+    const TRIAL_PRICE = '¥5,000';
+    document.querySelectorAll('.js-price').forEach(el=>{ el.textContent = TRIAL_PRICE; });
+
+    // スクロールフェード(reduced-motion時は無効)
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!rm && 'IntersectionObserver' in window){
+      const io = new IntersectionObserver((es)=>{
+        es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      },{threshold:.16});
+      document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+    }
+  </script>
+</body>
+</html>
