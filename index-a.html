@@ -36,6 +36,7 @@
     --didot:linotype-didot,"Playfair Display",Georgia,serif;
 
     --cta-h:64px;
+    --frame:480px;          /* SP専用フレーム幅（Storiesは縦・スマホ専用） */
   }
 
   *{margin:0;padding:0;box-sizing:border-box}
@@ -53,6 +54,16 @@
   ::selection{background:var(--brass);color:var(--cream)}
 
   .wrap{max-width:680px;margin:0 auto;padding-left:26px;padding-right:26px}
+
+  /* ============================================================
+     SP特化フレーム — Instagram Storiesは縦・スマホ専用の広告。
+     PCで見ても崩れないよう、LP全体をスマホ幅の中央カラムに固定する。
+     実機（≤480px）ではそのまま全幅表示、PCでは暗背景に1枚の縦カラム。
+     ============================================================ */
+  body{background:#17120e}
+  .fv,.empathy,.sec{max-width:var(--frame);margin-left:auto;margin-right:auto}
+  .sticky-cta{max-width:var(--frame);margin-left:auto;margin-right:auto}
+
 
   /* eyebrow(ラテン/ラベル) */
   .eyebrow{
@@ -476,8 +487,8 @@
       <div class="wrap">
         <h1 class="fv__headline">その不調に、<br><span class="em">名前</span>がないだけ。</h1>
         <p class="fv__lead">
-          病院に行くほどじゃない。<br>でも、<b>本調子でもない。</b><br>
-          その&ldquo;なんとなく&rdquo;には、<br>ちゃんと理由があります。
+          病院に行くほどじゃない。<br>でも<b>本調子でもない。</b><br>
+          その&ldquo;なんとなく&rdquo;には<br>理由があります。
         </p>
         <div class="fv__scroll">Scroll</div>
       </div>
@@ -490,10 +501,10 @@
       <span class="eyebrow reveal">Your body is the capital</span>
       <h2 class="empathy__h reveal">時間も、お金も、<br />ぜんぶ「体」が生んでいる。</h2>
       <div class="empathy__body">
-        <p class="reveal">仕事のスキルにも、美容にも、学びにも投資してきた。マッサージも、整体も、ジムも、サウナも、一通り試した。</p>
+        <p class="reveal">仕事のスキルにも美容にも学びにも投資してきた。マッサージも整体もジムもサウナも、ひと通り試した。</p>
         <p class="reveal">でも——その場では軽くなるのに、数日で戻る。かけたお金と時間の割に、コンディションが根本的に変わらない。</p>
-        <p class="reveal">それもそのはず。多くのケアは、その日をしのぐためのもので、&ldquo;なぜ不調が起きるのか&rdquo;には、手をつけていないからです。</p>
-        <p class="turn reveal">いちばん大事な資本なのに、<b>いちばんちゃんと向き合えていない。</b>それが、自分の「体」かもしれません。</p>
+        <p class="reveal">それもそのはず。多くのケアはその日をしのぐためのもの。&ldquo;なぜ不調が起きるのか&rdquo;には手をつけていない。</p>
+        <p class="turn reveal">いちばん大事な資本なのに、<b>いちばん向き合えていない。</b>それが自分の「体」かもしれません。</p>
       </div>
     </div>
   </section>
@@ -503,7 +514,7 @@
     <div class="wrap">
       <span class="sec__label reveal">The Practitioner</span>
       <h2 class="sec__h reveal">その体を、最初から最後まで、<br>一人の手で。</h2>
-      <p class="sec__lead reveal">「なぜ不調が起きるのか」に手をつけるには、体を部分で診ていては届きません。姿勢も、呼吸も、巡りも、ぜんぶ繋がっているからです。</p>
+      <p class="sec__lead reveal">「なぜ不調が起きるのか」に手をつけるには、体を部分で診ていては届きません。姿勢も呼吸も巡りも、ぜんぶ繋がっているからです。</p>
       <img class="ichiki__photo reveal" src="img/ichiki-b.jpg" alt="kuukan 代表 一木勇太" loading="lazy">
       <p class="ichiki__name reveal">一木 勇太<span class="en">Yuta Ichiki</span></p>
       <span class="ichiki__role reveal">代表</span>
@@ -527,7 +538,7 @@
           <li><span class="dur">5年</span><span class="role">パーソナルジム 店長</span></li>
         </ul>
       </div>
-      <blockquote class="ichiki__quote reveal">かつて私自身、心身が限界を迎えた時期がありました。体を動かし、呼吸と姿勢が変わると、心にも静けさが戻ってくる。その実感が、kuukanの原点です。ここは、ただ鍛える場所ではなく、体を通して自分を取り戻す場所でありたいと思っています。</blockquote>
+      <blockquote class="ichiki__quote reveal">かつて私自身、心身が限界を迎えた時期がありました。体を動かして呼吸と姿勢が変わると、心にも静けさが戻ってくる。その実感がkuukanの原点です。ただ鍛える場所ではなく、体を通して自分を取り戻す場所でありたい。</blockquote>
     </div>
   </section>
 
@@ -537,7 +548,7 @@
       <div class="method__hero reveal">
         <span class="sec__label">Method</span>
         <h2 class="sec__h">その不調には、順番がある。</h2>
-        <p class="sec__lead method__hero-lead">健康のベースは、運動・食事・睡眠。誰もが知っている当たり前のことです。でも、それを続けても本調子にならない人には、理由があります。土台となる体そのものが、ちゃんと働ける状態になっていない。kuukanは、その土台を3つの順番で立て直します。</p>
+        <p class="sec__lead method__hero-lead">健康のベースは運動・食事・睡眠。誰もが知っている当たり前のこと。でも、それを続けても本調子にならない人には理由があります。土台となる体そのものが、ちゃんと働ける状態になっていない。kuukanはその土台を、3つの順番で立て直します。</p>
       </div>
       <div class="reveal">
         <div class="mstep">
@@ -556,7 +567,7 @@
             <p class="mstep__desc">そして、血流を巡らせ、循環を最適化する。</p></div>
         </div>
       </div>
-      <p class="method__close reveal">体に負荷をかけ続けない。すると、血流がめぐる。めぐる血流が、コンディションをつくり、その先の肌や表情まで変えていく。&ldquo;なんとなく不調&rdquo;の正体は、たいていこの土台の不全です。だから、その場しのぎでは戻る。順番に立て直すから、変化が続く。</p>
+      <p class="method__close reveal">体に負荷をかけ続けない。すると血流がめぐる。めぐる血流がコンディションをつくり、その先の肌や表情まで変えていく。&ldquo;なんとなく不調&rdquo;の正体は、たいていこの土台の不全。だからその場しのぎでは戻る。順番に立て直すから、変化が続く。</p>
     </div>
   </section>
 
@@ -704,7 +715,7 @@
     <div class="wrap">
       <span class="sec__label reveal">Postscript</span>
       <h2 class="ps__h reveal">&ldquo;なんとなく&rdquo;のまま、何年が過ぎましたか</h2>
-      <p class="ps__b reveal">その不調は、放っておいても消えません。理由がある以上、向き合えば変えられます。体だけは、先延ばしにした分だけ、取り戻すのに時間がかかります。<br><br>まず90分。自分の体の&ldquo;理由&rdquo;を、確かめにきてください。</p>
+      <p class="ps__b reveal">その不調は放っておいても消えません。理由がある以上、向き合えば変えられる。体だけは、先延ばしにした分だけ取り戻すのに時間がかかります。<br><br>まず90分。自分の体の&ldquo;理由&rdquo;を確かめにきてください。</p>
     </div>
   </section>
 
