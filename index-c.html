@@ -340,6 +340,7 @@
   /* ⑨ offer */
   /* コラージュ: 左=受付(大) / 右=マシン室+館内(中2分割) */
   .offer__collage{display:grid;grid-template-columns:1.3fr 1fr;gap:4px;margin-bottom:26px;height:280px}
+  .offer__collage--perk{margin:12px 0 0}
   .offer__collage img{width:100%;height:100%;object-fit:cover;display:block}
   .offer__collage .split{display:grid;grid-template-rows:1fr 1fr;gap:4px;height:100%}
   .offer__collage .gc-recep-tall{object-position:22% center} /* 受付ネオンを縦に */
@@ -385,7 +386,7 @@
   .offer__perks{margin:20px 0 14px}
   .perk{padding:13px 0;border-top:1px solid rgba(245,242,236,.13)}
   .perk:first-child{border-top:0;padding-top:4px}
-  .perk__no{display:inline-block;font-family:var(--label);font-size:10px;letter-spacing:.24em;color:#c9a668;margin-bottom:7px}
+  .perk__no{display:inline-block;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#c9a668;margin-bottom:7px}
   .perk__t{font-family:var(--gothic);font-size:14px;line-height:1.5;color:var(--cream);margin:0}
   .perk__t b{font-size:19px;color:#e8c47c;font-weight:700;letter-spacing:.01em}
   .perk__d{font-family:var(--label);font-size:11.5px;letter-spacing:.02em;color:rgba(245,242,236,.55);margin-top:4px}
@@ -656,7 +657,13 @@
             <span class="perk__no">特典 3</span>
             <p class="perk__t">会員は GYM CONCEPT <b>通い放題</b></p>
             <p class="perk__d">9:00–23:00</p>
-            <img class="perk__img" src="img/gym-reception.jpg" alt="GYM CONCEPT" loading="lazy">
+            <div class="offer__collage offer__collage--perk">
+              <img class="gc-recep-tall" src="img/gym-reception.jpg" alt="GYM CONCEPT 受付" loading="lazy">
+              <div class="split">
+                <img src="img/gym-machines.jpg" alt="GYM CONCEPT マシンルーム" loading="lazy">
+                <img src="img/gym-room.jpg" alt="GYM CONCEPT マシンエリア" loading="lazy">
+              </div>
+            </div>
           </div>
         </div>
       </div>
