@@ -99,6 +99,14 @@
     width:100%;height:100%;object-fit:cover;
     background:#1a120c;
   }
+  /* 動画が再生できない時(低電力モード等)は素の静止画に見せる。再生成功でフェードして隠す */
+  .fv__poster{
+    position:absolute;inset:0;z-index:0;
+    width:100%;height:100%;object-fit:cover;
+    background:#1a120c;
+    opacity:1;transition:opacity .6s ease;
+  }
+  .fv__poster.is-hidden{opacity:0;pointer-events:none;}
   /* 可読性スクリム: 上/右を落として白文字を担保しつつ、下端は②のsepiaへ繋ぐ */
   .fv__scrim{
     position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -579,6 +587,7 @@
       <video class="fv__video" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="img/fv-seitai.jpg">
         <source src="video/kuukan-fv.mp4" type="video/mp4" />
       </video>
+      <img class="fv__poster" src="img/fv-seitai.jpg" alt="" aria-hidden="true" />
       <div class="fv__scrim" aria-hidden="true"></div>
       <div class="fv__top wrap">
         <img class="fv__logo" src="img/横_kuukan_logo_0130.png" alt="kuukan — 麻布のコンディショニングサロン" />
@@ -893,14 +902,21 @@
 </script>
 <script>
   // FV動画の自動再生フォールバック(iOS省電力モード/低速回線対策)
+  // 再生できない間は.fv__posterの静止画のまま(再生ボタン等は一切出さない)。
+  // 再生が実際に始まったら(playingイベント)フェードで隠し、途中で止まったら再度表示する。
   (function(){
     var v = document.querySelector('.fv__video');
+    var poster = document.querySelector('.fv__poster');
     if(!v) return;
     var tryPlay = function(){
       v.muted = true;
       var p = v.play();
       if(p && p.catch) p.catch(function(){});
     };
+    if(poster){
+      v.addEventListener('playing', function(){ poster.classList.add('is-hidden'); });
+      v.addEventListener('pause', function(){ poster.classList.remove('is-hidden'); });
+    }
     tryPlay();
     document.addEventListener('visibilitychange', function(){
       if(document.visibilityState === 'visible') tryPlay();
