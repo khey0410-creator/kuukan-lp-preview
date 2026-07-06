@@ -487,12 +487,13 @@
   }
   .method-transfer__inner{ max-width:1080px; margin-inline:auto; }
   .method-transfer__label{
-    margin:0 0 16px; color:var(--method-accent); text-align:left;
-    font-family:var(--label); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    display:inline-flex; align-items:center; gap:16px;
+    margin:0 0 24px; color:var(--method-accent); text-align:left;
+    font-family:var(--label); font-size:18px; font-weight:700; letter-spacing:.28em; text-transform:uppercase;
   }
   .method-transfer__label::before{
-    content:""; display:inline-block; width:44px; height:1px; margin-right:14px;
-    vertical-align:middle; background:currentColor;
+    content:""; width:34px; height:1px; opacity:.85;
+    background:currentColor; flex:none;
   }
   .method-transfer__heading{
     margin:0 0 20px; text-align:left; font-family:var(--mincho);
