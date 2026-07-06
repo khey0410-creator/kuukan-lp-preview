@@ -104,9 +104,9 @@
     position:absolute;inset:0;z-index:0;
     width:100%;height:100%;object-fit:cover;
     background:#1a120c;
-    opacity:0;pointer-events:none;transition:opacity .5s ease;
+    opacity:1;transition:opacity .25s ease;
   }
-  .fv__poster.is-shown{opacity:1;}
+  .fv__poster.is-hidden{opacity:0;pointer-events:none;}
   /* 可読性スクリム: 上/右を落として白文字を担保しつつ、下端は②のsepiaへ繋ぐ */
   .fv__scrim{
     position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -447,7 +447,6 @@
   .reveal.in{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
-    .reveal{opacity:1;transform:none;transition:none}
     .fv__scroll::before{animation:none}
   }
 
@@ -757,7 +756,7 @@
 
     // スクロールフェード(reduced-motion時は無効)
     const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!rm && 'IntersectionObserver' in window){
+    if('IntersectionObserver' in window){
       const io = new IntersectionObserver((es)=>{
         es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
       },{threshold:.16});
@@ -767,9 +766,9 @@
     }
   </script>
 <script>
-  // FV動画の自動再生フォールバック(iOS省電力モード/低速回線対策)
-  // 通常(再生できる場合)は最初から動画のまま表示(静止画を挟まない)。
-  // 一定時間経っても再生できていない時だけ(低電力モード等)静止画に切り替え、再生ボタンは出さない。
+  // FV動画: 開いた瞬間から静止画(fv__poster)で覆い、再生ボタンを一切出さない。
+  // 再生が実際に始まったら静止画をフェードで隠す(PCは即座に再生→ほぼ継ぎ目なし)。
+  // 低電力モード等で再生できない場合は静止画のまま。
   (function(){
     var v = document.querySelector('.fv__video');
     var poster = document.querySelector('.fv__poster');
@@ -779,15 +778,11 @@
       var p = v.play();
       if(p && p.catch) p.catch(function(){});
     };
-    var checkStuck = function(){
-      if(v.paused && poster) poster.classList.add('is-shown');
-    };
     if(poster){
-      v.addEventListener('playing', function(){ poster.classList.remove('is-shown'); });
-      v.addEventListener('pause', function(){ setTimeout(checkStuck, 200); });
+      v.addEventListener('playing', function(){ poster.classList.add('is-hidden'); });
+      v.addEventListener('pause', function(){ poster.classList.remove('is-hidden'); });
     }
     tryPlay();
-    setTimeout(checkStuck, 350);
     document.addEventListener('visibilitychange', function(){
       if(document.visibilityState === 'visible') tryPlay();
     });
