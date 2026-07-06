@@ -263,8 +263,9 @@
 
   /* ②資格タグ */
   .ichiki__tags{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-  .ichiki__tags li{font-family:var(--label);font-size:12px;font-weight:500;letter-spacing:0;color:var(--charcoal);text-align:center;line-height:1.5;
+  .ichiki__tags li{font-family:var(--label);font-size:15px;font-weight:600;letter-spacing:0;color:var(--charcoal);text-align:center;line-height:1.45;
     border:1px solid rgba(176,141,87,.65);padding:8px 5px}
+  .ichiki__tag-sub{display:inline-block;margin-top:2px;font-size:10px;font-weight:400;opacity:.68;letter-spacing:0}
 
   /* ③経歴タイムライン(役職を時系列で) */
   .ichiki__timeline{display:flex;flex-direction:column}
@@ -545,9 +546,9 @@
 
         <span class="ichiki__career-label mt">保有資格</span>
         <ul class="ichiki__tags">
-          <li>鍼灸師<br>（国家資格）</li>
-          <li>柔道整復師<br>（国家資格）</li>
-          <li>禅療法士<br>（2025年取得）</li>
+          <li>鍼灸師<br><span class="ichiki__tag-sub">（国家資格）</span></li>
+          <li>柔道整復師<br><span class="ichiki__tag-sub">（国家資格）</span></li>
+          <li>禅療法士<br><span class="ichiki__tag-sub">（2025年取得）</span></li>
         </ul>
 
         <span class="ichiki__career-label mt">経歴</span>
