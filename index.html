@@ -344,6 +344,12 @@
   .offer__box .offer__sub,.offer__box .offer__incl,.offer__box .offer__fine,.offer__box .offer__through,.offer__box .offer__now-t{color:var(--cream-dim)}
   .offer__box .offer__price{border-color:rgba(245,242,236,.18)}
   .offer__box .offer__now b,.offer__box .offer__bonus b{color:#e8c47c}
+  /* 含む=ピル型ボタン / 岩盤の補足 */
+  .offer__incl-label{display:block;font-family:var(--label);font-size:11px;letter-spacing:.2em;color:rgba(245,242,236,.5);margin-bottom:12px}
+  .offer__chips{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+  .offer__chips li{font-family:var(--gothic);font-size:12.5px;letter-spacing:.02em;color:var(--cream);
+    border:1px solid rgba(203,167,106,.5);border-radius:999px;padding:7px 16px;background:rgba(255,255,255,.05)}
+  .offer__addon{font-family:var(--label);font-size:12px;letter-spacing:.03em;color:rgba(245,242,236,.62);margin-top:10px}
   .offer__ttl{font-family:var(--mincho);font-size:16px;color:var(--charcoal);margin-bottom:6px}
   .offer__sub{font-size:13px;line-height:1.7;color:var(--charcoal-soft);margin-bottom:18px}
   .offer__incl{font-size:12.5px;line-height:1.75;color:var(--charcoal);margin-bottom:20px}
@@ -597,12 +603,22 @@
       <div class="offer__box reveal">
         <p class="offer__ttl">初回体験セッション（90分）</p>
         <p class="offer__sub">姿勢矯正トレーニング × 全身整体（60分）＋《今だけ》岩盤ベッド 30分</p>
-        <p class="offer__incl">含む：カウンセリング／姿勢チェック／整体 × トレーニング／岩盤ベッド／セルフケア指導</p>
+        <div class="offer__incl">
+          <span class="offer__incl-label">含まれるもの</span>
+          <ul class="offer__chips">
+            <li>カウンセリング</li>
+            <li>姿勢チェック</li>
+            <li>整体 × トレーニング</li>
+            <li>岩盤ベッド</li>
+            <li>セルフケア指導</li>
+          </ul>
+        </div>
         <div class="offer__price">
           <span class="offer__through">通常 ¥15,000</span>
-          <span class="offer__now"><span class="offer__now-l">初回体験</span><b class="js-price">¥5,000</b><span class="offer__now-t">（税込）</span></span>
+          <span class="offer__now"><span class="offer__now-l">初回体験</span><b class="js-price">¥3,000</b><span class="offer__now-t">（税込）</span></span>
         </div>
         <p class="offer__bonus">特典：さらに、当日ご入会で <b>登録料 ¥10,000 ＋ 入会金 ¥20,000 → ¥0</b></p>
+        <p class="offer__addon">岩盤ベッド（20分）¥2,500</p>
         <p class="offer__fine">完全予約制／手ぶらOK（着替え・シューズ・水完備）</p>
       </div>
 
@@ -689,15 +705,15 @@
 
   <!-- 追従CTA(唯一) ------------------------------------------->
   <nav class="sticky-cta">
-    <a href="https://cl.gyms.jp/trial/CC4774539643/?clear_all=1" target="_blank" rel="noopener" aria-label="初回体験を予約する 90分 5000円">
+    <a href="https://cl.gyms.jp/trial/CC4774539643/?clear_all=1" target="_blank" rel="noopener" aria-label="初回体験を予約する 90分 3000円">
       初回体験を予約する
-      <span class="price">90分 ／ <span class="js-price">¥5,000</span></span>
+      <span class="price">90分 ／ <span class="js-price">¥3,000</span></span>
     </a>
   </nav>
 
   <script>
     // 価格の一元管理(SPEC §6 {{TRIAL_PRICE}}) — ここ1箇所で全反映
-    const TRIAL_PRICE = '¥5,000';
+    const TRIAL_PRICE = '¥3,000';
     document.querySelectorAll('.js-price').forEach(el=>{ el.textContent = TRIAL_PRICE; });
 
     // スクロールフェード(reduced-motion時は無効)
