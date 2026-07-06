@@ -517,8 +517,7 @@
     opacity:0; transform:rotate(45deg) translate(-6px, 6px);
   }
   .method-transfer__layer{
-    display:grid; grid-template-columns:54px minmax(0,1fr); gap:clamp(14px, 2.5cqw, 24px);
-    align-items:start; min-height:130px; padding:clamp(20px, 3cqw, 30px);
+    display:block; padding:clamp(18px, 3cqw, 26px);
     border:1px solid var(--method-border); border-left:3px solid var(--method-accent);
     background:var(--method-card-bg); opacity:0; transform:translateY(34px) scale(.985);
   }
@@ -530,14 +529,16 @@
     border:1px solid color-mix(in srgb, var(--method-accent) 55%, transparent);
     color:var(--method-accent); font-family:var(--label); font-size:17px; font-weight:700; line-height:1;
   }
+  .method-transfer__top{ display:flex; align-items:center; gap:14px; }
+  .method-transfer__head{ min-width:0; }
   .method-transfer__en{
-    margin:0 0 7px; color:var(--method-accent); font-family:var(--label);
+    margin:0 0 4px; color:var(--method-accent); font-family:var(--label);
     font-size:12px; font-weight:700; letter-spacing:.26em; text-transform:uppercase;
   }
-  .method-transfer__body h3{
-    margin:0 0 9px; font-family:var(--mincho); font-size:clamp(18px, 4cqw, 22px); font-weight:500; line-height:1.55;
+  .method-transfer__head h3{
+    margin:0; font-family:var(--mincho); font-size:clamp(18px, 4cqw, 22px); font-weight:500; line-height:1.5;
   }
-  .method-transfer__body p{ margin:0; color:var(--method-muted); font-size:13.5px; line-height:1.85; }
+  .method-transfer__desc{ margin:12px 0 0; color:var(--method-muted); font-size:13.5px; line-height:1.8; }
   .method-transfer__sub{ margin-top:8px !important; color:var(--method-accent) !important; opacity:.85; }
   .method-transfer__stack.is-stacking::before{ animation:methodRailRise .9s .1s cubic-bezier(.22,1,.36,1) both; }
   .method-transfer__stack.is-stacking::after{ animation:methodArrowIn .42s .72s cubic-bezier(.22,1,.36,1) forwards; }
@@ -553,13 +554,14 @@
     .method-transfer__stack{ padding-left:28px; gap:11px; }
     .method-transfer__stack::before{ left:9px; top:30px; bottom:30px; }
     .method-transfer__stack::after{ left:1px; top:20px; width:16px; height:16px; }
-    .method-transfer__layer{ grid-template-columns:36px minmax(0,1fr); gap:11px; min-height:auto; padding:15px 14px 16px; }
+    .method-transfer__layer{ padding:15px 14px 16px; }
+    .method-transfer__top{ gap:11px; }
     .method-transfer__layer--top{ width:calc(100% - 14px); margin-left:14px; }
     .method-transfer__layer--mid{ width:calc(100% - 7px); margin-left:7px; }
     .method-transfer__num{ width:34px; height:34px; font-size:14px; }
-    .method-transfer__en{ margin-bottom:5px; font-size:10.5px; letter-spacing:.22em; }
-    .method-transfer__body h3{ margin-bottom:6px; font-size:16px; line-height:1.5; }
-    .method-transfer__body p{ font-size:12.5px; line-height:1.7; }
+    .method-transfer__en{ margin-bottom:3px; font-size:10.5px; letter-spacing:.22em; }
+    .method-transfer__head h3{ margin:0; font-size:16px; line-height:1.45; }
+    .method-transfer__desc{ margin-top:10px; font-size:12.5px; line-height:1.7; }
   }
   @media (prefers-reduced-motion: reduce){
     .method-transfer__stack::before, .method-transfer__stack::after, .method-transfer__layer{ animation:none !important; }
@@ -653,33 +655,39 @@
 
         <div class="method-transfer__stack" aria-label="姿勢、呼吸、血流の順番">
           <article class="method-transfer__layer method-transfer__layer--top">
-            <span class="method-transfer__num">03</span>
-            <div class="method-transfer__body">
-              <p class="method-transfer__en">Flow</p>
-              <h3>血流を巡らせ、循環を最適化する</h3>
-              <p>そして、血流を巡らせ、循環を最適化する。</p>
-              <p class="method-transfer__sub">整体・鍼灸・温熱</p>
+            <div class="method-transfer__top">
+              <span class="method-transfer__num">03</span>
+              <div class="method-transfer__head">
+                <p class="method-transfer__en">Flow</p>
+                <h3>血流を巡らせ、循環を最適化する</h3>
+              </div>
             </div>
+            <p class="method-transfer__desc">そして、血流を巡らせ、循環を最適化する。</p>
+            <p class="method-transfer__sub">整体・鍼灸・温熱</p>
           </article>
 
           <article class="method-transfer__layer method-transfer__layer--mid">
-            <span class="method-transfer__num">02</span>
-            <div class="method-transfer__body">
-              <p class="method-transfer__en">Breath</p>
-              <h3>呼吸を深め、酸素をしっかり取り込む</h3>
-              <p>次に、呼吸を深め、酸素をしっかり取り込む。浅い呼吸のままでは、体は回復に向かえない。</p>
-              <p class="method-transfer__sub">呼吸・坐禅</p>
+            <div class="method-transfer__top">
+              <span class="method-transfer__num">02</span>
+              <div class="method-transfer__head">
+                <p class="method-transfer__en">Breath</p>
+                <h3>呼吸を深め、酸素をしっかり取り込む</h3>
+              </div>
             </div>
+            <p class="method-transfer__desc">次に呼吸を深め、酸素を取り込む。浅い呼吸のままでは、体は回復に向かえない。</p>
+            <p class="method-transfer__sub">呼吸・坐禅</p>
           </article>
 
           <article class="method-transfer__layer method-transfer__layer--base">
-            <span class="method-transfer__num">01</span>
-            <div class="method-transfer__body">
-              <p class="method-transfer__en">Structure</p>
-              <h3>姿勢と筋肉の歪みを立て直す</h3>
-              <p>まず、姿勢と筋肉の歪みを立て直す。体に余計な負荷がかかり続ける状態を、断つ。</p>
-              <p class="method-transfer__sub">整体・トレーニング</p>
+            <div class="method-transfer__top">
+              <span class="method-transfer__num">01</span>
+              <div class="method-transfer__head">
+                <p class="method-transfer__en">Structure</p>
+                <h3>姿勢と筋肉の歪みを立て直す</h3>
+              </div>
             </div>
+            <p class="method-transfer__desc">まず姿勢と筋肉の歪みを立て直し、体にかかり続ける余計な負荷を断つ。</p>
+            <p class="method-transfer__sub">整体・トレーニング</p>
           </article>
         </div>
 
