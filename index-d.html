@@ -216,7 +216,7 @@
   .sec{padding:clamp(46px,8vw,72px) 0}
   /* 各セクションを"次の色"へ抜けるグラデにして境目を消す(暗→明を連続化) */
   .sec--g1{background:linear-gradient(180deg,#d6d2cb,#dbd7cf)} /* ③ empathy末尾#d6d2cbから連続 */
-  .sec--g2{background:linear-gradient(180deg,#dbd7cf,#e0dcd3)} /* ④ */
+  .sec--g2{background:linear-gradient(180deg,#2a231b,#221c15);color:var(--cream);padding-top:14px} /* ④ [D]暗い章 */
   .sec--g3{background:linear-gradient(180deg,#e0dcd3,#e5e0d7)} /* ⑤ */
   .sec--g4{background:linear-gradient(180deg,#e5e0d7,#eae4db)} /* Trial */
   .sec--t1{background:linear-gradient(180deg,#eae4db,#eee8df)} /* Voice */
@@ -483,7 +483,7 @@
     --method-card-bg: color-mix(in srgb, currentColor 6%, transparent);
     --method-muted: color-mix(in srgb, currentColor 66%, transparent);
     --method-gap: clamp(16px, 3cqw, 30px);
-    color: inherit;
+    color: var(--cream);
   }
   .method-transfer__inner{ max-width:1080px; margin-inline:auto; }
   .method-transfer__label{
