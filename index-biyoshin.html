@@ -16,17 +16,17 @@
      ============================================================ */
   :root{
     /* --- color tokens (SPEC §2) --- */
-    --ink-deep:#2b221c;      /* FV 最暗 */
-    --sepia:#3a2e26;         /* 焦げ茶 */
-    --sepia-soft:#4d4034;    /* 移行の中間(暗側) */
-    --warm-mid:#8c8377;      /* 移行の中間 */
-    --warm-gray:#c9c5be;     /* 本文背景 */
-    --warm-gray-hi:#d6d2cb;  /* 本文背景(明) */
-    --charcoal:#2e2a26;      /* 明背景上の文字 */
-    --charcoal-soft:#5c554d; /* 補助文字 */
-    --cream:#f5f2ec;         /* 暗背景上の文字 */
-    --cream-dim:rgba(245,242,236,.66);
-    --brass:#b08d57;         /* 唯一のアクセント */
+    --ink-deep:#452735;      /* FV 最暗 */
+    --sepia:#4e2c3a;         /* 焦げ茶 */
+    --sepia-soft:#613a4b;    /* 移行の中間(暗側) */
+    --warm-mid:#a5919a;      /* 移行の中間 */
+    --warm-gray:#d8ccd0;     /* 本文背景 */
+    --warm-gray-hi:#e5dade;  /* 本文背景(明) */
+    --charcoal:#361f28;      /* 明背景上の文字 */
+    --charcoal-soft:#6f5058; /* 補助文字 */
+    --cream:#faf3f1;         /* 暗背景上の文字 */
+    --cream-dim:rgba(250,243,241,.66);
+    --brass:#bd8b52;         /* 唯一のアクセント */
 
     /* --- type --- */
     --mincho:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
@@ -60,7 +60,7 @@
      PCで見ても崩れないよう、LP全体をスマホ幅の中央カラムに固定する。
      実機（≤480px）ではそのまま全幅表示、PCでは暗背景に1枚の縦カラム。
      ============================================================ */
-  body{background:#17120e}
+  body{background:#2c1622}
   .fv,.empathy,.sec{max-width:var(--frame);margin-left:auto;margin-right:auto;container-type:inline-size}
   .sticky-cta{max-width:var(--frame);margin-left:auto;margin-right:auto}
 
@@ -86,25 +86,25 @@
   .fv__media{
     position:relative;
     height:52vh;min-height:330px;max-height:560px;
-    overflow:hidden;background:#1a120c;
+    overflow:hidden;background:#38202b;
   }
   /* 見出し帯(動画の下・sepia。②共感へ繋ぐ) */
   .fv__body{
-    background:linear-gradient(180deg,#1a120c 0%, var(--sepia) 55%, var(--sepia) 100%);
+    background:linear-gradient(180deg,#38202b 0%, var(--sepia) 55%, var(--sepia) 100%);
     padding:12px 0 54px;text-align:center;
   }
   /* FV動画(kuukan PV縦_2 → kuukan-fv.mp4) */
   .fv__video{
     position:absolute;inset:0;z-index:0;
     width:100%;height:100%;object-fit:cover;
-    background:#1a120c;
+    background:#38202b;
   }
   /* 可読性スクリム: 上/右を落として白文字を担保しつつ、下端は②のsepiaへ繋ぐ */
   .fv__scrim{
     position:absolute;inset:0;z-index:1;pointer-events:none;
     background:linear-gradient(180deg,
-      rgba(22,16,11,.58) 0%, rgba(22,16,11,.14) 24%,
-      rgba(22,16,11,.10) 60%, rgba(26,18,12,.94) 100%);
+      rgba(40,22,31,.58) 0%, rgba(40,22,31,.14) 24%,
+      rgba(40,22,31,.10) 60%, rgba(44,25,34,.94) 100%);
   }
   .fv__top{
     position:absolute;top:0;left:0;right:0;z-index:2;
@@ -150,7 +150,7 @@
     line-height:2;
     color:var(--cream-dim);
     letter-spacing:.04em;
-    text-shadow:0 1px 18px rgba(14,9,6,.55);
+    text-shadow:0 1px 18px rgba(30,15,23,.55);
   }
   .fv__lead b{color:var(--cream);font-weight:500}
   .fv__scroll{
@@ -175,11 +175,11 @@
       var(--sepia) 0,
       var(--sepia) 190px,
       var(--warm-gray) 320px,
-      #d6d2cb 430px,
-      #d6d2cb 100%);
+      #e5dade 430px,
+      #e5dade 100%);
     padding:84px 0 76px;
   }
-  .empathy .eyebrow{color:#cba76a;font-size:18px;font-weight:700;letter-spacing:.24em}
+  .empathy .eyebrow{color:#cca664;font-size:18px;font-weight:700;letter-spacing:.24em}
   .empathy__h{
     font-family:var(--mincho);
     font-weight:500;
@@ -215,16 +215,16 @@
      ============================================================ */
   .sec{padding:clamp(46px,8vw,72px) 0}
   /* 各セクションを"次の色"へ抜けるグラデにして境目を消す(暗→明を連続化) */
-  .sec--g1{background:linear-gradient(180deg,#d6d2cb,#dbd7cf)} /* ③ empathy末尾#d6d2cbから連続 */
-  .sec--g2{background:linear-gradient(180deg,#2a231b,#221c15);color:var(--cream);padding-top:14px} /* ④ [D]暗い章 */
-  .sec--g3{background:linear-gradient(180deg,#e0dcd3,#e5e0d7)} /* ⑤ */
-  .sec--g4{background:linear-gradient(180deg,#e5e0d7,#eae4db)} /* Trial */
-  .sec--t1{background:linear-gradient(180deg,#eae4db,#eee8df)} /* Voice */
-  .sec--l1{background:linear-gradient(180deg,#eee8df,#f2ece3)} /* 流れ */
-  .sec--l2{background:linear-gradient(180deg,#f2ece3,#f5efe6)} /* FAQ */
-  .sec--l3{background:linear-gradient(180deg,#f5efe6,#f8f3ea)} /* 追伸 */
+  .sec--g1{background:linear-gradient(180deg,#e5dade,#e9dfe2)} /* ③ empathy末尾#e5dadeから連続 */
+  .sec--g2{background:linear-gradient(180deg,#452735,#3a2130);color:var(--cream);padding-top:14px} /* ④ [D]暗い章 */
+  .sec--g3{background:linear-gradient(180deg,#ece2e4,#f0e8e8)} /* ⑤ */
+  .sec--g4{background:linear-gradient(180deg,#f0e8e8,#f3ecec)} /* Trial */
+  .sec--t1{background:linear-gradient(180deg,#f3ecec,#f6f0f0)} /* Voice */
+  .sec--l1{background:linear-gradient(180deg,#f6f0f0,#f8f2f2)} /* 流れ */
+  .sec--l2{background:linear-gradient(180deg,#f8f2f2,#faf5f4)} /* FAQ */
+  .sec--l3{background:linear-gradient(180deg,#faf5f4,#fcf8f7)} /* 追伸 */
 
-  .sec__label{font-family:var(--label);color:var(--gold-dark,#9c7c40);font-size:18px;font-weight:700;
+  .sec__label{font-family:var(--label);color:var(--gold-dark,#a17b44);font-size:18px;font-weight:700;
     letter-spacing:.28em;text-transform:uppercase;display:block;margin-bottom:24px}
   .sec__h{font-family:var(--mincho);font-weight:500;font-size:clamp(22px,5.9cqw,30px);
     line-height:1.58;letter-spacing:.02em;color:var(--charcoal);margin-bottom:20px}
@@ -239,7 +239,7 @@
   .ichiki__bio{font-size:14px;line-height:1.75;color:var(--charcoal);margin-bottom:24px}
   .ichiki__quote{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);border-left:2px solid var(--brass);padding-left:20px}
   /* 経歴・資格 — 「数字」「資格」「経歴」を意味ごとに塊分け */
-  .ichiki__career{margin:8px 0 30px;border-top:1px solid rgba(46,42,38,.16);padding-top:26px}
+  .ichiki__career{margin:8px 0 30px;border-top:1px solid rgba(54,31,40,.16);padding-top:26px}
   .ichiki__career-label{font-family:var(--label);font-size:14px;font-weight:700;letter-spacing:.16em;
     color:var(--charcoal);display:inline-flex;align-items:center;gap:11px;margin:0 0 22px}
   .ichiki__career-label::before{content:"";width:22px;height:2px;background:var(--brass)}
@@ -254,13 +254,13 @@
   /* ②資格タグ */
   .ichiki__tags{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
   .ichiki__tags li{font-family:var(--label);font-size:15px;font-weight:600;letter-spacing:0;color:var(--charcoal);text-align:center;line-height:1.45;
-    border:1px solid rgba(176,141,87,.65);padding:8px 5px}
+    border:1px solid rgba(189,139,82,.65);padding:8px 5px}
   .ichiki__tag-sub{display:inline-block;margin-top:2px;font-size:10px;font-weight:400;opacity:.68;letter-spacing:0}
 
   /* ③経歴タイムライン(役職を時系列で) */
   .ichiki__timeline{display:flex;flex-direction:column}
-  .ichiki__timeline li{display:flex;gap:18px;padding:14px 0;border-top:1px solid rgba(46,42,38,.14)}
-  .ichiki__timeline li:last-child{border-bottom:1px solid rgba(46,42,38,.14)}
+  .ichiki__timeline li{display:flex;gap:18px;padding:14px 0;border-top:1px solid rgba(54,31,40,.14)}
+  .ichiki__timeline li:last-child{border-bottom:1px solid rgba(54,31,40,.14)}
   .ichiki__timeline .dur{font-family:var(--label);font-size:14px;font-weight:700;color:var(--charcoal);min-width:60px;flex:none;padding-top:1px}
   .ichiki__timeline .role{font-size:14px;line-height:1.5;color:var(--charcoal)}
 
@@ -270,13 +270,13 @@
   .method__hero::before{content:"";position:absolute;inset:0;z-index:0;
     background:url("img/fv-incense.jpg") center/cover no-repeat;opacity:.42}
   .method__hero::after{content:"";position:absolute;inset:0;z-index:1;
-    background:linear-gradient(180deg, rgba(222,216,207,.4) 0%, rgba(224,220,211,.5) 100%)}
+    background:linear-gradient(180deg, rgba(234,224,226,.4) 0%, rgba(236,226,228,.5) 100%)}
   .method__hero>*{position:relative;z-index:2}
   .method__hero .sec__h{margin-bottom:18px}
   .method__hero-lead{margin-bottom:0}
 
-  .mstep{display:flex;gap:18px;align-items:flex-start;padding:26px 0;border-top:1px solid rgba(46,42,38,.15)}
-  .mstep:last-of-type{border-bottom:1px solid rgba(46,42,38,.15)}
+  .mstep{display:flex;gap:18px;align-items:flex-start;padding:26px 0;border-top:1px solid rgba(54,31,40,.15)}
+  .mstep:last-of-type{border-bottom:1px solid rgba(54,31,40,.15)}
   .mstep__num{font-family:var(--label);font-size:13px;letter-spacing:.05em;color:var(--brass);padding-top:3px;min-width:24px}
   .mstep__head{display:flex;align-items:baseline;gap:13px;margin-bottom:6px}
   .mstep__en{font-family:var(--label);font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--charcoal-soft)}
@@ -293,11 +293,11 @@
   .menu__close{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);margin-top:8px}
 
   /* ⑥ voice — 高級感カード(属性を先に提示) */
-  .vquote{position:relative;background:rgba(255,255,255,.45);border:1px solid rgba(46,42,38,.1);
-    padding:26px 26px 30px;margin-bottom:14px;box-shadow:0 10px 34px rgba(46,42,38,.06)}
+  .vquote{position:relative;background:rgba(255,255,255,.45);border:1px solid rgba(54,31,40,.1);
+    padding:26px 26px 30px;margin-bottom:14px;box-shadow:0 10px 34px rgba(54,31,40,.06)}
   .vquote__who{font-family:var(--label);font-size:14.5px;font-weight:700;letter-spacing:.1em;color:var(--charcoal);
     display:flex;align-items:center;gap:10px;
-    padding-bottom:15px;margin-bottom:18px;border-bottom:1px solid rgba(176,141,87,.4)}
+    padding-bottom:15px;margin-bottom:18px;border-bottom:1px solid rgba(189,139,82,.4)}
   .vquote__who::before{content:"\201C";font-family:var(--didot);font-style:italic;font-size:26px;
     line-height:1;color:var(--brass);flex:none}
   .vquote p{font-family:var(--mincho);font-size:14.5px;line-height:1.75;color:var(--charcoal);position:relative}
@@ -306,11 +306,11 @@
   .fstep{position:relative;padding:0 0 30px 56px;min-height:36px}
   .fstep:last-of-type{padding-bottom:0}
   /* 連結線(真鍮) */
-  .fstep::before{content:"";position:absolute;left:17.5px;top:34px;bottom:0;width:1px;background:rgba(176,141,87,.4)}
+  .fstep::before{content:"";position:absolute;left:17.5px;top:34px;bottom:0;width:1px;background:rgba(189,139,82,.4)}
   .fstep:last-of-type::before{display:none}
   /* 番号ノード(丸) */
   .fstep__num{position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;
-    border:1px solid var(--brass);background:#f0eae1;
+    border:1px solid var(--brass);background:#f6eff0;
     display:flex;align-items:center;justify-content:center;z-index:1;
     font-family:var(--label);font-size:12px;color:var(--brass)}
   .fstep>div{padding-top:5px}
@@ -318,8 +318,8 @@
   .fstep__d{font-size:13px;line-height:1.75;color:var(--charcoal-soft)}
 
   /* ⑧ faq */
-  .qa{border-top:1px solid rgba(46,42,38,.16)}
-  .qa:last-of-type{border-bottom:1px solid rgba(46,42,38,.16)}
+  .qa{border-top:1px solid rgba(54,31,40,.16)}
+  .qa:last-of-type{border-bottom:1px solid rgba(54,31,40,.16)}
   .qa summary{list-style:none;cursor:pointer;padding:20px 34px 20px 26px;position:relative;
     font-family:var(--mincho);font-size:15px;color:var(--charcoal)}
   .qa summary::-webkit-details-marker{display:none}
@@ -338,36 +338,36 @@
   .offer__collage .gc-recep-in{object-position:90% center}   /* 受付奥のジム側 */
 
   /* GYM CONCEPT特典(オファー直下・独立バナー) */
-  .offer__facility{display:flex;align-items:center;gap:14px;background:rgba(176,141,87,.1);
-    border:1px solid rgba(176,141,87,.4);padding:16px 18px;margin-bottom:16px}
+  .offer__facility{display:flex;align-items:center;gap:14px;background:rgba(189,139,82,.1);
+    border:1px solid rgba(189,139,82,.4);padding:16px 18px;margin-bottom:16px}
   .offer__facility b{font-family:var(--mincho);font-size:14.5px;color:var(--charcoal);font-weight:500}
   .offer__facility span{display:block;font-family:var(--label);font-size:10.5px;letter-spacing:.05em;
     color:var(--charcoal-soft);margin-top:4px}
 
   /* 希少性(価格ボックスの上・独立バナー) */
-  .offer__scarcity{border:1px solid rgba(46,42,38,.22);border-left:3px solid var(--brass);
+  .offer__scarcity{border:1px solid rgba(54,31,40,.22);border-left:3px solid var(--brass);
     padding:16px 18px;margin-bottom:16px;background:rgba(255,255,255,.3)}
   .offer__scarcity-tag{font-family:var(--label);font-size:14.5px;letter-spacing:.08em;color:var(--charcoal);
     display:block;margin-bottom:10px;font-weight:700}
   .offer__scarcity p{font-size:13px;line-height:1.8;color:var(--charcoal)}
 
   /* オファーを焦げ茶ダークカードで主役化(CTAと統一) */
-  .offer__box{border:1px solid rgba(203,167,106,.45);padding:30px 24px;background:#3a2e26;box-shadow:0 18px 46px rgba(26,18,12,.32)}
+  .offer__box{border:1px solid rgba(206,166,101,.45);padding:30px 24px;background:#4e2c3a;box-shadow:0 18px 46px rgba(44,25,34,.32)}
   .offer__box .offer__ttl,.offer__box .offer__now,.offer__box .offer__now-l,.offer__box .offer__bonus{color:var(--cream)}
   .offer__box .offer__sub,.offer__box .offer__incl,.offer__box .offer__fine,.offer__box .offer__through,.offer__box .offer__now-t{color:var(--cream-dim)}
-  .offer__box .offer__price{border-color:rgba(245,242,236,.18)}
-  .offer__box .offer__now b,.offer__box .offer__bonus b{color:#e8c47c}
+  .offer__box .offer__price{border-color:rgba(250,243,241,.18)}
+  .offer__box .offer__now b,.offer__box .offer__bonus b{color:#e7c178}
   /* 含む=ピル型ボタン / 岩盤の補足 */
-  .offer__incl-label{display:block;font-family:var(--label);font-size:11px;letter-spacing:.2em;color:rgba(245,242,236,.5);margin-bottom:12px}
+  .offer__incl-label{display:block;font-family:var(--label);font-size:11px;letter-spacing:.2em;color:rgba(250,243,241,.5);margin-bottom:12px}
   .offer__chips{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:7px}
   .offer__chips li{font-family:var(--gothic);font-size:12px;letter-spacing:0;line-height:1.3;color:var(--cream);
     text-align:center;
-    border:1px solid rgba(203,167,106,.5);border-radius:999px;padding:6px 8px;background:rgba(255,255,255,.05)}
-  .offer__addon{font-family:var(--label);font-size:12px;letter-spacing:.03em;color:rgba(245,242,236,.62);margin-top:10px}
+    border:1px solid rgba(206,166,101,.5);border-radius:999px;padding:6px 8px;background:rgba(255,255,255,.05)}
+  .offer__addon{font-family:var(--label);font-size:12px;letter-spacing:.03em;color:rgba(250,243,241,.62);margin-top:10px}
   .offer__ttl{font-family:var(--mincho);font-size:16px;color:var(--charcoal);margin-bottom:6px}
   .offer__sub{font-size:13px;line-height:1.7;color:var(--charcoal-soft);margin-bottom:18px}
   .offer__incl{font-size:12.5px;line-height:1.75;color:var(--charcoal);margin-bottom:20px}
-  .offer__price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:16px 0;border-top:1px solid rgba(46,42,38,.15);border-bottom:1px solid rgba(46,42,38,.15)}
+  .offer__price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:16px 0;border-top:1px solid rgba(54,31,40,.15);border-bottom:1px solid rgba(54,31,40,.15)}
   .offer__through{font-family:var(--label);text-decoration:line-through;color:var(--charcoal-soft);font-size:14px}
   .offer__now{font-family:var(--mincho);font-size:15px;color:var(--charcoal)}
   .offer__now b{font-size:27px;color:var(--brass);font-weight:600;margin:0 2px}
@@ -375,14 +375,14 @@
   .offer__bonus b{color:var(--brass);font-weight:500}
   .offer__fine{font-family:var(--label);font-size:10.5px;letter-spacing:.03em;color:var(--charcoal-soft)}
   .offer__perks{margin:20px 0 14px}
-  .perks__head{display:flex;align-items:center;gap:12px;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#e8c47c;font-weight:600;margin:2px 0 12px}
+  .perks__head{display:flex;align-items:center;gap:12px;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#e7c178;font-weight:600;margin:2px 0 12px}
   .perks__head::before,.perks__head::after{content:"";flex:1;height:1px;background:rgba(232,196,124,.32)}
-  .perk{padding:13px 0;border-top:1px solid rgba(245,242,236,.13)}
+  .perk{padding:13px 0;border-top:1px solid rgba(250,243,241,.13)}
   .perk:first-child{border-top:0;padding-top:4px}
-  .perk__no{display:inline-block;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#c9a668;margin-bottom:7px}
+  .perk__no{display:inline-block;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#caa25e;margin-bottom:7px}
   .perk__t{font-family:var(--gothic);font-size:14px;line-height:1.5;color:var(--cream);margin:0}
-  .perk__t b{font-size:19px;color:#e8c47c;font-weight:700;letter-spacing:.01em}
-  .perk__d{font-family:var(--label);font-size:11.5px;letter-spacing:.02em;color:rgba(245,242,236,.55);margin-top:4px}
+  .perk__t b{font-size:19px;color:#e7c178;font-weight:700;letter-spacing:.01em}
+  .perk__d{font-family:var(--label);font-size:11.5px;letter-spacing:.02em;color:rgba(250,243,241,.55);margin-top:4px}
   .perk__img{display:block;width:100%;border-radius:8px;margin-top:12px}
   .offer__fine--incl{margin-top:14px}
 
@@ -394,9 +394,9 @@
   .sec--ps::before{content:"";position:absolute;inset:0;z-index:0;
     background:url("img/fv-incense.jpg") center/cover no-repeat}
   .sec--ps::after{content:"";position:absolute;inset:0;z-index:1;
-    background:linear-gradient(180deg, rgba(26,18,12,.78) 0%, rgba(26,18,12,.62) 45%, rgba(26,18,12,.8) 100%)}
+    background:linear-gradient(180deg, rgba(44,25,34,.78) 0%, rgba(44,25,34,.62) 45%, rgba(44,25,34,.8) 100%)}
   .sec--ps .wrap{position:relative;z-index:2}
-  .sec--ps .sec__label{color:#cba76a}
+  .sec--ps .sec__label{color:#cca664}
   .sec--ps .ps__h{color:var(--cream)}
   .sec--ps .ps__b{color:var(--cream-dim)}
   .sec--ps .ps__b b,.sec--ps .ps__h{color:var(--cream)}
@@ -407,15 +407,15 @@
   /* [B] 焦げ茶ソリッドCTA＋金文字 */
   .sticky-cta{
     position:fixed;left:0;right:0;bottom:0;z-index:50;
-    background:#3a2e26;
-    border-top:1px solid rgba(203,167,106,.45);
+    background:#4e2c3a;
+    border-top:1px solid rgba(206,166,101,.45);
     padding:0 16px calc(env(safe-area-inset-bottom));
-    box-shadow:0 -10px 30px rgba(20,15,11,.34);
+    box-shadow:0 -10px 30px rgba(36,20,29,.34);
   }
   .sticky-cta a{
     display:flex;align-items:center;justify-content:center;gap:10px;
     height:var(--cta-h);
-    color:#dcb87f;
+    color:#deb677;
     text-decoration:none;
     font-family:var(--gothic);
     font-weight:500;
@@ -425,7 +425,7 @@
   .sticky-cta .price{
     font-size:12.5px;letter-spacing:.04em;opacity:.78;font-weight:400;
   }
-  .sticky-cta a:focus-visible{outline:2px solid #dcb87f;outline-offset:-6px}
+  .sticky-cta a:focus-visible{outline:2px solid #deb677;outline-offset:-6px}
 
   /* ============================================================
      motion — スクロールフェード程度のみ
