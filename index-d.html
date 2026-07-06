@@ -104,9 +104,9 @@
     position:absolute;inset:0;z-index:0;
     width:100%;height:100%;object-fit:cover;
     background:#1a120c;
-    opacity:1;transition:opacity .6s ease;
+    opacity:0;pointer-events:none;transition:opacity .5s ease;
   }
-  .fv__poster.is-hidden{opacity:0;pointer-events:none;}
+  .fv__poster.is-shown{opacity:1;}
   /* 可読性スクリム: 上/右を落として白文字を担保しつつ、下端は②のsepiaへ繋ぐ */
   .fv__scrim{
     position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -902,8 +902,8 @@
 </script>
 <script>
   // FV動画の自動再生フォールバック(iOS省電力モード/低速回線対策)
-  // 再生できない間は.fv__posterの静止画のまま(再生ボタン等は一切出さない)。
-  // 再生が実際に始まったら(playingイベント)フェードで隠し、途中で止まったら再度表示する。
+  // 通常(再生できる場合)は最初から動画のまま表示(静止画を挟まない)。
+  // 一定時間経っても再生できていない時だけ(低電力モード等)静止画に切り替え、再生ボタンは出さない。
   (function(){
     var v = document.querySelector('.fv__video');
     var poster = document.querySelector('.fv__poster');
@@ -913,11 +913,15 @@
       var p = v.play();
       if(p && p.catch) p.catch(function(){});
     };
+    var checkStuck = function(){
+      if(v.paused && poster) poster.classList.add('is-shown');
+    };
     if(poster){
-      v.addEventListener('playing', function(){ poster.classList.add('is-hidden'); });
-      v.addEventListener('pause', function(){ poster.classList.remove('is-hidden'); });
+      v.addEventListener('playing', function(){ poster.classList.remove('is-shown'); });
+      v.addEventListener('pause', function(){ setTimeout(checkStuck, 200); });
     }
     tryPlay();
+    setTimeout(checkStuck, 350);
     document.addEventListener('visibilitychange', function(){
       if(document.visibilityState === 'visible') tryPlay();
     });
