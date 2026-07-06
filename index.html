@@ -483,7 +483,7 @@
   <!-- ① FV ---------------------------------------------------->
   <header class="fv">
     <div class="fv__media">
-      <video class="fv__video" autoplay muted loop playsinline preload="auto" poster="img/fv-seitai.jpg">
+      <video class="fv__video" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="img/fv-seitai.jpg">
         <source src="video/kuukan-fv.mp4" type="video/mp4" />
       </video>
       <div class="fv__scrim" aria-hidden="true"></div>
@@ -752,5 +752,24 @@
       document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
     }
   </script>
+<script>
+  // FV動画の自動再生フォールバック(iOS省電力モード/低速回線対策)
+  (function(){
+    var v = document.querySelector('.fv__video');
+    if(!v) return;
+    var tryPlay = function(){
+      v.muted = true;
+      var p = v.play();
+      if(p && p.catch) p.catch(function(){});
+    };
+    tryPlay();
+    document.addEventListener('visibilitychange', function(){
+      if(document.visibilityState === 'visible') tryPlay();
+    });
+    ['touchstart','click','scroll'].forEach(function(evt){
+      document.addEventListener(evt, tryPlay, {once:true, passive:true});
+    });
+  })();
+</script>
 </body>
 </html>
