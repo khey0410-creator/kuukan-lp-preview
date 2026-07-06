@@ -432,11 +432,7 @@
      ============================================================ */
   .reveal{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
   .reveal.in{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    .reveal{opacity:1;transform:none;transition:none}
-    .fv__scroll::before{animation:none}
-  }
+  /* 注: この広告はアニメが演出の核のため、OSの「視差効果を減らす」でも動かす（reveal/積み上げのnone上書きは意図的に外している） */
 
   /* ============================================================
      POLISH — 磨き込み(ヘッダー/構造装置/Didot/価格ヒーロー)
@@ -563,11 +559,6 @@
     .method-transfer__en{ margin-bottom:3px; font-size:10.5px; letter-spacing:.22em; }
     .method-transfer__head h3{ margin:0; font-size:16px; line-height:1.45; }
     .method-transfer__desc{ margin-top:10px; font-size:12.5px; line-height:1.7; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .method-transfer__stack::before, .method-transfer__stack::after, .method-transfer__layer{ animation:none !important; }
-    .method-transfer__stack::before{ transform:scaleY(1); }
-    .method-transfer__stack::after, .method-transfer__layer{ opacity:1; transform:none; }
   }
 </style>
 </head>
@@ -856,13 +847,22 @@
     const TRIAL_PRICE = '¥7,000';
     document.querySelectorAll('.js-price').forEach(el=>{ el.textContent = TRIAL_PRICE; });
 
-    // スクロールフェード(reduced-motion時は無効)
-    const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!rm && 'IntersectionObserver' in window){
+    // スクロールフェード(モバイルの視差軽減設定でも動かす)
+    if('IntersectionObserver' in window){
       const io = new IntersectionObserver((es)=>{
         es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
       },{threshold:.16});
       document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+      // バックストップ: IOが発火しない環境でも、ビューに入った要素はスクロールでフェード表示する
+      var revealNear = function(){
+        document.querySelectorAll('.reveal:not(.in)').forEach(function(el){
+          if(el.getBoundingClientRect().top < window.innerHeight * 0.92){ el.classList.add('in'); }
+        });
+      };
+      window.addEventListener('scroll', revealNear, {passive:true});
+      window.addEventListener('resize', revealNear, {passive:true});
+      revealNear();
+      setTimeout(revealNear, 1200);
     } else {
       document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
     }
@@ -871,8 +871,7 @@
   (() => {
     const stack = document.querySelector('[data-method-diagram] .method-transfer__stack');
     if (!stack) return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion || !('IntersectionObserver' in window)) { stack.classList.add('is-stacking'); return; }
+    if (!('IntersectionObserver' in window)) { stack.classList.add('is-stacking'); return; }
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -888,20 +887,23 @@
   })();
 </script>
 <script>
-  // FV動画の自動再生フォールバック(iOS省電力モード/低速回線対策)
+  // FV動画の自動再生フォールバック(iOS省電力/低速回線/アプリ内ブラウザ対策)
   (function(){
     var v = document.querySelector('.fv__video');
     if(!v) return;
+    v.muted = true; v.defaultMuted = true;
+    v.setAttribute('muted',''); v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
     var tryPlay = function(){
       v.muted = true;
       var p = v.play();
       if(p && p.catch) p.catch(function(){});
     };
     tryPlay();
+    ['loadedmetadata','loadeddata','canplay'].forEach(function(ev){ v.addEventListener(ev, tryPlay); });
     document.addEventListener('visibilitychange', function(){
       if(document.visibilityState === 'visible') tryPlay();
     });
-    ['touchstart','click','scroll'].forEach(function(evt){
+    ['touchstart','touchend','pointerdown','click','scroll'].forEach(function(evt){
       document.addEventListener(evt, tryPlay, {once:true, passive:true});
     });
   })();
