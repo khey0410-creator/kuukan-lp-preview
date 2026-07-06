@@ -388,8 +388,12 @@
   .offer__bonus b{color:var(--brass);font-weight:500}
   .offer__fine{font-family:var(--label);font-size:10.5px;letter-spacing:.03em;color:var(--charcoal-soft)}
   .offer__perks{margin:20px 0 14px}
-  .perks__head{display:flex;align-items:center;gap:12px;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#e8c47c;font-weight:600;margin:2px 0 12px}
-  .perks__head::before,.perks__head::after{content:"";flex:1;height:1px;background:rgba(232,196,124,.32)}
+  .perks__head{
+    display:inline-flex;align-items:center;
+    font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.15em;
+    color:#e8c47c;border:1px solid rgba(232,196,124,.5);border-radius:999px;
+    padding:6px 16px;margin:2px 0 16px;
+  }
   .perk{padding:13px 0;border-top:1px solid rgba(245,242,236,.13)}
   .perk:first-child{border-top:0;padding-top:4px}
   .perk__no{display:inline-block;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#c9a668;margin-bottom:7px}
