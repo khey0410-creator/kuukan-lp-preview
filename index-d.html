@@ -367,12 +367,13 @@
   .offer__box .offer__sub,.offer__box .offer__incl,.offer__box .offer__fine,.offer__box .offer__through,.offer__box .offer__now-t{color:var(--cream-dim)}
   .offer__box .offer__price{border-color:rgba(245,242,236,.18)}
   .offer__box .offer__now b,.offer__box .offer__bonus b{color:#e8c47c}
-  /* 含む=ピル型ボタン / 岩盤の補足 */
+  /* 含む=ピル型ボタン */
   .offer__incl-label{display:block;font-family:var(--label);font-size:11px;letter-spacing:.2em;color:rgba(245,242,236,.5);margin-bottom:12px}
   .offer__chips{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:7px}
   .offer__chips li{font-family:var(--gothic);font-size:12px;letter-spacing:0;line-height:1.3;color:var(--cream);
     text-align:center;
     border:1px solid rgba(203,167,106,.5);border-radius:999px;padding:6px 8px;background:rgba(255,255,255,.05)}
+  .offer__chips li:last-child{grid-column:1 / -1}
   .offer__addon{font-family:var(--label);font-size:12px;letter-spacing:.03em;color:rgba(245,242,236,.62);margin-top:10px}
   .offer__ttl{font-family:var(--mincho);font-size:16px;color:var(--charcoal);margin-bottom:6px}
   .offer__sub{font-size:13px;line-height:1.7;color:var(--charcoal-soft);margin-bottom:18px}
@@ -746,12 +747,12 @@
 
       <div class="offer__scarcity reveal">
         <span class="offer__scarcity-tag">新規会員枠受付中！</span>
-        <p>完全予約制のため、普段は空き枠に限りがあります。今期は新規の方を若干名のみご案内。岩盤ベット30分の特典は、今期の体験の方限定です。</p>
+        <p>完全予約制のため、普段は空き枠に限りがあります。今期は新規の方を若干名のみご案内。</p>
       </div>
 
       <div class="offer__box reveal">
         <p class="offer__ttl">初回体験セッション（90分）</p>
-        <p class="offer__sub">姿勢矯正トレーニング × 全身整体（60分）＋《今だけ》岩盤ベット 30分</p>
+        <p class="offer__sub">姿勢矯正トレーニング × 全身整体（60分）</p>
         <div class="offer__incl">
           <span class="offer__incl-label">含まれるもの</span>
           <ul class="offer__chips">
@@ -759,7 +760,6 @@
             <li>姿勢チェック</li>
             <li>トレーニング</li>
             <li>整体</li>
-            <li>岩盤ベット</li>
             <li>セルフケア指導</li>
           </ul>
           <p class="offer__fine offer__fine--incl">手ぶらOK（着替え・シューズ・水完備）</p>
@@ -769,7 +769,7 @@
           <span class="offer__now"><span class="offer__now-l">初回体験</span><b class="js-price">¥3,000</b><span class="offer__now-t">（税込）</span></span>
         </div>
         <div class="offer__perks">
-          <p class="perks__head">今だけの3大特典</p>
+          <p class="perks__head">今だけの2大特典</p>
           <div class="perk">
             <span class="perk__no">特典 1</span>
             <p class="perk__t">登録料 ¥10,000 ＋ 入会金 ¥20,000 → <b>¥0</b></p>
@@ -777,12 +777,6 @@
           </div>
           <div class="perk">
             <span class="perk__no">特典 2</span>
-            <p class="perk__t">岩盤ベット 30分 <b>無料</b></p>
-            <p class="perk__d">温めて巡らせ、整った状態を仕上げる時間</p>
-            <img class="perk__img" src="img/m-heat.jpg" alt="岩盤ベット" loading="lazy">
-          </div>
-          <div class="perk">
-            <span class="perk__no">特典 3</span>
             <p class="perk__t">会員は GYM CONCEPT <b>通い放題</b></p>
             <p class="perk__d">9:00–23:00</p>
             <div class="offer__collage offer__collage--perk">
@@ -832,8 +826,7 @@
         <div class="fstep"><span class="fstep__num">02</span><div><span class="fstep__t">カウンセリング</span></div></div>
         <div class="fstep"><span class="fstep__num">03</span><div><span class="fstep__t">姿勢チェック</span><span class="fstep__d">体の&ldquo;現在地&rdquo;と、不調の理由を確認</span></div></div>
         <div class="fstep"><span class="fstep__num">04</span><div><span class="fstep__t">姿勢矯正トレーニング × 全身整体</span><span class="fstep__d">あなた専用のプログラムで</span></div></div>
-        <div class="fstep"><span class="fstep__num">05</span><div><span class="fstep__t">岩盤ベット（30分）</span><span class="fstep__d">温めて巡らせ、整った状態を仕上げる</span></div></div>
-        <div class="fstep"><span class="fstep__num">06</span><div><span class="fstep__t">セルフケア指導</span><span class="fstep__d">自宅でできることまで持ち帰れる</span></div></div>
+        <div class="fstep"><span class="fstep__num">05</span><div><span class="fstep__t">セルフケア指導</span><span class="fstep__d">自宅でできることまで持ち帰れる</span></div></div>
       </div>
     </div>
   </section>
@@ -850,7 +843,6 @@
         <details class="qa"><summary><span class="qmark">Q</span>どんな服装で行けばいいですか？</summary><p class="qa__a">動きやすい服装でお越しください。お着替えのご用意もございますので、お仕事帰りでもそのままお越しいただけます。</p></details>
         <details class="qa"><summary><span class="qmark">Q</span>どのくらいの頻度で通えばいいですか？</summary><p class="qa__a">月4回の定期的な通院をおすすめしています。お身体の状態や目標に合わせて、最適なプランをご提案いたします。</p></details>
         <details class="qa"><summary><span class="qmark">Q</span>GYM CONCEPTはどのように利用できますか？</summary><p class="qa__a">kuukan会員の方（サブスク月4回プラン以上）であれば、徒歩4分のトレーニングジム「GYM CONCEPT」を無料で通い放題でご利用いただけます。セッション日以外のトレーニングにぜひご活用ください。</p></details>
-        <details class="qa"><summary><span class="qmark">Q</span>岩盤ベットとはどんなものですか？</summary><p class="qa__a">天然鉱石を使用した温熱ベッドです。遠赤外線の温熱効果で身体を芯から温め、血行促進・代謝アップ・リラックス効果が期待できます。施術やトレーニングとの組み合わせがおすすめです。</p></details>
         <details class="qa"><summary><span class="qmark">Q</span>法人向けのプランはありますか？</summary><p class="qa__a">はい、福利厚生としてご導入いただける法人プランをご用意しております。社員の方の健康管理・パフォーマンス向上にご活用ください。詳細はお問い合わせください。</p></details>
       </div>
     </div>
