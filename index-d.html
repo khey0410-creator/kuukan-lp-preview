@@ -6,6 +6,8 @@
 <title>kuukan ｜ その不調に、名前がないだけ。</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://use.typekit.net" crossorigin />
+<link rel="preconnect" href="https://p.typekit.net" crossorigin />
 <!-- 既存踏襲: Typekit(din-2014 / linotype-didot)＋Shippori Mincho -->
 <link rel="stylesheet" href="https://use.typekit.net/ogu1wio.css" />
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -396,7 +398,7 @@
   .perk__t b{font-size:19px;color:#e8c47c;font-weight:700;letter-spacing:.01em}
   .perk__d{font-family:var(--label);font-size:11.5px;letter-spacing:.02em;color:rgba(245,242,236,.55);margin-top:4px}
   .perk__d-em{color:rgba(245,242,236,.82);font-weight:600}
-  .perk__img{display:block;width:100%;border-radius:8px;margin-top:12px}
+  .perk__img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:8px;margin-top:12px}
   .offer__fine--incl{margin-top:14px}
 
   /* ⑩ ps */
@@ -583,7 +585,7 @@
   <!-- ① FV ---------------------------------------------------->
   <header class="fv">
     <div class="fv__media">
-      <video class="fv__video" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="img/fv-seitai.jpg">
+      <video class="fv__video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="img/fv-seitai.jpg">
         <source src="video/kuukan-fv.mp4" type="video/mp4" />
       </video>
       <img class="fv__poster" src="img/fv-seitai.jpg" alt="" aria-hidden="true" />
