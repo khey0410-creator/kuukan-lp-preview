@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kuukan ｜ その不調に、名前がないだけ。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://use.typekit.net" crossorigin />
+<link rel="preconnect" href="https://p.typekit.net" crossorigin />
+<!-- 既存踏襲: Typekit(din-2014 / linotype-didot)＋Shippori Mincho -->
+<link rel="stylesheet" href="https://use.typekit.net/ogu1wio.css" />
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     kuukan LP mock — Step A (token layer + FV + 共感 + 追従CTA)
+     SPEC v4 準拠。差し色は --brass のみ。暗→明の縦トーン。
+     ============================================================ */
+  :root{
+    /* --- color tokens (SPEC §2) --- */
+    --ink-deep:#2b221c;      /* FV 最暗 */
+    --sepia:#3a2e26;         /* 焦げ茶 */
+    --sepia-soft:#4d4034;    /* 移行の中間(暗側) */
+    --warm-mid:#8c8377;      /* 移行の中間 */
+    --warm-gray:#c9c5be;     /* 本文背景 */
+    --warm-gray-hi:#d6d2cb;  /* 本文背景(明) */
+    --charcoal:#2e2a26;      /* 明背景上の文字 */
+    --charcoal-soft:#5c554d; /* 補助文字 */
+    --cream:#f5f2ec;         /* 暗背景上の文字 */
+    --cream-dim:rgba(245,242,236,.66);
+    --brass:#b08d57;         /* 唯一のアクセント */
+
+    /* --- type --- */
+    --mincho:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+    /* 既存踏襲: 本文もShippori Mincho(明朝)。ラテン見出し=din-2014 / ラテン装飾=Didot */
+    --gothic:"Shippori Mincho","Hiragino Kaku Gothic ProN","Yu Gothic",serif;
+    --label:din-2014,"Helvetica Neue",Arial,sans-serif;
+    --didot:linotype-didot,"Playfair Display",Georgia,serif;
+
+    --cta-h:64px;
+    --frame:480px;          /* SP専用フレーム幅（Storiesは縦・スマホ専用） */
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--gothic);
+    color:var(--charcoal);
+    background:var(--ink-deep);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.9;
+    letter-spacing:.02em;
+    /* 追従CTA分の余白 */
+    padding-bottom:calc(var(--cta-h) + env(safe-area-inset-bottom));
+  }
+  ::selection{background:var(--brass);color:var(--cream)}
+
+  .wrap{max-width:680px;margin:0 auto;padding-left:26px;padding-right:26px}
+
+  /* ============================================================
+     SP特化フレーム — Instagram Storiesは縦・スマホ専用の広告。
+     PCで見ても崩れないよう、LP全体をスマホ幅の中央カラムに固定する。
+     実機（≤480px）ではそのまま全幅表示、PCでは暗背景に1枚の縦カラム。
+     ============================================================ */
+  body{background:#17120e}
+  .fv,.empathy,.sec{max-width:var(--frame);margin-left:auto;margin-right:auto;container-type:inline-size}
+  .sticky-cta{max-width:var(--frame);margin-left:auto;margin-right:auto}
+
+
+  /* eyebrow(ラテン/ラベル) */
+  .eyebrow{
+    font-family:var(--label);      /* din-2014(既存踏襲のラテンラベル) */
+    font-weight:400;
+    font-size:11px;
+    letter-spacing:.42em;
+    text-transform:uppercase;
+  }
+
+  /* ============================================================
+     ① FV — 縦組みシグネチャ
+     ============================================================ */
+  .fv{
+    position:relative;
+    background:var(--ink-deep);
+    color:var(--cream);
+  }
+  /* 動画バンド(上部・占拠しすぎない) */
+  .fv__media{
+    position:relative;
+    height:52vh;min-height:330px;max-height:560px;
+    overflow:hidden;background:#1a120c;
+  }
+  /* 見出し帯(動画の下・sepia。②共感へ繋ぐ) */
+  .fv__body{
+    background:linear-gradient(180deg,#1a120c 0%, var(--sepia) 55%, var(--sepia) 100%);
+    padding:12px 0 54px;text-align:center;
+  }
+  /* FV動画(kuukan PV縦_2 → kuukan-fv.mp4) */
+  .fv__video{
+    position:absolute;inset:0;z-index:0;
+    width:100%;height:100%;object-fit:cover;
+    background:#1a120c;
+  }
+  /* 動画が再生できない時(低電力モード等)は素の静止画に見せる。再生成功でフェードして隠す */
+  .fv__poster{
+    position:absolute;inset:0;z-index:0;
+    width:100%;height:100%;object-fit:cover;
+    background:#1a120c;
+    opacity:1;transition:opacity .25s ease;
+  }
+  .fv__poster.is-hidden{opacity:0;pointer-events:none;}
+  /* 可読性スクリム: 上/右を落として白文字を担保しつつ、下端は②のsepiaへ繋ぐ */
+  .fv__scrim{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(22,16,11,.58) 0%, rgba(22,16,11,.14) 24%,
+      rgba(22,16,11,.10) 60%, rgba(26,18,12,.94) 100%);
+  }
+  .fv__top{
+    position:absolute;top:0;left:0;right:0;z-index:2;
+    padding-top:calc(env(safe-area-inset-top) + 22px);
+  }
+  .fv__brand{color:var(--cream);opacity:.9;text-transform:none} /* kuukanは小文字を維持 */
+
+  .fv__stage{
+    position:relative;z-index:2;
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:8px 0 20px;
+  }
+  /* 真鍮の細い縦ヘアライン */
+  .fv__rule{
+    width:1px;align-self:stretch;
+    margin:34px 0;
+    background:linear-gradient(180deg, transparent, var(--brass) 22%, var(--brass) 78%, transparent);
+    opacity:.85;
+  }
+  .fv__headline{
+    font-family:var(--mincho);
+    font-weight:400;
+    font-size:clamp(31px,9cqw,46px);
+    line-height:1.58;
+    letter-spacing:.12em;
+    text-align:center;
+    color:var(--cream);
+    margin-bottom:26px;
+  }
+  .fv__headline .em{color:var(--brass)}
+
+  .fv__foot{
+    position:relative;z-index:2;
+    /* 追従CTAの高さ分を確保してリード/Scrollが隠れないように */
+    padding-bottom:calc(var(--cta-h) + 26px);
+  }
+  .fv__lead{
+    font-family:var(--mincho);
+    font-size:15px;
+    line-height:2;
+    color:var(--cream-dim);
+    letter-spacing:.04em;
+    text-shadow:0 1px 18px rgba(14,9,6,.55);
+  }
+  .fv__lead b{color:var(--cream);font-weight:500}
+  .fv__scroll{
+    margin-top:28px;
+    display:inline-flex;flex-direction:column-reverse;align-items:center;gap:9px;
+    color:var(--cream-dim);font-family:var(--label);
+    font-size:10px;letter-spacing:.36em;text-transform:uppercase;
+  }
+  .fv__scroll::before{
+    content:"";width:1px;height:26px;background:var(--brass);
+    animation:pull 2.4s ease-in-out infinite;
+    transform-origin:top;
+  }
+  @keyframes pull{0%,100%{transform:scaleY(.4);opacity:.5}50%{transform:scaleY(1);opacity:1}}
+
+  /* ============================================================
+     ② 共感 × 投資 — 焦げ茶→グレーへ抜ける
+     ============================================================ */
+  .empathy{
+    /* 固定pxで暗帯=見出し用、本文は明地に載せて視認性を担保(縦長でも崩れない) */
+    background:linear-gradient(180deg,
+      var(--sepia) 0,
+      var(--sepia) 190px,
+      var(--warm-gray) 320px,
+      #d6d2cb 430px,
+      #d6d2cb 100%);
+    padding:84px 0 76px;
+  }
+  .empathy .eyebrow{color:#cba76a;font-size:18px;font-weight:700;letter-spacing:.08em}
+  .empathy__h{
+    font-family:var(--mincho);
+    font-weight:500;
+    font-size:clamp(23px,6.6cqw,31px);
+    line-height:1.62;
+    letter-spacing:.05em;
+    margin:16px 0 28px;
+    /* 上部(暗)ではcream、下地はグレーなので中間色で両立 */
+    color:var(--cream);
+  }
+  .empathy__body p{
+    font-size:15.5px;
+    line-height:1.75;
+    color:var(--charcoal);
+    margin-bottom:17px;
+    letter-spacing:.01em;
+  }
+  /* 全段落を濃色で統一(明地で高コントラスト) */
+  .empathy__body .turn{
+    font-family:var(--mincho);
+    font-size:17px;
+    line-height:1.8;
+    color:var(--charcoal);
+  }
+  .empathy__body .turn b{
+    color:var(--brass);
+    font-weight:500;
+    font-style:normal;
+  }
+
+  /* ============================================================
+     ③〜⑩ body sections(暗→明の"明"側へ段階的に上げる)
+     ============================================================ */
+  .sec{padding:clamp(46px,8vw,72px) 0}
+  /* 各セクションを"次の色"へ抜けるグラデにして境目を消す(暗→明を連続化) */
+  .sec--g1{background:linear-gradient(180deg,#d6d2cb,#dbd7cf)} /* ③ empathy末尾#d6d2cbから連続 */
+  .sec--g2{background:linear-gradient(180deg,#2a231b,#221c15);color:var(--cream);padding-top:14px} /* ④ [D]暗い章 */
+  .sec--g3{background:linear-gradient(180deg,#e0dcd3,#e5e0d7)} /* ⑤ */
+  .sec--g4{background:linear-gradient(180deg,#e5e0d7,#eae4db)} /* Trial */
+  .sec--t1{background:linear-gradient(180deg,#eae4db,#eee8df)} /* Voice */
+  .sec--l1{background:linear-gradient(180deg,#eee8df,#f2ece3)} /* 流れ */
+  .sec--l2{background:linear-gradient(180deg,#f2ece3,#f5efe6)} /* FAQ */
+  .sec--l3{background:linear-gradient(180deg,#f5efe6,#f8f3ea)} /* 追伸 */
+
+  .sec__label{font-family:var(--label);color:var(--gold-dark,#9c7c40);font-size:18px;font-weight:700;
+    letter-spacing:.28em;text-transform:uppercase;display:block;margin-bottom:24px}
+  .sec__h{font-family:var(--mincho);font-weight:500;font-size:clamp(22px,5.9cqw,30px);
+    line-height:1.58;letter-spacing:.02em;color:var(--charcoal);margin-bottom:20px}
+  .sec__lead{font-size:15px;line-height:1.72;color:var(--charcoal);margin-bottom:14px;letter-spacing:0}
+  .sec__note{font-size:11.5px;line-height:1.75;color:var(--charcoal-soft);margin-top:26px}
+
+  /* ③ 一木 */
+  .ichiki__photo{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 28%;display:block;margin-bottom:30px}
+  .ichiki__name{font-family:var(--mincho);font-size:21px;color:var(--charcoal);margin-bottom:4px}
+  .ichiki__name .en{font-family:var(--label);font-size:11px;letter-spacing:.16em;color:var(--charcoal-soft);margin-left:10px;text-transform:uppercase}
+  .ichiki__role{font-family:var(--label);font-size:10px;letter-spacing:.26em;color:var(--brass);text-transform:uppercase;display:block;margin-bottom:20px}
+  .ichiki__bio{font-size:14px;line-height:1.75;color:var(--charcoal);margin-bottom:24px}
+  .ichiki__quote{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);border-left:2px solid var(--brass);padding-left:20px}
+  /* 経歴・資格 — 「数字」「資格」「経歴」を意味ごとに塊分け */
+  .ichiki__career{margin:8px 0 30px;border-top:1px solid rgba(46,42,38,.16);padding-top:26px}
+  .ichiki__career-label{font-family:var(--label);font-size:14px;font-weight:700;letter-spacing:.16em;
+    color:var(--charcoal);display:inline-flex;align-items:center;gap:11px;margin:0 0 22px}
+  .ichiki__career-label::before{content:"";width:22px;height:2px;background:var(--brass)}
+  .ichiki__career-label.mt{margin-top:32px}
+
+  /* ①数字スタッツ(整体歴/施術実績) */
+  .ichiki__stats{display:flex;gap:34px;margin-bottom:8px}
+  .ichiki__stat b{display:block;font-family:var(--label);font-weight:400;
+    font-size:36px;letter-spacing:.01em;line-height:1;color:var(--brass)}
+  .ichiki__stat span{display:block;font-size:11.5px;color:var(--charcoal-soft);margin-top:8px;letter-spacing:.03em}
+
+  /* ②資格タグ */
+  .ichiki__tags{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+  .ichiki__tags li{font-family:var(--label);font-size:15px;font-weight:600;letter-spacing:0;color:var(--charcoal);text-align:center;line-height:1.45;
+    border:1px solid rgba(176,141,87,.65);padding:8px 5px}
+  .ichiki__tag-sub{display:inline-block;margin-top:2px;font-size:10px;font-weight:400;opacity:.68;letter-spacing:0}
+
+  /* ③経歴タイムライン(役職を時系列で) */
+  .ichiki__timeline{display:flex;flex-direction:column}
+  .ichiki__timeline li{display:flex;gap:18px;padding:14px 0;border-top:1px solid rgba(46,42,38,.14)}
+  .ichiki__timeline li:last-child{border-bottom:1px solid rgba(46,42,38,.14)}
+  .ichiki__timeline .dur{font-family:var(--label);font-size:14px;font-weight:700;color:var(--charcoal);min-width:60px;flex:none;padding-top:1px}
+  .ichiki__timeline .role{font-size:14px;line-height:1.5;color:var(--charcoal)}
+
+  /* ④ method */
+  /* メソッド導入: 坐禅画像を薄く敷いた上に文章を載せる */
+  .method__hero{position:relative;margin:0 -26px 20px;padding:48px 26px 40px;overflow:hidden}
+  .method__hero::before{content:"";position:absolute;inset:0;z-index:0;
+    background:url("img/fv-incense.jpg") center/cover no-repeat;opacity:.42}
+  .method__hero::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(222,216,207,.4) 0%, rgba(224,220,211,.5) 100%)}
+  .method__hero>*{position:relative;z-index:2}
+  .method__hero .sec__h{margin-bottom:18px}
+  .method__hero-lead{margin-bottom:0}
+
+  .mstep{display:flex;gap:18px;align-items:flex-start;padding:26px 0;border-top:1px solid rgba(46,42,38,.15)}
+  .mstep:last-of-type{border-bottom:1px solid rgba(46,42,38,.15)}
+  .mstep__num{font-family:var(--label);font-size:13px;letter-spacing:.05em;color:var(--brass);padding-top:3px;min-width:24px}
+  .mstep__head{display:flex;align-items:baseline;gap:13px;margin-bottom:6px}
+  .mstep__en{font-family:var(--label);font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--charcoal-soft)}
+  .mstep__ja{font-family:var(--mincho);font-size:18px;color:var(--charcoal)}
+  .mstep__desc{font-size:13.5px;line-height:1.8;color:var(--charcoal)}
+  .method__close{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);margin-top:22px}
+
+  /* ⑤ menu */
+  .mitem{margin-bottom:36px}
+  .mitem__img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;margin-bottom:15px}
+  .mitem__ja{font-family:var(--mincho);font-size:18px;color:var(--charcoal)}
+  .mitem__en{font-family:var(--label);font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--charcoal-soft);margin-left:12px}
+  .mitem__desc{font-size:13.5px;line-height:1.9;color:var(--charcoal);margin-top:9px}
+  .menu__close{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);margin-top:8px}
+
+  /* ⑥ voice — 高級感カード(属性を先に提示) */
+  .vquote{position:relative;background:rgba(255,255,255,.45);border:1px solid rgba(46,42,38,.1);
+    padding:26px 26px 30px;margin-bottom:14px;box-shadow:0 10px 34px rgba(46,42,38,.06)}
+  .vquote__who{font-family:var(--label);font-size:14.5px;font-weight:700;letter-spacing:.1em;color:var(--charcoal);
+    display:flex;align-items:center;gap:10px;
+    padding-bottom:15px;margin-bottom:18px;border-bottom:1px solid rgba(176,141,87,.4)}
+  .vquote__who::before{content:"\201C";font-family:var(--didot);font-style:italic;font-size:26px;
+    line-height:1;color:var(--brass);flex:none}
+  .vquote p{font-family:var(--mincho);font-size:14.5px;line-height:1.75;color:var(--charcoal);position:relative}
+
+  /* ⑦ flow — 縦タイムライン図解(スマホ最適) */
+  .fstep{position:relative;padding:0 0 30px 56px;min-height:36px}
+  .fstep:last-of-type{padding-bottom:0}
+  /* 連結線(真鍮) */
+  .fstep::before{content:"";position:absolute;left:17.5px;top:34px;bottom:0;width:1px;background:rgba(176,141,87,.4)}
+  .fstep:last-of-type::before{display:none}
+  /* 番号ノード(丸) */
+  .fstep__num{position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--brass);background:#f0eae1;
+    display:flex;align-items:center;justify-content:center;z-index:1;
+    font-family:var(--label);font-size:12px;color:var(--brass)}
+  .fstep>div{padding-top:5px}
+  .fstep__t{font-family:var(--mincho);font-size:15.5px;color:var(--charcoal);display:block;margin-bottom:5px}
+  .fstep__d{font-size:13px;line-height:1.75;color:var(--charcoal-soft)}
+
+  /* ⑧ faq */
+  .qa{border-top:1px solid rgba(46,42,38,.16)}
+  .qa:last-of-type{border-bottom:1px solid rgba(46,42,38,.16)}
+  .qa summary{list-style:none;cursor:pointer;padding:20px 34px 20px 26px;position:relative;
+    font-family:var(--mincho);font-size:15px;color:var(--charcoal)}
+  .qa summary::-webkit-details-marker{display:none}
+  .qa summary .qmark{font-family:var(--label);color:var(--brass);margin-right:12px;font-size:13px}
+  .qa summary::after{content:"+";position:absolute;right:6px;top:17px;color:var(--brass);font-size:20px;font-family:var(--label)}
+  .qa[open] summary::after{content:"–"}
+  .qa__a{padding:0 26px 24px 44px;font-size:13.5px;line-height:1.8;color:var(--charcoal)}
+
+  /* ⑨ offer */
+  /* コラージュ: 左=受付(大) / 右=マシン室+館内(中2分割) */
+  .offer__collage{display:grid;grid-template-columns:1.3fr 1fr;gap:4px;margin-bottom:26px;height:280px}
+  .offer__collage--perk{margin:12px 0 0}
+  .offer__collage img{width:100%;height:100%;object-fit:cover;display:block}
+  .offer__collage .split{display:grid;grid-template-rows:1fr 1fr;gap:4px;height:100%}
+  .offer__collage .gc-recep-tall{object-position:22% center} /* 受付ネオンを縦に */
+  .offer__collage .gc-recep-in{object-position:90% center}   /* 受付奥のジム側 */
+
+  /* GYM CONCEPT特典(オファー直下・独立バナー) */
+  .offer__facility{display:flex;align-items:center;gap:14px;background:rgba(176,141,87,.1);
+    border:1px solid rgba(176,141,87,.4);padding:16px 18px;margin-bottom:16px}
+  .offer__facility b{font-family:var(--mincho);font-size:14.5px;color:var(--charcoal);font-weight:500}
+  .offer__facility span{display:block;font-family:var(--label);font-size:10.5px;letter-spacing:.05em;
+    color:var(--charcoal-soft);margin-top:4px}
+
+  /* 希少性(価格ボックスの上・独立バナー) */
+  .offer__scarcity{border:1px solid rgba(46,42,38,.22);border-left:3px solid var(--brass);
+    padding:16px 18px;margin-bottom:16px;background:rgba(255,255,255,.3)}
+  .offer__scarcity-tag{font-family:var(--label);font-size:14.5px;letter-spacing:.08em;color:var(--charcoal);
+    display:block;margin-bottom:10px;font-weight:700}
+  .offer__scarcity p{font-size:13px;line-height:1.8;color:var(--charcoal)}
+
+  /* オファーを焦げ茶ダークカードで主役化(CTAと統一) */
+  .offer__box{border:1px solid rgba(203,167,106,.45);padding:30px 24px;background:#3a2e26;box-shadow:0 18px 46px rgba(26,18,12,.32)}
+  .offer__box .offer__ttl,.offer__box .offer__now,.offer__box .offer__now-l,.offer__box .offer__bonus{color:var(--cream)}
+  .offer__box .offer__sub,.offer__box .offer__incl,.offer__box .offer__fine,.offer__box .offer__through,.offer__box .offer__now-t{color:var(--cream-dim)}
+  .offer__box .offer__price{border-color:rgba(245,242,236,.18)}
+  .offer__box .offer__now b,.offer__box .offer__bonus b{color:#e8c47c}
+  /* 含む=ピル型ボタン */
+  .offer__incl-label{display:block;font-family:var(--label);font-size:11px;letter-spacing:.2em;color:rgba(245,242,236,.5);margin-bottom:12px}
+  .offer__chips{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;align-items:center}
+  .offer__chips li{font-family:var(--gothic);font-size:12px;letter-spacing:0;line-height:1.3;color:var(--cream);
+    text-align:center;display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(203,167,106,.5);border-radius:999px;padding:6px 8px;background:rgba(255,255,255,.05)}
+  .offer__addon{font-family:var(--label);font-size:12px;letter-spacing:.03em;color:rgba(245,242,236,.62);margin-top:10px}
+  .offer__ttl{font-family:var(--mincho);font-size:16px;color:var(--charcoal);margin-bottom:6px}
+  .offer__sub{font-size:13px;line-height:1.7;color:var(--charcoal-soft);margin-bottom:18px}
+  .offer__incl{font-size:12.5px;line-height:1.75;color:var(--charcoal);margin-bottom:20px}
+  .offer__price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:16px 0;border-top:1px solid rgba(46,42,38,.15);border-bottom:1px solid rgba(46,42,38,.15)}
+  .offer__through{font-family:var(--label);text-decoration:line-through;color:var(--charcoal-soft);font-size:14px}
+  .offer__now{font-family:var(--mincho);font-size:15px;color:var(--charcoal)}
+  .offer__now b{font-size:27px;color:var(--brass);font-weight:600;margin:0 2px}
+  .offer__bonus{font-size:13px;line-height:1.7;color:var(--charcoal);margin:18px 0 10px}
+  .offer__bonus b{color:var(--brass);font-weight:500}
+  .offer__fine{font-family:var(--label);font-size:10.5px;letter-spacing:.03em;color:var(--charcoal-soft)}
+  .offer__perks{margin:20px 0 14px}
+  .perks__head{
+    display:inline-flex;align-items:center;
+    font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.15em;
+    color:#e8c47c;border:1px solid rgba(232,196,124,.5);border-radius:999px;
+    padding:6px 16px;margin:2px 0 16px;
+  }
+  .perk{padding:13px 0;border-top:1px solid rgba(245,242,236,.13)}
+  .perk:first-child{border-top:0;padding-top:4px}
+  .perk__no{display:inline-block;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#c9a668;margin-bottom:7px}
+  .perk__t{font-family:var(--gothic);font-size:14px;line-height:1.5;color:var(--cream);margin:0}
+  .perk__t b{font-size:19px;color:#e8c47c;font-weight:700;letter-spacing:.01em}
+  .perk__d{font-family:var(--label);font-size:11.5px;letter-spacing:.02em;color:rgba(245,242,236,.55);margin-top:4px}
+  .perk__d-em{color:rgba(245,242,236,.82);font-weight:600}
+  .perk__img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:8px;margin-top:12px}
+  .offer__fine--incl{margin-top:14px;font-size:12.5px}
+
+  /* ⑩ ps */
+  .ps__h{font-family:var(--mincho);font-weight:500;font-size:clamp(20px,5.4cqw,26px);line-height:1.7;color:var(--charcoal);margin-bottom:24px}
+  .ps__b{font-size:14.5px;line-height:1.9;color:var(--charcoal)}
+  /* 追伸: お香をダークに沈めた締め(白文字) */
+  .sec--ps{position:relative;background:var(--ink-deep);overflow:hidden;text-align:center}
+  .sec--ps::before{content:"";position:absolute;inset:0;z-index:0;
+    background:url("img/fv-incense.jpg") center/cover no-repeat}
+  .sec--ps::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(26,18,12,.78) 0%, rgba(26,18,12,.62) 45%, rgba(26,18,12,.8) 100%)}
+  .sec--ps .wrap{position:relative;z-index:2}
+  .sec--ps .sec__label{color:#cba76a}
+  .sec--ps .ps__h{color:var(--cream)}
+  .sec--ps .ps__b{color:var(--cream-dim)}
+  .sec--ps .ps__b b,.sec--ps .ps__h{color:var(--cream)}
+
+  /* ============================================================
+     追従CTA(常時) — 唯一のCTA
+     ============================================================ */
+  /* [B] 焦げ茶ソリッドCTA＋金文字 */
+  .sticky-cta{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:#3a2e26;
+    border-top:1px solid rgba(203,167,106,.45);
+    padding:0 16px calc(env(safe-area-inset-bottom));
+    box-shadow:0 -10px 30px rgba(20,15,11,.34);
+  }
+  .sticky-cta a{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    height:var(--cta-h);
+    color:#dcb87f;
+    text-decoration:none;
+    font-family:var(--gothic);
+    font-weight:500;
+    font-size:15px;
+    letter-spacing:.06em;
+  }
+  .sticky-cta .price{
+    font-size:12.5px;letter-spacing:.04em;opacity:.78;font-weight:400;
+  }
+  .sticky-cta a:focus-visible{outline:2px solid #dcb87f;outline-offset:-6px}
+
+  /* ============================================================
+     motion — スクロールフェード程度のみ
+     ============================================================ */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .fv__scroll::before{animation:none}
+  }
+
+  /* ============================================================
+     POLISH — 磨き込み(ヘッダー/構造装置/Didot/価格ヒーロー)
+     ============================================================ */
+  /* FVロゴ(既存ブランド・ダーク上は反転で白に) */
+  .fv__logo{height:30px;width:auto;display:block;filter:brightness(0) invert(1);opacity:.92}
+
+  /* 全eyebrowに真鍮の導線 — 構造装置を統一 */
+  .eyebrow,.sec__label{display:inline-flex;align-items:center;gap:16px}
+  .eyebrow::before,.sec__label::before{content:"";width:34px;height:1px;background:var(--brass);opacity:.85;flex:none}
+
+  /* 見出しの品位(トラッキング/行間を締める) */
+  .sec__h{letter-spacing:.03em;line-height:1.56}
+
+  /* ④ メソッド: Didotイタリック数字で"順番"を格上げ */
+  .mstep{gap:22px;align-items:baseline;padding:20px 0}
+  .mstep__num{font-family:var(--label);font-weight:400;font-size:26px;color:var(--brass);letter-spacing:.02em;min-width:48px;line-height:.9}
+  .mstep__en{letter-spacing:.3em}
+
+  /* ⑤ menu: Didot番号 */
+  .mitem__no{font-family:var(--label);font-size:18px;font-weight:600;color:var(--brass);margin-right:14px;letter-spacing:.02em;vertical-align:1px}
+
+  /* ⑨ offer: 価格をヒーローに */
+  .offer__price{flex-direction:column;align-items:flex-start;gap:7px;padding:20px 0}
+  .offer__through{font-size:13px;letter-spacing:.05em}
+  .offer__now{font-size:15px;display:flex;align-items:baseline;gap:11px}
+  .offer__now b{font-family:var(--mincho);font-size:42px;line-height:1;font-weight:600;letter-spacing:.01em;margin:0}
+
+  /* FV: リード下の余白を確保(切れ防止) */
+  .fv__foot{padding-bottom:calc(var(--cta-h) + 40px)}
+
+  /* fix: FVロゴを左上へ(flex itemの縮み対策) */
+  .fv__top{width:100%}
+
+  /* fix: 価格の各要素を塊で折り返す(縦割れ防止) */
+  .offer__now{flex-wrap:wrap}
+  .offer__now-l{white-space:nowrap;font-size:15px}
+  .offer__now-t{white-space:nowrap;font-size:13px;color:var(--charcoal-soft)}
+  .offer__now b{white-space:nowrap}
+  /* ===== Method 新デザイン(積み上げ図) index-d専用。既存LPの色/フォント/背景/余白は踏襲 ===== */
+  .method-transfer{
+    --method-accent: var(--brass);
+    --method-border: color-mix(in srgb, currentColor 18%, transparent);
+    --method-card-bg: color-mix(in srgb, currentColor 6%, transparent);
+    --method-muted: color-mix(in srgb, currentColor 66%, transparent);
+    --method-gap: clamp(16px, 3cqw, 30px);
+    color: var(--cream);
+  }
+  .method-transfer__inner{ max-width:1080px; margin-inline:auto; }
+  .method-transfer__label{
+    display:inline-flex; align-items:center; gap:16px;
+    margin:0 0 24px; color:var(--method-accent); text-align:left;
+    font-family:var(--label); font-size:18px; font-weight:700; letter-spacing:.28em; text-transform:uppercase;
+  }
+  .method-transfer__label::before{
+    content:""; width:34px; height:1px; opacity:.85;
+    background:currentColor; flex:none;
+  }
+  .method-transfer__heading{
+    margin:0 0 20px; text-align:left; font-family:var(--mincho);
+    font-size:clamp(22px, 5.9cqw, 30px); font-weight:500; line-height:1.5;
+  }
+  .method-transfer__intro, .method-transfer__closing{
+    max-width:none; margin:0; color:var(--method-muted); text-align:left;
+    font-size:13.5px; line-height:1.95;
+  }
+  .method-transfer__stack{
+    position:relative; display:flex; flex-direction:column; gap:var(--method-gap);
+    margin-block:clamp(38px, 6cqw, 60px); padding-left:clamp(56px, 8cqw, 92px);
+  }
+  .method-transfer__stack::before{
+    content:""; position:absolute; left:clamp(20px, 3cqw, 34px); top:40px; bottom:40px; width:2px;
+    background:linear-gradient(0deg, var(--method-accent), color-mix(in srgb, var(--method-accent) 35%, transparent));
+    transform:scaleY(0); transform-origin:bottom;
+  }
+  .method-transfer__stack::after{
+    content:""; position:absolute; left:calc(clamp(20px, 3cqw, 34px) - 8px); top:28px;
+    width:18px; height:18px; border-left:2px solid var(--method-accent); border-top:2px solid var(--method-accent);
+    opacity:0; transform:rotate(45deg) translate(-6px, 6px);
+  }
+  .method-transfer__layer{
+    display:block; padding:clamp(18px, 3cqw, 26px);
+    border:1px solid var(--method-border); border-left:3px solid var(--method-accent);
+    background:var(--method-card-bg); opacity:0; transform:translateY(34px) scale(.985);
+  }
+  .method-transfer__layer--top{ width:76%; margin-left:12%; }
+  .method-transfer__layer--mid{ width:88%; margin-left:6%; }
+  .method-transfer__layer--base{ width:100%; }
+  .method-transfer__num{
+    display:grid; place-items:center; width:50px; height:50px;
+    border:1px solid color-mix(in srgb, var(--method-accent) 55%, transparent);
+    color:var(--method-accent); font-family:var(--label); font-size:17px; font-weight:700; line-height:1;
+  }
+  .method-transfer__top{ display:flex; align-items:center; gap:14px; }
+  .method-transfer__head{ min-width:0; }
+  .method-transfer__en{
+    margin:0 0 4px; color:var(--method-accent); font-family:var(--label);
+    font-size:12px; font-weight:700; letter-spacing:.26em; text-transform:uppercase;
+  }
+  .method-transfer__head h3{
+    margin:0; font-family:var(--mincho); font-size:clamp(18px, 4cqw, 22px); font-weight:500; line-height:1.5;
+  }
+  .method-transfer__desc{ margin:12px 0 0; color:var(--method-muted); font-size:13.5px; line-height:1.8; }
+  .method-transfer__sub{ margin-top:8px !important; color:var(--method-accent) !important; opacity:.85; }
+  .method-transfer__stack.is-stacking::before{ animation:methodRailRise .9s .1s cubic-bezier(.22,1,.36,1) both; }
+  .method-transfer__stack.is-stacking::after{ animation:methodArrowIn .42s .72s cubic-bezier(.22,1,.36,1) forwards; }
+  .method-transfer__stack.is-stacking .method-transfer__layer{ animation:methodLayerRise .72s cubic-bezier(.22,1,.36,1) forwards; }
+  .method-transfer__stack.is-stacking .method-transfer__layer--base{ animation-delay:0s; }
+  .method-transfer__stack.is-stacking .method-transfer__layer--mid{ animation-delay:.14s; }
+  .method-transfer__stack.is-stacking .method-transfer__layer--top{ animation-delay:.28s; }
+  @keyframes methodLayerRise{ from{opacity:0; transform:translateY(34px) scale(.985);} to{opacity:1; transform:none;} }
+  @keyframes methodRailRise{ from{transform:scaleY(0);} to{transform:scaleY(1);} }
+  @keyframes methodArrowIn{ from{opacity:0; transform:rotate(45deg) translate(-6px,6px);} to{opacity:1; transform:rotate(45deg) translate(0,0);} }
+  @media (max-width:680px){
+    .method-transfer__label, .method-transfer__heading, .method-transfer__intro, .method-transfer__closing{ text-align:left; }
+    .method-transfer__stack{ padding-left:28px; gap:11px; }
+    .method-transfer__stack::before{ left:9px; top:30px; bottom:30px; }
+    .method-transfer__stack::after{ left:1px; top:20px; width:16px; height:16px; }
+    .method-transfer__layer{ padding:15px 14px 16px; }
+    .method-transfer__top{ gap:11px; }
+    .method-transfer__layer--top{ width:calc(100% - 14px); margin-left:14px; }
+    .method-transfer__layer--mid{ width:calc(100% - 7px); margin-left:7px; }
+    .method-transfer__num{ width:34px; height:34px; font-size:14px; }
+    .method-transfer__en{ margin-bottom:3px; font-size:10.5px; letter-spacing:.22em; }
+    .method-transfer__head h3{ margin:0; font-size:16px; line-height:1.45; }
+    .method-transfer__desc{ margin-top:10px; font-size:12.5px; line-height:1.7; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ① FV ---------------------------------------------------->
+  <header class="fv">
+    <div class="fv__media">
+      <video class="fv__video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="img/fv-seitai.jpg">
+        <source src="video/kuukan-fv.mp4" type="video/mp4" />
+      </video>
+      <img class="fv__poster" src="img/fv-seitai.jpg" alt="" aria-hidden="true" />
+      <div class="fv__scrim" aria-hidden="true"></div>
+      <div class="fv__top wrap">
+        <img class="fv__logo" src="img/横_kuukan_logo_0130.png" alt="kuukan — 麻布のコンディショニングサロン" />
+      </div>
+    </div>
+
+    <div class="fv__body">
+      <div class="wrap">
+        <h1 class="fv__headline">その不調に、<br><span class="em">名前</span>がないだけ。</h1>
+        <p class="fv__lead">
+          病院に行くほどじゃない。<br>でも<b>本調子でもない。</b><br>
+          その&ldquo;なんとなく&rdquo;には<br>理由があります。
+        </p>
+        <div class="fv__scroll">Scroll</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ② 共感 × 投資 ------------------------------------------->
+  <section class="empathy">
+    <div class="wrap">
+      <span class="eyebrow reveal">Your body is the capital</span>
+      <h2 class="empathy__h reveal">時間もお金も、<br />ぜんぶ「体」が生んでいる。</h2>
+      <div class="empathy__body">
+        <p class="reveal">仕事のスキルにも美容にも学びにも投資してきた。マッサージも整体もジムもサウナもひと通り試した。</p>
+        <p class="reveal">でも——その場では軽くなるのに数日で戻る。かけたお金と時間の割にコンディションが根本的に変わらない。</p>
+        <p class="reveal">それもそのはず。多くのケアはその日をしのぐためのもの。&ldquo;なぜ不調が起きるのか&rdquo;には手をつけていない。</p>
+        <p class="turn reveal">いちばん大事な資本なのに、<b>いちばん向き合えていない。</b>それが自分の「体」かもしれません。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 一木(信頼の核) --------------------------------------->
+  <section class="sec sec--g1">
+    <div class="wrap">
+      <span class="sec__label reveal">The Practitioner</span>
+      <h2 class="sec__h reveal">その体を、最初から最後まで、<br>一人の手で。</h2>
+      <p class="sec__lead reveal">戻らない体を立て直すには、部分をほぐすだけでは届きません。こわばりも、巡りも、冷えも、ぜんぶ繋がっているからです。</p>
+      <img class="ichiki__photo reveal" src="img/ichiki-b.jpg" alt="kuukan 代表 一木勇太" loading="lazy">
+      <p class="ichiki__name reveal">一木 勇太<span class="en">Yuta Ichiki</span></p>
+      <span class="ichiki__role reveal">代表</span>
+      <p class="ichiki__bio reveal">整体歴17年。これまで2万人以上の体と向き合ってきました。鍼灸師・柔道整復師の国家資格を取得後、整骨院の院長として5年、パーソナルジムの店長として5年。2025年には禅療法士を取得。ほぐす整体、巡らせる鍼、奥から温める岩盤——ふつうは別々の人が担うこれらを、一人で診られる。だから体を分けず、&ldquo;戻らない理由&rdquo;そのものにアプローチできます。</p>
+      <div class="ichiki__career reveal">
+        <div class="ichiki__stats">
+          <div class="ichiki__stat"><b>17</b><span>整体歴（年）</span></div>
+          <div class="ichiki__stat"><b>20,000+</b><span>施術実績（のべ）</span></div>
+        </div>
+
+        <span class="ichiki__career-label mt">保有資格</span>
+        <ul class="ichiki__tags">
+          <li>鍼灸師<br><span class="ichiki__tag-sub">（国家資格）</span></li>
+          <li>柔道整復師<br><span class="ichiki__tag-sub">（国家資格）</span></li>
+          <li>禅療法士<br><span class="ichiki__tag-sub">（2025年取得）</span></li>
+        </ul>
+
+        <span class="ichiki__career-label mt">経歴</span>
+        <ul class="ichiki__timeline">
+          <li><span class="dur">5年</span><span class="role">整骨院 院長</span></li>
+          <li><span class="dur">5年</span><span class="role">パーソナルジム 店長</span></li>
+        </ul>
+      </div>
+      <blockquote class="ichiki__quote reveal">かつて私自身、心身が限界を迎えた時期がありました。体をほぐし、巡らせ、奥から温めると、心にも静けさが戻ってくる。その実感がkuukanの原点です。無理に鍛える場所ではなく、体を通して自分を取り戻す場所でありたい。</blockquote>
+    </div>
+  </section>
+
+  <!-- ④ メソッド ---------------------------------------------->
+  <section class="sec sec--g2 method-transfer" data-method-diagram>
+    <div class="wrap">
+      <div class="method-transfer__inner">
+        <p class="method-transfer__label">Method</p>
+        <h2 class="method-transfer__heading">立て直しには、順番がある。</h2>
+        <p class="method-transfer__intro">
+          運動・食事・睡眠を続けても、戻らない体には理由があります。土台そのものが、こわばって・滞って・冷えているからです。kuukanは、ほぐす・巡らせる・温めるの順に立て直します。
+        </p>
+
+        <div class="method-transfer__stack" aria-label="ほぐす、巡らせる、温めるの順番">
+          <article class="method-transfer__layer method-transfer__layer--top">
+            <div class="method-transfer__top">
+              <span class="method-transfer__num">03</span>
+              <div class="method-transfer__head">
+                <p class="method-transfer__en">Warm</p>
+                <h3>岩盤で奥から温め、巡りを深める</h3>
+              </div>
+            </div>
+            <p class="method-transfer__desc">そして岩盤ベッドで深部体温を上げ、ほぐし巡らせた状態を、奥からじんわり深めていく。</p>
+            <p class="method-transfer__sub">岩盤ベッド</p>
+          </article>
+
+          <article class="method-transfer__layer method-transfer__layer--mid">
+            <div class="method-transfer__top">
+              <span class="method-transfer__num">02</span>
+              <div class="method-transfer__head">
+                <p class="method-transfer__en">Flow</p>
+                <h3>鍼で滞りを流し、巡りを動かす</h3>
+              </div>
+            </div>
+            <p class="method-transfer__desc">次に全身鍼で滞りを流す。経絡・ツボへ届かせ、自律神経と血流にはたらきかける。</p>
+            <p class="method-transfer__sub">全身鍼</p>
+          </article>
+
+          <article class="method-transfer__layer method-transfer__layer--base">
+            <div class="method-transfer__top">
+              <span class="method-transfer__num">01</span>
+              <div class="method-transfer__head">
+                <p class="method-transfer__en">Release</p>
+                <h3>全身のこわばりと歪みをほどく</h3>
+              </div>
+            </div>
+            <p class="method-transfer__desc">まず全身整体で、こわばりと歪みを手技でほどく。力みが残ったままでは、巡りは動かない。</p>
+            <p class="method-transfer__sub">全身整体</p>
+          </article>
+        </div>
+
+        <p class="method-transfer__closing">
+          ほぐして、巡らせて、温める。この順番だから、その場かぎりで終わらない。&quot;戻ってしまう&quot;の正体は、たいていこの順番の欠けです。順番でそろえるから、変化が続きます。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 手法(5メニュー) -------------------------------------->
+  <section class="sec sec--g3">
+    <div class="wrap">
+      <span class="sec__label reveal">Menu</span>
+      <p class="sec__lead reveal">「ほぐす→巡らせる→温める」を、あなたの状態に合わせて。<br>全身整体 × 全身鍼 × 岩盤ベッド（60分）。</p>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/m-seitai.jpg" alt="全身整体" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">01</span>全身整体<span class="mitem__en">Seitai</span></div>
+        <p class="mitem__desc">骨格・筋膜の歪みを丁寧に読み取り、手技で全身のこわばりをほどく。</p>
+      </div>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/m-acupuncture.jpg" alt="全身鍼" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">02</span>全身鍼<span class="mitem__en">Acupuncture</span></div>
+        <p class="mitem__desc">経絡・ツボへ的確にアプローチ。滞りを流し、自律神経と巡りを動かす。</p>
+      </div>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/iwaban.jpg" alt="岩盤ベッド" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">03</span>岩盤ベッド<span class="mitem__en">Bedrock</span></div>
+        <p class="mitem__desc">遠赤外線の温熱で深部体温を上げ、巡りを奥から深めて仕上げる。</p>
+      </div>
+      <p class="menu__close reveal">三つを、別々の店で受ける必要はありません。国家資格者ひとりが全身を通して診るから、60分がひとつの流れになる。</p>
+    </div>
+  </section>
+
+  <!-- Trial オファー(Voiceの上) ------------------------------->
+  <section class="sec sec--g4" id="offer">
+    <div class="wrap">
+      <span class="sec__label reveal">Trial</span>
+      <h2 class="sec__h reveal">まずは、戻る体を、体験することから。</h2>
+
+      <div class="offer__scarcity reveal">
+        <span class="offer__scarcity-tag">新規会員枠受付中！</span>
+        <p>完全予約制のため、普段は空き枠に限りがあります。<br>今期は新規の方を若干名のみご案内。</p>
+      </div>
+
+      <div class="offer__box reveal">
+        <p class="offer__ttl">初回体験セッション（60分）</p>
+        <p class="offer__sub">ほぐす・巡らせる・温める、を一度に。</p>
+        <div class="offer__incl">
+          <span class="offer__incl-label">含まれるもの</span>
+          <ul class="offer__chips">
+            <li>全身整体</li>
+            <li>全身鍼</li>
+            <li>岩盤ベッド</li>
+          </ul>
+          <p class="offer__fine offer__fine--incl">手ぶらOK（着替え・シューズ・水完備）</p>
+        </div>
+        <div class="offer__price">
+          <span class="offer__through">通常 ¥18,000</span>
+          <span class="offer__now"><span class="offer__now-l">初回体験 60分</span><b class="js-price">¥3,000</b><span class="offer__now-t">（税込）</span></span>
+        </div>
+        <div class="offer__perks">
+          <p class="perks__head">今だけの2大特典</p>
+          <div class="perk">
+            <span class="perk__no">特典 1</span>
+            <p class="perk__t">登録料 ¥10,000 ＋ 入会金 ¥20,000 → <b>¥0</b></p>
+            <p class="perk__d">当日ご入会で ・ <b class="perk__d-em">いつでも解約可能</b></p>
+          </div>
+          <div class="perk">
+            <span class="perk__no">特典 2</span>
+            <p class="perk__t">会員は GYM CONCEPT <b>通い放題</b></p>
+            <p class="perk__d">9:00–23:00</p>
+            <div class="offer__collage offer__collage--perk">
+              <img class="gc-recep-tall" src="img/gym-reception.jpg" alt="GYM CONCEPT 受付" loading="lazy">
+              <div class="split">
+                <img src="img/gym-machines.jpg" alt="GYM CONCEPT マシンルーム" loading="lazy">
+                <img src="img/gym-room.jpg" alt="GYM CONCEPT マシンエリア" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑥ Voice ------------------------------------------------->
+  <section class="sec sec--t1">
+    <div class="wrap">
+      <span class="sec__label reveal">Voice</span>
+      <div class="vquote reveal">
+        <span class="vquote__who">40代・男性</span>
+        <p>デスクワークで背中も腰もガチガチでした。ほぐして、鍼で流して、岩盤で温める——この流れを続けるうちに、朝の重さが軽くなってきました。単発のマッサージとは、戻り方が違います。</p>
+      </div>
+      <div class="vquote reveal">
+        <span class="vquote__who">40代・女性</span>
+        <p>4年以上、通っています。その日の状態に合わせてメニューを組んでくれるので、毎回きちんと軽くなる。整体も鍼も岩盤も一か所で受けられるのは、ここだけの価値だと思います。</p>
+      </div>
+      <div class="vquote reveal">
+        <span class="vquote__who">30代・女性</span>
+        <p>慢性の肩こりと冷えに悩んでいました。2年続けて、体の巡りが変わった実感があります。一木さんの人柄があるから、無理なく通い続けられています。</p>
+      </div>
+      <p class="sec__note reveal">※体験談は個人の感想であり、効果を保証するものではありません。</p>
+    </div>
+  </section>
+
+  <!-- ⑦ 流れ(初回60分) -------------------------------------->
+  <section class="sec sec--l1">
+    <div class="wrap">
+      <span class="sec__label reveal">First Visit</span>
+      <h2 class="sec__h reveal">初回の60分で、やること。</h2>
+      <div class="reveal">
+        <div class="fstep"><span class="fstep__num">01</span><div><span class="fstep__t">ご予約</span></div></div>
+        <div class="fstep"><span class="fstep__num">02</span><div><span class="fstep__t">カウンセリング</span><span class="fstep__d">お悩みと、体の状態を、じっくり伺う</span></div></div>
+        <div class="fstep"><span class="fstep__num">03</span><div><span class="fstep__t">全身整体</span><span class="fstep__d">こわばりと歪みを、手技でほどく</span></div></div>
+        <div class="fstep"><span class="fstep__num">04</span><div><span class="fstep__t">全身鍼</span><span class="fstep__d">滞りを流し、巡りのスイッチを入れる</span></div></div>
+        <div class="fstep"><span class="fstep__num">05</span><div><span class="fstep__t">岩盤ベッド</span><span class="fstep__d">深部から温め、巡りをじっくり深める</span></div></div>
+        <div class="fstep"><span class="fstep__num">06</span><div><span class="fstep__t">セルフケア指導</span><span class="fstep__d">自宅でできることまで持ち帰れる</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑧ FAQ --------------------------------------------------->
+  <section class="sec sec--l2">
+    <div class="wrap">
+      <span class="sec__label reveal">FAQ</span>
+      <div class="reveal">
+        <details class="qa"><summary><span class="qmark">Q</span>予約は必要ですか？</summary><p class="qa__a">はい、完全予約制となっております。予約カレンダーよりご予約ください。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>運動やトレーニングはしますか？</summary><p class="qa__a">いいえ。今回は&ldquo;まず立て直す&rdquo;ためのメニューです。全身整体・全身鍼・岩盤ベッドで、ほぐす・巡らせる・温めるに専念します。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>鍼は痛くないですか？</summary><p class="qa__a">状態に合わせて調整します。強い痛みを伴う施術は行いません。使用する鍼も、髪より細いものです。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>2回目以降の料金はおいくらですか？</summary><p class="qa__a">1回18,000円から、お得な回数券もご用意しております。回数券はご自身のペースで通いたい方におすすめで、有効期限内であれば自由にご利用いただけます。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>支払い方法は何がありますか？</summary><p class="qa__a">クレジットカードのみのお取り扱いとなっております。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>回数券の有効期限はありますか？</summary><p class="qa__a">はい、ご購入日から1年間が有効期限となります。期限内であればご自身のペースでご利用いただけます。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>どんな服装で行けばいいですか？</summary><p class="qa__a">動きやすい服装でお越しください。お着替えのご用意もございますので、お仕事帰りでもそのままお越しいただけます。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>どのくらいの頻度で通えばいいですか？</summary><p class="qa__a">月4回の定期的な通院をおすすめしています。お身体の状態や目標に合わせて、最適なプランをご提案いたします。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>GYM CONCEPTはどのように利用できますか？</summary><p class="qa__a">kuukan会員の方（サブスク月4回プラン以上）であれば、徒歩4分のトレーニングジム「GYM CONCEPT」を無料で通い放題でご利用いただけます。セッション日以外のトレーニングにぜひご活用ください。</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>法人向けのプランはありますか？</summary><p class="qa__a">はい、福利厚生としてご導入いただける法人プランをご用意しております。社員の方の健康管理・パフォーマンス向上にご活用ください。詳細はお問い合わせください。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑩ 追伸 -------------------------------------------------->
+  <section class="sec sec--l3">
+    <div class="wrap">
+      <span class="sec__label reveal">Postscript</span>
+      <h2 class="ps__h reveal">&ldquo;戻らない&rdquo;まま、何年が過ぎましたか</h2>
+      <p class="ps__b reveal">その重さは放っておいても抜けません。順番がある以上、そろえれば変えられる。体だけは、先延ばしにした分だけ取り戻すのに時間がかかります。<br><br>まず60分。ほぐして、巡らせて、温めた体を、確かめにきてください。</p>
+    </div>
+  </section>
+
+  <!-- 追従CTA(唯一) ------------------------------------------->
+  <nav class="sticky-cta">
+    <a href="https://cl.gyms.jp/trial/CC4774539643/?clear_all=1" target="_blank" rel="noopener" aria-label="初回体験を予約する 60分 3000円">
+      初回体験を予約する
+      <span class="price">60分 ／ <span class="js-price">¥3,000</span></span>
+    </a>
+  </nav>
+
+  <script>
+    // 価格の一元管理(SPEC §6 {{TRIAL_PRICE}}) — ここ1箇所で全反映
+    const TRIAL_PRICE = '¥3,000';
+    document.querySelectorAll('.js-price').forEach(el=>{ el.textContent = TRIAL_PRICE; });
+
+    // スクロールフェード(reduced-motion時は無効)
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if('IntersectionObserver' in window){
+      const io = new IntersectionObserver((es)=>{
+        es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      },{threshold:.16});
+      document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+    }
+  </script>
+<script>
+  (() => {
+    const stack = document.querySelector('[data-method-diagram] .method-transfer__stack');
+    if (!stack) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!('IntersectionObserver' in window)) { stack.classList.add('is-stacking'); return; }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          stack.classList.remove('is-stacking');
+          void stack.offsetWidth;
+          stack.classList.add('is-stacking');
+        } else {
+          stack.classList.remove('is-stacking');
+        }
+      });
+    }, { threshold: .35, rootMargin: '0px 0px -12% 0px' });
+    observer.observe(stack);
+  })();
+</script>
+<script>
+  // FV動画: 開いた瞬間から静止画(fv__poster)で覆い、再生ボタンを一切出さない。
+  // 再生が実際に始まったら静止画をフェードで隠す(PCは即座に再生→ほぼ継ぎ目なし)。
+  // 低電力モード等で再生できない場合は静止画のまま。
+  (function(){
+    var v = document.querySelector('.fv__video');
+    var poster = document.querySelector('.fv__poster');
+    if(!v) return;
+    var tryPlay = function(){
+      v.muted = true;
+      var p = v.play();
+      if(p && p.catch) p.catch(function(){});
+    };
+    if(poster){
+      v.addEventListener('playing', function(){ poster.classList.add('is-hidden'); });
+      v.addEventListener('pause', function(){ poster.classList.remove('is-hidden'); });
+    }
+    tryPlay();
+    document.addEventListener('visibilitychange', function(){
+      if(document.visibilityState === 'visible') tryPlay();
+    });
+    ['touchstart','click','scroll'].forEach(function(evt){
+      document.addEventListener(evt, tryPlay, {once:true, passive:true});
+    });
+  })();
+</script>
+</body>
+</html>
