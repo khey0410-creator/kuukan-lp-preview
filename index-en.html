@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://p.typekit.net" crossorigin />
 <!-- 既存踏襲: Typekit(din-2014 / linotype-didot)。EN版は本文セリフをEB Garamondへ -->
 <link rel="stylesheet" href="https://use.typekit.net/ogu1wio.css" />
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 <style>
   /* ============================================================
      kuukan LP mock — Step A (token layer + FV + 共感 + 追従CTA)
@@ -34,8 +34,9 @@
     --brass:#b08d57;         /* 唯一のアクセント */
 
     /* --- type --- */
+    --display:"Cormorant Garamond",Georgia,"Times New Roman",serif; /* 大見出し=Cormorant(華やか) */
     --mincho:"EB Garamond",Georgia,"Times New Roman",serif;
-    /* EN版: 見出し・本文セリフ=EB Garamond。ラテン見出しラベル=din-2014 / 装飾=Didot */
+    /* EN版: 大見出し=Cormorant / 本文セリフ=EB Garamond。ラベル=din-2014 / 装飾=Didot */
     --gothic:"EB Garamond",Georgia,"Times New Roman",serif;
     --label:din-2014,"Helvetica Neue",Arial,sans-serif;
     --didot:linotype-didot,"Playfair Display",Georgia,serif;
@@ -581,6 +582,9 @@
     .method-transfer__head h3{ margin:0; font-size:16px; line-height:1.45; }
     .method-transfer__desc{ margin-top:10px; font-size:12.5px; line-height:1.7; }
   }
+
+  /* EN: 大見出しディスプレイ=Cormorant Garamond(本文・リード・レビュー等はEB Garamondのまま) */
+  .fv__headline,.empathy__h,.sec__h,.ps__h,.method-transfer__heading{font-family:var(--display)}
 </style>
 </head>
 <body>
