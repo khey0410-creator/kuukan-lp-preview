@@ -7,6 +7,33 @@
 <meta name="description" content="A conditioning salon in Azabu, Tokyo. Seitai, training and acupuncture — one practitioner treating your whole body, from the root. First 60-minute session ¥3,000." />
 <link rel="alternate" hreflang="ja" href="https://kuukan-zc.com/" />
 <link rel="alternate" hreflang="en" href="https://kuukan-zc.com/en/" />
+
+<!-- Meta Pixel Code (本番と同一ID=1482972990008620。EN広告のCVを同じ広告アカウントへ統合) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1482972990008620');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1482972990008620&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- Google tag (gtag.js) — 本番と同一 GA4=G-QC5TDF8DDG -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QC5TDF8DDG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QC5TDF8DDG');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://use.typekit.net" crossorigin />
@@ -930,6 +957,20 @@
     });
     ['touchstart','click','scroll'].forEach(function(evt){
       document.addEventListener(evt, tryPlay, {once:true, passive:true});
+    });
+  })();
+</script>
+<script>
+  // 予約ボタン(→gyms.jp)クリックを"申込コンバージョン"として計測。
+  // Meta=Lead / GA4=booking_click。language:'en'とpageで英語版を切り分け可。
+  // ※真の「予約完了」はgyms.jp(外部)で発生しLPでは取れない → 別途オフラインCV取込が必要。
+  (function(){
+    var links = document.querySelectorAll('a[href*="gyms.jp"]');
+    links.forEach(function(a){
+      a.addEventListener('click', function(){
+        try{ if(window.fbq) fbq('track','Lead',{content_name:'trial_booking',language:'en',value:3000,currency:'JPY'}); }catch(e){}
+        try{ if(window.gtag) gtag('event','booking_click',{language:'en',value:3000,currency:'JPY'}); }catch(e){}
+      }, {passive:true});
     });
   })();
 </script>
