@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kuukan | Facial Acupuncture — Azabu, Tokyo</title>
+<meta name="description" content="Facial + full-body acupuncture in Azabu. Beauty released, not added — one nationally licensed practitioner works from the whole body to the face. First 90-minute session ¥5,000." />
+
+<!-- Meta Pixel Code (本番と同一ID=1482972990008620) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1482972990008620');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1482972990008620&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- Google tag (gtag.js) — 本番と同一 GA4=G-QC5TDF8DDG -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QC5TDF8DDG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QC5TDF8DDG');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://use.typekit.net" crossorigin />
+<link rel="preconnect" href="https://p.typekit.net" crossorigin />
+<!-- 既存踏襲: Typekit(din-2014 / linotype-didot)。EN版=見出しCormorant/本文EB Garamond -->
+<link rel="stylesheet" href="https://use.typekit.net/ogu1wio.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     kuukan LP mock — Step A (token layer + FV + 共感 + 追従CTA)
+     SPEC v4 準拠。差し色は --brass のみ。暗→明の縦トーン。
+     ============================================================ */
+  :root{
+    /* --- color tokens (SPEC §2) --- */
+    --ink-deep:#452735;      /* FV 最暗 */
+    --sepia:#4e2c3a;         /* 焦げ茶 */
+    --sepia-soft:#613a4b;    /* 移行の中間(暗側) */
+    --warm-mid:#a5919a;      /* 移行の中間 */
+    --warm-gray:#d8ccd0;     /* 本文背景 */
+    --warm-gray-hi:#e5dade;  /* 本文背景(明) */
+    --charcoal:#361f28;      /* 明背景上の文字 */
+    --charcoal-soft:#6f5058; /* 補助文字 */
+    --cream:#faf3f1;         /* 暗背景上の文字 */
+    --cream-dim:rgba(250,243,241,.66);
+    --brass:#bd8b52;         /* 唯一のアクセント */
+
+    /* --- type --- */
+    --display:"Cormorant Garamond",Georgia,"Times New Roman",serif; /* 大見出し=Cormorant */
+    --mincho:"EB Garamond",Georgia,"Times New Roman",serif;
+    /* EN版: 大見出し=Cormorant / 本文セリフ=EB Garamond。ラベル=din-2014 / 装飾=Didot */
+    --gothic:"EB Garamond",Georgia,"Times New Roman",serif;
+    --label:din-2014,"Helvetica Neue",Arial,sans-serif;
+    --didot:linotype-didot,"Playfair Display",Georgia,serif;
+
+    --cta-h:64px;
+    --frame:480px;          /* SP専用フレーム幅（Storiesは縦・スマホ専用） */
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--gothic);
+    color:var(--charcoal);
+    background:var(--ink-deep);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.9;
+    letter-spacing:.02em;
+    /* 追従CTA分の余白 */
+    padding-bottom:calc(var(--cta-h) + env(safe-area-inset-bottom));
+  }
+  ::selection{background:var(--brass);color:var(--cream)}
+
+  .wrap{max-width:680px;margin:0 auto;padding-left:26px;padding-right:26px}
+
+  /* ============================================================
+     SP特化フレーム — Instagram Storiesは縦・スマホ専用の広告。
+     PCで見ても崩れないよう、LP全体をスマホ幅の中央カラムに固定する。
+     実機（≤480px）ではそのまま全幅表示、PCでは暗背景に1枚の縦カラム。
+     ============================================================ */
+  body{background:#2c1622}
+  .fv,.empathy,.sec{max-width:var(--frame);margin-left:auto;margin-right:auto;container-type:inline-size}
+  .sticky-cta{max-width:var(--frame);margin-left:auto;margin-right:auto}
+
+
+  /* eyebrow(ラテン/ラベル) */
+  .eyebrow{
+    font-family:var(--label);      /* din-2014(既存踏襲のラテンラベル) */
+    font-weight:400;
+    font-size:11px;
+    letter-spacing:.42em;
+    text-transform:uppercase;
+  }
+
+  /* ============================================================
+     ① FV — 縦組みシグネチャ
+     ============================================================ */
+  .fv{
+    position:relative;
+    background:var(--ink-deep);
+    color:var(--cream);
+  }
+  /* 動画バンド(上部・占拠しすぎない) */
+  .fv__media{
+    position:relative;
+    height:52vh;min-height:330px;max-height:560px;
+    overflow:hidden;background:#38202b;
+  }
+  /* 見出し帯(動画の下・sepia。②共感へ繋ぐ) */
+  .fv__body{
+    background:linear-gradient(180deg,#38202b 0%, var(--sepia) 55%, var(--sepia) 100%);
+    padding:12px 0 54px;text-align:center;
+  }
+  /* FV動画(kuukan PV縦_2 → kuukan-fv.mp4) */
+  .fv__video{
+    position:absolute;inset:0;z-index:0;
+    width:100%;height:100%;object-fit:cover;
+    background:#38202b;
+  }
+  /* 可読性スクリム: 上/右を落として白文字を担保しつつ、下端は②のsepiaへ繋ぐ */
+  .fv__scrim{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(40,22,31,.58) 0%, rgba(40,22,31,.14) 24%,
+      rgba(40,22,31,.10) 60%, rgba(44,25,34,.94) 100%);
+  }
+  .fv__top{
+    position:absolute;top:0;left:0;right:0;z-index:2;
+    padding-top:calc(env(safe-area-inset-top) + 22px);
+  }
+  .fv__brand{color:var(--cream);opacity:.9;text-transform:none} /* kuukanは小文字を維持 */
+
+  .fv__stage{
+    position:relative;z-index:2;
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:8px 0 20px;
+  }
+  /* 真鍮の細い縦ヘアライン */
+  .fv__rule{
+    width:1px;align-self:stretch;
+    margin:34px 0;
+    background:linear-gradient(180deg, transparent, var(--brass) 22%, var(--brass) 78%, transparent);
+    opacity:.85;
+  }
+  .fv__headline{
+    font-family:var(--mincho);
+    font-weight:400;
+    font-size:clamp(26px,8.4cqw,42px);
+    line-height:1.58;
+    letter-spacing:.12em;
+    text-align:center;
+    color:var(--cream);
+    margin-bottom:26px;
+  }
+  .fv__headline .em{color:var(--brass)}
+
+  .fv__foot{
+    position:relative;z-index:2;
+    /* 追従CTAの高さ分を確保してリード/Scrollが隠れないように */
+    padding-bottom:calc(var(--cta-h) + 26px);
+  }
+  .fv__lead{
+    font-family:var(--mincho);
+    font-size:15px;
+    line-height:2;
+    color:var(--cream-dim);
+    letter-spacing:.04em;
+    text-shadow:0 1px 18px rgba(30,15,23,.55);
+  }
+  .fv__lead b{color:var(--cream);font-weight:500}
+  .fv__scroll{
+    margin-top:28px;
+    display:inline-flex;flex-direction:column-reverse;align-items:center;gap:9px;
+    color:var(--cream-dim);font-family:var(--label);
+    font-size:10px;letter-spacing:.36em;text-transform:uppercase;
+  }
+  .fv__scroll::before{
+    content:"";width:1px;height:26px;background:var(--brass);
+    animation:pull 2.4s ease-in-out infinite;
+    transform-origin:top;
+  }
+  @keyframes pull{0%,100%{transform:scaleY(.4);opacity:.5}50%{transform:scaleY(1);opacity:1}}
+
+  /* ============================================================
+     ② 共感 × 投資 — 焦げ茶→グレーへ抜ける
+     ============================================================ */
+  .empathy{
+    /* 固定pxで暗帯=見出し用、本文は明地に載せて視認性を担保(縦長でも崩れない) */
+    background:linear-gradient(180deg,
+      var(--sepia) 0,
+      var(--sepia) 190px,
+      var(--warm-gray) 320px,
+      #e5dade 430px,
+      #e5dade 100%);
+    padding:84px 0 76px;
+  }
+  .empathy .eyebrow{color:#cca664;font-size:18px;font-weight:700;letter-spacing:.08em}
+  .empathy__h{
+    font-family:var(--mincho);
+    font-weight:500;
+    font-size:clamp(23px,6.6cqw,31px);
+    line-height:1.62;
+    letter-spacing:.05em;
+    margin:16px 0 28px;
+    /* 上部(暗)ではcream、下地はグレーなので中間色で両立 */
+    color:var(--cream);
+  }
+  .empathy__body p{
+    font-size:15.5px;
+    line-height:1.75;
+    color:var(--charcoal);
+    margin-bottom:17px;
+    letter-spacing:.01em;
+  }
+  /* 全段落を濃色で統一(明地で高コントラスト) */
+  .empathy__body .turn{
+    font-family:var(--mincho);
+    font-size:17px;
+    line-height:1.8;
+    color:var(--charcoal);
+  }
+  .empathy__body .turn b{
+    color:var(--brass);
+    font-weight:500;
+    font-style:normal;
+  }
+
+  /* ============================================================
+     ③〜⑩ body sections(暗→明の"明"側へ段階的に上げる)
+     ============================================================ */
+  .sec{padding:clamp(46px,8vw,72px) 0}
+  /* 各セクションを"次の色"へ抜けるグラデにして境目を消す(暗→明を連続化) */
+  .sec--g1{background:linear-gradient(180deg,#e5dade,#e9dfe2)} /* ③ empathy末尾#e5dadeから連続 */
+  .sec--g2{background:linear-gradient(180deg,#452735,#3a2130);color:var(--cream);padding-top:14px} /* ④ [D]暗い章 */
+  .sec--g3{background:linear-gradient(180deg,#ece2e4,#f0e8e8)} /* ⑤ */
+  .sec--g4{background:linear-gradient(180deg,#f0e8e8,#f3ecec)} /* Trial */
+  .sec--t1{background:linear-gradient(180deg,#f3ecec,#f6f0f0)} /* Voice */
+  .sec--l1{background:linear-gradient(180deg,#f6f0f0,#f8f2f2)} /* 流れ */
+  .sec--l2{background:linear-gradient(180deg,#f8f2f2,#faf5f4)} /* FAQ */
+  .sec--l3{background:linear-gradient(180deg,#faf5f4,#fcf8f7)} /* 追伸 */
+
+  .sec__label{font-family:var(--label);color:var(--gold-dark,#a17b44);font-size:18px;font-weight:700;
+    letter-spacing:.28em;text-transform:uppercase;display:block;margin-bottom:24px}
+  .sec__h{font-family:var(--mincho);font-weight:500;font-size:clamp(22px,5.9cqw,30px);
+    line-height:1.58;letter-spacing:.02em;color:var(--charcoal);margin-bottom:20px}
+  .sec__lead{font-size:15px;line-height:1.72;color:var(--charcoal);margin-bottom:14px;letter-spacing:0}
+  .sec__note{font-size:11.5px;line-height:1.75;color:var(--charcoal-soft);margin-top:26px}
+
+  /* ③ 一木 */
+  .ichiki__photo{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 28%;display:block;margin-bottom:30px}
+  .ichiki__name{font-family:var(--mincho);font-size:21px;color:var(--charcoal);margin-bottom:4px}
+  .ichiki__name .en{font-family:var(--label);font-size:11px;letter-spacing:.16em;color:var(--charcoal-soft);margin-left:10px;text-transform:uppercase}
+  .ichiki__role{font-family:var(--label);font-size:10px;letter-spacing:.26em;color:var(--brass);text-transform:uppercase;display:block;margin-bottom:20px}
+  .ichiki__bio{font-size:14px;line-height:1.75;color:var(--charcoal);margin-bottom:24px}
+  .ichiki__quote{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);border-left:2px solid var(--brass);padding-left:20px}
+  /* 経歴・資格 — 「数字」「資格」「経歴」を意味ごとに塊分け */
+  .ichiki__career{margin:8px 0 30px;border-top:1px solid rgba(54,31,40,.16);padding-top:26px}
+  .ichiki__career-label{font-family:var(--label);font-size:14px;font-weight:700;letter-spacing:.16em;
+    color:var(--charcoal);display:inline-flex;align-items:center;gap:11px;margin:0 0 22px}
+  .ichiki__career-label::before{content:"";width:22px;height:2px;background:var(--brass)}
+  .ichiki__career-label.mt{margin-top:32px}
+
+  /* ①数字スタッツ(整体歴/施術実績) */
+  .ichiki__stats{display:flex;gap:34px;margin-bottom:8px}
+  .ichiki__stat b{display:block;font-family:var(--label);font-weight:400;
+    font-size:36px;letter-spacing:.01em;line-height:1;color:var(--brass)}
+  .ichiki__stat span{display:block;font-size:11.5px;color:var(--charcoal-soft);margin-top:8px;letter-spacing:.03em}
+
+  /* ②資格タグ */
+  .ichiki__tags{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+  .ichiki__tags li{font-family:var(--label);font-size:15px;font-weight:600;letter-spacing:0;color:var(--charcoal);text-align:center;line-height:1.45;
+    border:1px solid rgba(189,139,82,.65);padding:8px 5px}
+  .ichiki__tag-sub{display:inline-block;margin-top:2px;font-size:10px;font-weight:400;opacity:.68;letter-spacing:0}
+
+  /* ③経歴タイムライン(役職を時系列で) */
+  .ichiki__timeline{display:flex;flex-direction:column}
+  .ichiki__timeline li{display:flex;gap:18px;padding:14px 0;border-top:1px solid rgba(54,31,40,.14)}
+  .ichiki__timeline li:last-child{border-bottom:1px solid rgba(54,31,40,.14)}
+  .ichiki__timeline .dur{font-family:var(--label);font-size:14px;font-weight:700;color:var(--charcoal);min-width:60px;flex:none;padding-top:1px}
+  .ichiki__timeline .role{font-size:14px;line-height:1.5;color:var(--charcoal)}
+
+  /* ④ method */
+  /* メソッド導入: 坐禅画像を薄く敷いた上に文章を載せる */
+  .method__hero{position:relative;margin:0 -26px 20px;padding:48px 26px 40px;overflow:hidden}
+  .method__hero::before{content:"";position:absolute;inset:0;z-index:0;
+    background:url("img/fv-incense.jpg") center/cover no-repeat;opacity:.42}
+  .method__hero::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(234,224,226,.4) 0%, rgba(236,226,228,.5) 100%)}
+  .method__hero>*{position:relative;z-index:2}
+  .method__hero .sec__h{margin-bottom:18px}
+  .method__hero-lead{margin-bottom:0}
+
+  .mstep{display:flex;gap:18px;align-items:flex-start;padding:26px 0;border-top:1px solid rgba(54,31,40,.15)}
+  .mstep:last-of-type{border-bottom:1px solid rgba(54,31,40,.15)}
+  .mstep__num{font-family:var(--label);font-size:13px;letter-spacing:.05em;color:var(--brass);padding-top:3px;min-width:24px}
+  .mstep__head{display:flex;align-items:baseline;gap:13px;margin-bottom:6px}
+  .mstep__en{font-family:var(--label);font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--charcoal-soft)}
+  .mstep__ja{font-family:var(--mincho);font-size:18px;color:var(--charcoal)}
+  .mstep__desc{font-size:13.5px;line-height:1.8;color:var(--charcoal)}
+  .method__close{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);margin-top:22px}
+
+  /* ⑤ menu */
+  .mitem{margin-bottom:36px}
+  .mitem__img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;margin-bottom:15px}
+  .mitem__ja{font-family:var(--mincho);font-size:18px;color:var(--charcoal)}
+  .mitem__en{font-family:var(--label);font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--charcoal-soft);margin-left:12px}
+  .mitem__desc{font-size:13.5px;line-height:1.9;color:var(--charcoal);margin-top:9px}
+  .menu__close{font-family:var(--mincho);font-size:15px;line-height:1.75;color:var(--charcoal);margin-top:8px}
+
+  /* ⑥ voice — 高級感カード(属性を先に提示) */
+  .vquote{position:relative;background:rgba(255,255,255,.45);border:1px solid rgba(54,31,40,.1);
+    padding:26px 26px 30px;margin-bottom:14px;box-shadow:0 10px 34px rgba(54,31,40,.06)}
+  .vquote__who{font-family:var(--label);font-size:14.5px;font-weight:700;letter-spacing:.1em;color:var(--charcoal);
+    display:flex;align-items:center;gap:10px;
+    padding-bottom:15px;margin-bottom:18px;border-bottom:1px solid rgba(189,139,82,.4)}
+  .vquote__who::before{content:"\201C";font-family:var(--didot);font-style:italic;font-size:26px;
+    line-height:1;color:var(--brass);flex:none}
+  .vquote p{font-family:var(--mincho);font-size:14.5px;line-height:1.75;color:var(--charcoal);position:relative}
+
+  /* ⑦ flow — 縦タイムライン図解(スマホ最適) */
+  .fstep{position:relative;padding:0 0 30px 56px;min-height:36px}
+  .fstep:last-of-type{padding-bottom:0}
+  /* 連結線(真鍮) */
+  .fstep::before{content:"";position:absolute;left:17.5px;top:34px;bottom:0;width:1px;background:rgba(189,139,82,.4)}
+  .fstep:last-of-type::before{display:none}
+  /* 番号ノード(丸) */
+  .fstep__num{position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--brass);background:#f6eff0;
+    display:flex;align-items:center;justify-content:center;z-index:1;
+    font-family:var(--label);font-size:12px;color:var(--brass)}
+  .fstep>div{padding-top:5px}
+  .fstep__t{font-family:var(--mincho);font-size:15.5px;color:var(--charcoal);display:block;margin-bottom:5px}
+  .fstep__d{font-size:13px;line-height:1.75;color:var(--charcoal-soft)}
+
+  /* ⑧ faq */
+  .qa{border-top:1px solid rgba(54,31,40,.16)}
+  .qa:last-of-type{border-bottom:1px solid rgba(54,31,40,.16)}
+  .qa summary{list-style:none;cursor:pointer;padding:20px 34px 20px 26px;position:relative;
+    font-family:var(--mincho);font-size:15px;color:var(--charcoal)}
+  .qa summary::-webkit-details-marker{display:none}
+  .qa summary .qmark{font-family:var(--label);color:var(--brass);margin-right:12px;font-size:13px}
+  .qa summary::after{content:"+";position:absolute;right:6px;top:17px;color:var(--brass);font-size:20px;font-family:var(--label)}
+  .qa[open] summary::after{content:"–"}
+  .qa__a{padding:0 26px 24px 44px;font-size:13.5px;line-height:1.8;color:var(--charcoal)}
+
+  /* ⑨ offer */
+  /* コラージュ: 左=受付(大) / 右=マシン室+館内(中2分割) */
+  .offer__collage{display:grid;grid-template-columns:1.3fr 1fr;gap:4px;margin-bottom:26px;height:280px}
+  .offer__collage--perk{margin:12px 0 0}
+  .offer__collage img{width:100%;height:100%;object-fit:cover;display:block}
+  .offer__collage .split{display:grid;grid-template-rows:1fr 1fr;gap:4px;height:100%}
+  .offer__collage .gc-recep-tall{object-position:22% center} /* 受付ネオンを縦に */
+  .offer__collage .gc-recep-in{object-position:90% center}   /* 受付奥のジム側 */
+
+  /* GYM CONCEPT特典(オファー直下・独立バナー) */
+  .offer__facility{display:flex;align-items:center;gap:14px;background:rgba(189,139,82,.1);
+    border:1px solid rgba(189,139,82,.4);padding:16px 18px;margin-bottom:16px}
+  .offer__facility b{font-family:var(--mincho);font-size:14.5px;color:var(--charcoal);font-weight:500}
+  .offer__facility span{display:block;font-family:var(--label);font-size:10.5px;letter-spacing:.05em;
+    color:var(--charcoal-soft);margin-top:4px}
+
+  /* 希少性(価格ボックスの上・独立バナー) */
+  .offer__scarcity{border:1px solid rgba(54,31,40,.22);border-left:3px solid var(--brass);
+    padding:16px 18px;margin-bottom:16px;background:rgba(255,255,255,.3)}
+  .offer__scarcity-tag{font-family:var(--label);font-size:14.5px;letter-spacing:.08em;color:var(--charcoal);
+    display:block;margin-bottom:10px;font-weight:700}
+  .offer__scarcity p{font-size:13px;line-height:1.8;color:var(--charcoal)}
+
+  /* オファーを焦げ茶ダークカードで主役化(CTAと統一) */
+  .offer__box{border:1px solid rgba(206,166,101,.45);padding:30px 24px;background:#4e2c3a;box-shadow:0 18px 46px rgba(44,25,34,.32)}
+  .offer__box .offer__ttl,.offer__box .offer__now,.offer__box .offer__now-l,.offer__box .offer__bonus{color:var(--cream)}
+  .offer__box .offer__sub,.offer__box .offer__incl,.offer__box .offer__fine,.offer__box .offer__through,.offer__box .offer__now-t{color:var(--cream-dim)}
+  .offer__box .offer__price{border-color:rgba(250,243,241,.18)}
+  .offer__box .offer__now b,.offer__box .offer__bonus b{color:#e7c178}
+  .offer__incl-label{display:block;font-family:var(--label);font-size:11px;letter-spacing:.2em;color:rgba(250,243,241,.5);margin-bottom:12px}
+  .offer__chips{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .offer__chips li{font-family:var(--gothic);font-size:12px;letter-spacing:0;line-height:1.3;color:var(--cream);
+    text-align:center;
+    border:1px solid rgba(206,166,101,.5);border-radius:999px;padding:6px 8px;background:rgba(255,255,255,.05)}
+  .offer__addon{font-family:var(--label);font-size:12px;letter-spacing:.03em;color:rgba(250,243,241,.62);margin-top:10px}
+  .offer__ttl{font-family:var(--mincho);font-size:16px;color:var(--charcoal);margin-bottom:6px}
+  .offer__sub{font-size:13px;line-height:1.7;color:var(--charcoal-soft);margin-bottom:18px}
+  .offer__incl{font-size:12.5px;line-height:1.75;color:var(--charcoal);margin-bottom:20px}
+  .offer__price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:16px 0;border-top:1px solid rgba(54,31,40,.15);border-bottom:1px solid rgba(54,31,40,.15)}
+  .offer__through{font-family:var(--label);text-decoration:line-through;color:var(--charcoal-soft);font-size:14px}
+  .offer__now{font-family:var(--mincho);font-size:15px;color:var(--charcoal)}
+  .offer__now b{font-size:27px;color:var(--brass);font-weight:600;margin:0 2px}
+  .offer__bonus{font-size:13px;line-height:1.7;color:var(--charcoal);margin:18px 0 10px}
+  .offer__bonus b{color:var(--brass);font-weight:500}
+  .offer__fine{font-family:var(--label);font-size:10.5px;letter-spacing:.03em;color:var(--charcoal-soft)}
+  .offer__perks{margin:20px 0 14px}
+  .perks__head{display:flex;align-items:center;gap:12px;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#e7c178;font-weight:600;margin:2px 0 12px}
+  .perks__head::before,.perks__head::after{content:"";flex:1;height:1px;background:rgba(232,196,124,.32)}
+  .perk{padding:13px 0;border-top:1px solid rgba(250,243,241,.13)}
+  .perk:first-child{border-top:0;padding-top:4px}
+  .perk__no{display:inline-block;font-family:var(--label);font-size:12px;letter-spacing:.2em;color:#caa25e;margin-bottom:7px}
+  .perk__t{font-family:var(--gothic);font-size:14px;line-height:1.5;color:var(--cream);margin:0}
+  .perk__t b{font-size:19px;color:#e7c178;font-weight:700;letter-spacing:.01em}
+  .perk__d{font-family:var(--label);font-size:11.5px;letter-spacing:.02em;color:rgba(250,243,241,.55);margin-top:4px}
+  .perk__img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:8px;margin-top:12px}
+  .offer__fine--incl{margin-top:14px}
+
+  /* ⑩ ps */
+  .ps__h{font-family:var(--mincho);font-weight:500;font-size:clamp(20px,5.4cqw,26px);line-height:1.7;color:var(--charcoal);margin-bottom:24px}
+  .ps__b{font-size:14.5px;line-height:1.9;color:var(--charcoal)}
+  /* 追伸: お香をダークに沈めた締め(白文字) */
+  .sec--ps{position:relative;background:var(--ink-deep);overflow:hidden;text-align:center}
+  .sec--ps::before{content:"";position:absolute;inset:0;z-index:0;
+    background:url("img/fv-incense.jpg") center/cover no-repeat}
+  .sec--ps::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(44,25,34,.78) 0%, rgba(44,25,34,.62) 45%, rgba(44,25,34,.8) 100%)}
+  .sec--ps .wrap{position:relative;z-index:2}
+  .sec--ps .sec__label{color:#cca664}
+  .sec--ps .ps__h{color:var(--cream)}
+  .sec--ps .ps__b{color:var(--cream-dim)}
+  .sec--ps .ps__b b,.sec--ps .ps__h{color:var(--cream)}
+
+  /* ============================================================
+     追従CTA(常時) — 唯一のCTA
+     ============================================================ */
+  /* [B] 焦げ茶ソリッドCTA＋金文字 */
+  .sticky-cta{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:#4e2c3a;
+    border-top:1px solid rgba(206,166,101,.45);
+    padding:0 16px calc(env(safe-area-inset-bottom));
+    box-shadow:0 -10px 30px rgba(36,20,29,.34);
+  }
+  .sticky-cta a{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    height:var(--cta-h);
+    color:#deb677;
+    text-decoration:none;
+    font-family:var(--gothic);
+    font-weight:500;
+    font-size:15px;
+    letter-spacing:.06em;
+  }
+  .sticky-cta .price{
+    font-size:12.5px;letter-spacing:.04em;opacity:.78;font-weight:400;
+  }
+  .sticky-cta a:focus-visible{outline:2px solid #deb677;outline-offset:-6px}
+
+  /* ============================================================
+     motion — スクロールフェード程度のみ
+     ============================================================ */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
+  .reveal.in{opacity:1;transform:none}
+  /* 注: この広告はアニメが演出の核のため、OSの「視差効果を減らす」でも動かす（reveal/積み上げのnone上書きは意図的に外している） */
+
+  /* ============================================================
+     POLISH — 磨き込み(ヘッダー/構造装置/Didot/価格ヒーロー)
+     ============================================================ */
+  /* FVロゴ(既存ブランド・ダーク上は反転で白に) */
+  .fv__logo{height:30px;width:auto;display:block;filter:brightness(0) invert(1);opacity:.92}
+
+  /* 全eyebrowに真鍮の導線 — 構造装置を統一 */
+  .eyebrow,.sec__label{display:inline-flex;align-items:center;gap:16px}
+  .eyebrow::before,.sec__label::before{content:"";width:34px;height:1px;background:var(--brass);opacity:.85;flex:none}
+
+  /* 見出しの品位(トラッキング/行間を締める) */
+  .sec__h{letter-spacing:.03em;line-height:1.56}
+
+  /* ④ メソッド: Didotイタリック数字で"順番"を格上げ */
+  .mstep{gap:22px;align-items:baseline;padding:20px 0}
+  .mstep__num{font-family:var(--label);font-weight:400;font-size:26px;color:var(--brass);letter-spacing:.02em;min-width:48px;line-height:.9}
+  .mstep__en{letter-spacing:.3em}
+
+  /* ⑤ menu: Didot番号 */
+  .mitem__no{font-family:var(--label);font-size:18px;font-weight:600;color:var(--brass);margin-right:14px;letter-spacing:.02em;vertical-align:1px}
+
+  /* ⑨ offer: 価格をヒーローに */
+  .offer__price{flex-direction:column;align-items:flex-start;gap:7px;padding:20px 0}
+  .offer__through{font-size:13px;letter-spacing:.05em}
+  .offer__now{font-size:15px;display:flex;align-items:baseline;gap:11px}
+  .offer__now b{font-family:var(--mincho);font-size:42px;line-height:1;font-weight:600;letter-spacing:.01em;margin:0}
+
+  /* FV: リード下の余白を確保(切れ防止) */
+  .fv__foot{padding-bottom:calc(var(--cta-h) + 40px)}
+
+  /* fix: FVロゴを左上へ(flex itemの縮み対策) */
+  .fv__top{width:100%}
+
+  /* fix: 価格の各要素を塊で折り返す(縦割れ防止) */
+  .offer__now{flex-wrap:wrap}
+  .offer__now-l{white-space:nowrap;font-size:15px}
+  .offer__now-t{white-space:nowrap;font-size:13px;color:var(--charcoal-soft)}
+  .offer__now b{white-space:nowrap}
+  /* ===== Method 新デザイン(積み上げ図) index-d専用。既存LPの色/フォント/背景/余白は踏襲 ===== */
+  .method-transfer{
+    --method-accent: var(--brass);
+    --method-border: color-mix(in srgb, currentColor 18%, transparent);
+    --method-card-bg: color-mix(in srgb, currentColor 6%, transparent);
+    --method-muted: color-mix(in srgb, currentColor 66%, transparent);
+    --method-gap: clamp(16px, 3cqw, 30px);
+    color: var(--cream);
+  }
+  .method-transfer__inner{ max-width:1080px; margin-inline:auto; }
+  .method-transfer__label{
+    display:inline-flex; align-items:center; gap:16px;
+    margin:0 0 24px; color:var(--method-accent); text-align:left;
+    font-family:var(--label); font-size:18px; font-weight:700; letter-spacing:.28em; text-transform:uppercase;
+  }
+  .method-transfer__label::before{
+    content:""; width:34px; height:1px; opacity:.85;
+    background:currentColor; flex:none;
+  }
+  .method-transfer__heading{
+    margin:0 0 20px; text-align:left; font-family:var(--mincho);
+    font-size:clamp(22px, 5.9cqw, 30px); font-weight:500; line-height:1.5;
+  }
+  .method-transfer__intro, .method-transfer__closing{
+    max-width:none; margin:0; color:var(--method-muted); text-align:left;
+    font-size:13.5px; line-height:1.95;
+  }
+  .method-transfer__stack{
+    position:relative; display:flex; flex-direction:column; gap:var(--method-gap);
+    margin-block:clamp(38px, 6cqw, 60px); padding-left:clamp(56px, 8cqw, 92px);
+  }
+  .method-transfer__stack::before{
+    content:""; position:absolute; left:clamp(20px, 3cqw, 34px); top:40px; bottom:40px; width:2px;
+    background:linear-gradient(0deg, var(--method-accent), color-mix(in srgb, var(--method-accent) 35%, transparent));
+    transform:scaleY(0); transform-origin:bottom;
+  }
+  .method-transfer__stack::after{
+    content:""; position:absolute; left:calc(clamp(20px, 3cqw, 34px) - 8px); top:28px;
+    width:18px; height:18px; border-left:2px solid var(--method-accent); border-top:2px solid var(--method-accent);
+    opacity:0; transform:rotate(45deg) translate(-6px, 6px);
+  }
+  .method-transfer__layer{
+    display:block; padding:clamp(18px, 3cqw, 26px);
+    border:1px solid var(--method-border); border-left:3px solid var(--method-accent);
+    background:var(--method-card-bg); opacity:0; transform:translateY(34px) scale(.985);
+  }
+  .method-transfer__layer--top{ width:76%; margin-left:12%; }
+  .method-transfer__layer--mid{ width:88%; margin-left:6%; }
+  .method-transfer__layer--base{ width:100%; }
+  .method-transfer__num{
+    display:grid; place-items:center; width:50px; height:50px;
+    border:1px solid color-mix(in srgb, var(--method-accent) 55%, transparent);
+    color:var(--method-accent); font-family:var(--label); font-size:17px; font-weight:700; line-height:1;
+  }
+  .method-transfer__top{ display:flex; align-items:center; gap:14px; }
+  .method-transfer__head{ min-width:0; }
+  .method-transfer__en{
+    margin:0 0 4px; color:var(--method-accent); font-family:var(--label);
+    font-size:12px; font-weight:700; letter-spacing:.26em; text-transform:uppercase;
+  }
+  .method-transfer__head h3{
+    margin:0; font-family:var(--mincho); font-size:clamp(18px, 4cqw, 22px); font-weight:500; line-height:1.5;
+  }
+  .method-transfer__desc{ margin:12px 0 0; color:var(--method-muted); font-size:13.5px; line-height:1.8; }
+  .method-transfer__sub{ margin-top:8px !important; color:var(--method-accent) !important; opacity:.85; }
+  .method-transfer__stack.is-stacking::before{ animation:methodRailRise .9s .1s cubic-bezier(.22,1,.36,1) both; }
+  .method-transfer__stack.is-stacking::after{ animation:methodArrowIn .42s .72s cubic-bezier(.22,1,.36,1) forwards; }
+  .method-transfer__stack.is-stacking .method-transfer__layer{ animation:methodLayerRise .72s cubic-bezier(.22,1,.36,1) forwards; }
+  .method-transfer__stack.is-stacking .method-transfer__layer--base{ animation-delay:0s; }
+  .method-transfer__stack.is-stacking .method-transfer__layer--mid{ animation-delay:.14s; }
+  .method-transfer__stack.is-stacking .method-transfer__layer--top{ animation-delay:.28s; }
+  @keyframes methodLayerRise{ from{opacity:0; transform:translateY(34px) scale(.985);} to{opacity:1; transform:none;} }
+  @keyframes methodRailRise{ from{transform:scaleY(0);} to{transform:scaleY(1);} }
+  @keyframes methodArrowIn{ from{opacity:0; transform:rotate(45deg) translate(-6px,6px);} to{opacity:1; transform:rotate(45deg) translate(0,0);} }
+  @media (max-width:680px){
+    .method-transfer__label, .method-transfer__heading, .method-transfer__intro, .method-transfer__closing{ text-align:left; }
+    .method-transfer__stack{ padding-left:28px; gap:11px; }
+    .method-transfer__stack::before{ left:9px; top:30px; bottom:30px; }
+    .method-transfer__stack::after{ left:1px; top:20px; width:16px; height:16px; }
+    .method-transfer__layer{ padding:15px 14px 16px; }
+    .method-transfer__top{ gap:11px; }
+    .method-transfer__layer--top{ width:calc(100% - 14px); margin-left:14px; }
+    .method-transfer__layer--mid{ width:calc(100% - 7px); margin-left:7px; }
+    .method-transfer__num{ width:34px; height:34px; font-size:14px; }
+    .method-transfer__en{ margin-bottom:3px; font-size:10.5px; letter-spacing:.22em; }
+    .method-transfer__head h3{ margin:0; font-size:16px; line-height:1.45; }
+    .method-transfer__desc{ margin-top:10px; font-size:12.5px; line-height:1.7; }
+  }
+
+  /* EN: 大見出しディスプレイ=Cormorant Garamond(本文・リード・レビュー等はEB Garamond) */
+  .fv__headline,.empathy__h,.sec__h,.ps__h,.method-transfer__heading{font-family:var(--display)}
+</style>
+</head>
+<body>
+
+  <!-- ① FV ---------------------------------------------------->
+  <header class="fv">
+    <div class="fv__media">
+      <video class="fv__video" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="img/bh-fv-poster.jpg?v=2">
+        <source src="video/kuukan-biyoshin-fv.mp4?v=3" type="video/mp4" />
+      </video>
+      <div class="fv__scrim" aria-hidden="true"></div>
+      <div class="fv__top wrap">
+        <img class="fv__logo" src="img/横_kuukan_logo_0130.png" alt="kuukan — facial &amp; full-body acupuncture in Azabu" />
+      </div>
+    </div>
+
+    <div class="fv__body">
+      <div class="wrap">
+        <h1 class="fv__headline">Beauty, <span class="em">released</span> —<br>not added.</h1>
+        <p class="fv__lead">
+          Not just the face — <b>the whole body.</b><br>
+          Facial acupuncture, done properly, in Azabu.
+        </p>
+        <div class="fv__scroll">Scroll</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ② 共感 × 投資 ------------------------------------------->
+  <section class="empathy">
+    <div class="wrap">
+      <span class="eyebrow reveal">Where beauty begins</span>
+      <h2 class="empathy__h reveal">Skin that circulates well<br />is beautiful on its own.</h2>
+      <div class="empathy__body">
+        <p class="reveal">Somewhere, you already know it — skin and expression both come from the circulation within.</p>
+        <p class="reveal">The skin of a well-slept morning. The flush after a bath. The clean line of a face once the puffiness is gone.</p>
+        <p class="reveal">Nothing added — and yet you look your very best.</p>
+        <p class="turn reveal">Making that no accident —<br><b>that is facial acupuncture at kuukan.</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 一木(信頼の核) --------------------------------------->
+  <section class="sec sec--g1">
+    <div class="wrap">
+      <span class="sec__label reveal">The Practitioner</span>
+      <h2 class="sec__h reveal">The face is the far end of circulation.</h2>
+      <p class="sec__lead reveal">So treating the face alone never quite reaches it. At kuukan, we read the whole body first — and needle the face last.</p>
+      <img class="ichiki__photo reveal" src="img/ichiki-b.jpg" alt="Yuta Ichiki, founder of kuukan" loading="lazy">
+      <p class="ichiki__name reveal">Yuta Ichiki<span class="en">一木 勇太</span></p>
+      <span class="ichiki__role reveal">Founder</span>
+      <p class="ichiki__bio reveal">A nationally licensed acupuncturist and judo therapist, with 17 years of practice and more than 20,000 bodies seen. Five years directing an orthopedic clinic, five more running a personal-training gym; in 2025 he qualified as a Zen therapist. Needling the face is delicate work. That is exactly why it should be done by someone trained in anatomy, who reads the whole body before placing a single needle. It's an order kuukan has never broken.</p>
+      <div class="ichiki__career reveal">
+        <div class="ichiki__stats">
+          <div class="ichiki__stat"><b>17</b><span>Years in practice</span></div>
+          <div class="ichiki__stat"><b>20,000+</b><span>Sessions to date</span></div>
+        </div>
+
+        <span class="ichiki__career-label mt">Qualifications</span>
+        <ul class="ichiki__tags">
+          <li>Acupuncturist<br><span class="ichiki__tag-sub">(national license)</span></li>
+          <li>Judo Therapist<br><span class="ichiki__tag-sub">(national license)</span></li>
+          <li>Zen Therapist<br><span class="ichiki__tag-sub">(certified 2025)</span></li>
+        </ul>
+
+        <span class="ichiki__career-label mt">Career</span>
+        <ul class="ichiki__timeline">
+          <li><span class="dur">5 yrs</span><span class="role">Director, orthopedic clinic</span></li>
+          <li><span class="dur">5 yrs</span><span class="role">Manager, personal-training gym</span></li>
+        </ul>
+      </div>
+      <blockquote class="ichiki__quote reveal">There was a time my own mind and body reached their limit. When the body changes, the face changes with it. That is where kuukan began. Beauty, I believe, can only stand on good health.</blockquote>
+    </div>
+  </section>
+
+  <!-- ④ メソッド ---------------------------------------------->
+  <section class="sec sec--g2 method-transfer" data-method-diagram>
+    <div class="wrap">
+      <div class="method-transfer__inner">
+        <p class="method-transfer__label">Method</p>
+        <h2 class="method-transfer__heading">Beauty has an order.</h2>
+        <p class="method-transfer__intro">
+          Facial acupuncture on its own doesn't hold. The foundation — circulation through the whole body — isn't there yet. kuukan restores the flow in order: body, then face, then skin.
+        </p>
+
+        <div class="method-transfer__stack" aria-label="The order: body, face, skin">
+          <article class="method-transfer__layer method-transfer__layer--top">
+            <div class="method-transfer__top">
+              <span class="method-transfer__num">03</span>
+              <div class="method-transfer__head">
+                <p class="method-transfer__en">Skin</p>
+                <h3>Skin</h3>
+              </div>
+            </div>
+            <p class="method-transfer__desc">Skin that circulation reaches changes from within. Puffiness moves on, and a lightness returns to the jawline — not added, but your own colour and firmness.</p>
+            <p class="method-transfer__sub">Colour · Firmness</p>
+          </article>
+
+          <article class="method-transfer__layer method-transfer__layer--mid">
+            <div class="method-transfer__top">
+              <span class="method-transfer__num">02</span>
+              <div class="method-transfer__head">
+                <p class="method-transfer__en">Face</p>
+                <h3>Facial flow</h3>
+              </div>
+            </div>
+            <p class="method-transfer__desc">Once the foundation is flowing, facial acupuncture moves to the face — softening the expression muscles, easing what's stagnant.</p>
+            <p class="method-transfer__sub">Facial acupuncture</p>
+          </article>
+
+          <article class="method-transfer__layer method-transfer__layer--base">
+            <div class="method-transfer__top">
+              <span class="method-transfer__num">01</span>
+              <div class="method-transfer__head">
+                <p class="method-transfer__en">Body</p>
+                <h3>Whole-body flow</h3>
+              </div>
+            </div>
+            <p class="method-transfer__desc">What stops the flow isn't the face — it's the neck, shoulders and back. First, full-body acupuncture and seitai release that tension.</p>
+            <p class="method-transfer__sub">Body acupuncture · Seitai</p>
+          </article>
+        </div>
+
+        <p class="method-transfer__closing">
+          From the whole body, in order — so it doesn't end the moment you leave.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 手法(5メニュー) -------------------------------------->
+  <section class="sec sec--g3">
+    <div class="wrap">
+      <span class="sec__label reveal">Menu</span>
+      <p class="sec__lead reveal">Three treatments in one: facial acupuncture × full-body acupuncture × seitai (90 min).</p>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/bh-seitai.jpg" alt="Seitai" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">01</span>Seitai<span class="mitem__en">Structural bodywork</span></div>
+        <p class="mitem__desc">Resetting bone and fascia by hand, into a body that doesn't hold the flow back.</p>
+      </div>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/bh-body.jpg" alt="Full-body acupuncture" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">02</span>Body Acupuncture<span class="mitem__en">Zenshin-shin</span></div>
+        <p class="mitem__desc">Releasing the body's tension to build the foundation for circulation.</p>
+      </div>
+      <div class="mitem reveal">
+        <img class="mitem__img" src="img/bh-facial.jpg" alt="Facial acupuncture" loading="lazy">
+        <div class="mitem__ja"><span class="mitem__no">03</span>Facial Acupuncture<span class="mitem__en">Bigan-shin</span></div>
+        <p class="mitem__desc">To finish, the face — reaching the expression muscles and blood flow directly.</p>
+      </div>
+      <p class="menu__close reveal">No need to visit three places for three treatments. Because one licensed practitioner works from the whole body to the face, the 90 minutes become a single flow.</p>
+    </div>
+  </section>
+
+  <!-- Trial オファー(Voiceの上) ------------------------------->
+  <section class="sec sec--g4" id="offer">
+    <div class="wrap">
+      <span class="sec__label reveal">Trial</span>
+      <h2 class="sec__h reveal">Start with the 90 minutes that change your circulation.</h2>
+
+      <div class="offer__scarcity reveal">
+        <span class="offer__scarcity-tag">Now accepting new members</span>
+        <p>By appointment only. Open slots are usually few, and this season we're taking just a handful of new members.</p>
+      </div>
+
+      <div class="offer__box reveal">
+        <p class="offer__ttl">First Session (90 min)</p>
+        <p class="offer__sub">Facial acupuncture × full-body acupuncture × seitai</p>
+        <div class="offer__incl">
+          <span class="offer__incl-label">What's included</span>
+          <ul class="offer__chips">
+            <li>Counselling</li>
+            <li>Posture check</li>
+            <li>Seitai</li>
+            <li>Body acupuncture</li>
+            <li>Facial acupuncture</li>
+          </ul>
+          <p class="offer__fine offer__fine--incl">By appointment only · fully private room</p>
+        </div>
+        <div class="offer__price">
+          <span class="offer__through">Usually ¥27,000</span>
+          <span class="offer__now"><span class="offer__now-l">First session · 90 min</span><b class="js-price">¥5,000</b><span class="offer__now-t">(tax incl.)</span></span>
+        </div>
+        <div class="offer__perks">
+          <p class="perks__head">Two bonuses, for now</p>
+          <div class="perk">
+            <span class="perk__no">Bonus 1</span>
+            <p class="perk__t">Registration ¥10,000 + membership ¥20,000 → <b>¥0</b></p>
+            <p class="perk__d">With same-day sign-up</p>
+          </div>
+          <div class="perk">
+            <span class="perk__no">Bonus 2</span>
+            <p class="perk__t">Members get <b>unlimited</b> access to GYM CONCEPT</p>
+            <p class="perk__d">9:00–23:00</p>
+            <div class="offer__collage offer__collage--perk">
+              <img class="gc-recep-tall" src="img/gym-reception.jpg" alt="GYM CONCEPT reception" loading="lazy">
+              <div class="split">
+                <img src="img/gym-machines.jpg" alt="GYM CONCEPT machine room" loading="lazy">
+                <img src="img/gym-room.jpg" alt="GYM CONCEPT training floor" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑥ Voice ------------------------------------------------->
+  <section class="sec sec--t1">
+    <div class="wrap">
+      <span class="sec__label reveal">Voice</span>
+      <div class="vquote reveal">
+        <span class="vquote__who">Female, 40s</span>
+        <p>I've come here for more than four years. I feel a real change every time, because each session is built around how I am that day. Acupuncture and seitai in one place — that's something I've found only here.</p>
+      </div>
+      <div class="vquote reveal">
+        <span class="vquote__who">Female, 30s</span>
+        <p>Two years now. My posture changed and the shoulder tension I'd had for years eased. Even my face feels brighter — the longer I come, the more I like my own body. Ichiki-san himself is part of why I keep coming back.</p>
+      </div>
+      <div class="vquote reveal">
+        <span class="vquote__who">Female, 30s</span>
+        <p>It was my first time with acupuncture and I was nervous, but the careful explanation and delicate work had me half asleep partway through. Afterwards, the colour in the mirror surprised me.</p>
+      </div>
+      <p class="sec__note reveal">Individual experiences. Results are not guaranteed.</p>
+    </div>
+  </section>
+
+  <!-- ⑦ 流れ(初回90分) -------------------------------------->
+  <section class="sec sec--l1">
+    <div class="wrap">
+      <span class="sec__label reveal">First Visit</span>
+      <h2 class="sec__h reveal">What we do in your first 90 minutes.</h2>
+      <div class="reveal">
+        <div class="fstep"><span class="fstep__num">01</span><div><span class="fstep__t">Booking</span><span class="fstep__d">Pick a date and time from the reservation calendar</span></div></div>
+        <div class="fstep"><span class="fstep__num">02</span><div><span class="fstep__t">Counselling</span><span class="fstep__d">We take time to hear about your skin, your body, and where you want to go</span></div></div>
+        <div class="fstep"><span class="fstep__num">03</span><div><span class="fstep__t">Seitai</span><span class="fstep__d">Resetting bone and fascia</span></div></div>
+        <div class="fstep"><span class="fstep__num">04</span><div><span class="fstep__t">Body Acupuncture</span><span class="fstep__d">Releasing tension, building the foundation for flow</span></div></div>
+        <div class="fstep"><span class="fstep__num">05</span><div><span class="fstep__t">Facial Acupuncture</span><span class="fstep__d">To finish, the face</span></div></div>
+        <div class="fstep"><span class="fstep__num">06</span><div><span class="fstep__t">After-care</span><span class="fstep__d">You leave with what to do at home, too</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑧ FAQ --------------------------------------------------->
+  <section class="sec sec--l2">
+    <div class="wrap">
+      <span class="sec__label reveal">FAQ</span>
+      <div class="reveal">
+        <details class="qa"><summary><span class="qmark">Q</span>Does it hurt?</summary><p class="qa__a">We use needles finer than a hair, made for facial acupuncture. It's no more than a light prick — many people fall asleep partway through.</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>Is there any bruising?</summary><p class="qa__a">Small bruising can occur on rare occasions. It fades naturally within a few days to about two weeks, so we recommend avoiding a session right before an important occasion.</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>Can I keep my makeup on?</summary><p class="qa__a">Yes — we can work over makeup, and there's a space to touch it up afterwards.</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>How often should I come?</summary><p class="qa__a">Once every two to four weeks is a good guide. We'll suggest a rhythm that fits your condition.</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>Is the practitioner male?</summary><p class="qa__a">Yes. Yuta Ichiki, our nationally licensed founder, handles everything from counselling to treatment. By appointment only, in a fully private room.</p></details>
+        <details class="qa"><summary><span class="qmark">Q</span>Do I need a reservation?</summary><p class="qa__a">We're fully by appointment, and open slots are limited.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑩ 追伸 -------------------------------------------------->
+  <section class="sec sec--l3">
+    <div class="wrap">
+      <span class="sec__label reveal">Postscript</span>
+      <h2 class="ps__h reveal">Make your best condition your everyday.</h2>
+      <p class="ps__b reveal">The skin of a well-slept morning — making that no accident is what circulation means.<br><br>Start with 90 minutes. Come feel a beauty that isn't added on.</p>
+    </div>
+  </section>
+
+  <!-- 追従CTA(唯一) ------------------------------------------->
+  <nav class="sticky-cta">
+    <a href="https://cl.gyms.jp/trial/CC4774539643/?clear_all=1" target="_blank" rel="noopener" aria-label="Book your first session, 90 minutes, 5000 yen">
+      Book your first session
+      <span class="price">90 min ／ <span class="js-price">¥5,000</span></span>
+    </a>
+  </nav>
+
+  <script>
+    // 価格の一元管理 — 広告(¥5,000)に合わせる。ここ1箇所で全反映
+    const TRIAL_PRICE = '¥5,000';
+    document.querySelectorAll('.js-price').forEach(el=>{ el.textContent = TRIAL_PRICE; });
+
+    // スクロールフェード(モバイルの視差軽減設定でも動かす)
+    if('IntersectionObserver' in window){
+      const io = new IntersectionObserver((es)=>{
+        es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      },{threshold:.16});
+      document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+      // バックストップ: IOが発火しない環境でも、ビューに入った要素はスクロールでフェード表示する
+      var revealNear = function(){
+        document.querySelectorAll('.reveal:not(.in)').forEach(function(el){
+          if(el.getBoundingClientRect().top < window.innerHeight * 0.92){ el.classList.add('in'); }
+        });
+      };
+      window.addEventListener('scroll', revealNear, {passive:true});
+      window.addEventListener('resize', revealNear, {passive:true});
+      revealNear();
+      setTimeout(revealNear, 1200);
+    } else {
+      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+    }
+  </script>
+<script>
+  (() => {
+    const stack = document.querySelector('[data-method-diagram] .method-transfer__stack');
+    if (!stack) return;
+    if (!('IntersectionObserver' in window)) { stack.classList.add('is-stacking'); return; }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          stack.classList.remove('is-stacking');
+          void stack.offsetWidth;
+          stack.classList.add('is-stacking');
+        } else {
+          stack.classList.remove('is-stacking');
+        }
+      });
+    }, { threshold: .35, rootMargin: '0px 0px -12% 0px' });
+    observer.observe(stack);
+  })();
+</script>
+<script>
+  // FV動画の自動再生フォールバック(iOS省電力/低速回線/アプリ内ブラウザ対策)
+  (function(){
+    var v = document.querySelector('.fv__video');
+    if(!v) return;
+    v.muted = true; v.defaultMuted = true;
+    v.setAttribute('muted',''); v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
+    var tryPlay = function(){
+      v.muted = true;
+      var p = v.play();
+      if(p && p.catch) p.catch(function(){});
+    };
+    tryPlay();
+    ['loadedmetadata','loadeddata','canplay'].forEach(function(ev){ v.addEventListener(ev, tryPlay); });
+    document.addEventListener('visibilitychange', function(){
+      if(document.visibilityState === 'visible') tryPlay();
+    });
+    ['touchstart','touchend','pointerdown','click','scroll'].forEach(function(evt){
+      document.addEventListener(evt, tryPlay, {once:true, passive:true});
+    });
+  })();
+</script>
+<script>
+  // 予約ボタン(→gyms.jp)クリックを"申込コンバージョン"として計測。Meta=Lead / GA4=booking_click。
+  // ※予約"完了"CVはgyms.jpの成果タグ(Schedule)側。
+  (function(){
+    document.querySelectorAll('a[href*="gyms.jp"]').forEach(function(a){
+      a.addEventListener('click', function(){
+        try{ if(window.fbq) fbq('track','Lead',{content_name:'biyoshin_trial',language:'en',value:5000,currency:'JPY'}); }catch(e){}
+        try{ if(window.gtag) gtag('event','booking_click',{language:'en',service:'biyoshin',value:5000,currency:'JPY'}); }catch(e){}
+      }, {passive:true});
+    });
+  })();
+</script>
+</body>
+</html>
