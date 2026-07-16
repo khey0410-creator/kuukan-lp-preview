@@ -523,18 +523,18 @@
   }
   .method-transfer__stack::before{
     content:""; position:absolute; left:clamp(20px, 3cqw, 34px); top:40px; bottom:40px; width:2px;
-    background:linear-gradient(0deg, var(--method-accent), color-mix(in srgb, var(--method-accent) 35%, transparent));
-    transform:scaleY(0); transform-origin:bottom;
+    background:linear-gradient(180deg, var(--method-accent), color-mix(in srgb, var(--method-accent) 35%, transparent));
+    transform:scaleY(0); transform-origin:top;
   }
   .method-transfer__stack::after{
-    content:""; position:absolute; left:calc(clamp(20px, 3cqw, 34px) - 8px); top:28px;
-    width:18px; height:18px; border-left:2px solid var(--method-accent); border-top:2px solid var(--method-accent);
-    opacity:0; transform:rotate(45deg) translate(-6px, 6px);
+    content:""; position:absolute; left:calc(clamp(20px, 3cqw, 34px) - 8px); bottom:28px;
+    width:18px; height:18px; border-right:2px solid var(--method-accent); border-bottom:2px solid var(--method-accent);
+    opacity:0; transform:rotate(45deg) translate(6px, -6px);
   }
   .method-transfer__layer{
     display:block; padding:clamp(18px, 3cqw, 26px);
     border:1px solid var(--method-border); border-left:3px solid var(--method-accent);
-    background:var(--method-card-bg); opacity:0; transform:translateY(34px) scale(.985);
+    background:var(--method-card-bg); opacity:0; transform:translateY(-34px) scale(.985);
   }
   .method-transfer__layer--top{ width:76%; margin-left:12%; }
   .method-transfer__layer--mid{ width:88%; margin-left:6%; }
@@ -561,14 +561,14 @@
   .method-transfer__stack.is-stacking .method-transfer__layer--base{ animation-delay:0s; }
   .method-transfer__stack.is-stacking .method-transfer__layer--mid{ animation-delay:.14s; }
   .method-transfer__stack.is-stacking .method-transfer__layer--top{ animation-delay:.28s; }
-  @keyframes methodLayerRise{ from{opacity:0; transform:translateY(34px) scale(.985);} to{opacity:1; transform:none;} }
+  @keyframes methodLayerRise{ from{opacity:0; transform:translateY(-34px) scale(.985);} to{opacity:1; transform:none;} }
   @keyframes methodRailRise{ from{transform:scaleY(0);} to{transform:scaleY(1);} }
-  @keyframes methodArrowIn{ from{opacity:0; transform:rotate(45deg) translate(-6px,6px);} to{opacity:1; transform:rotate(45deg) translate(0,0);} }
+  @keyframes methodArrowIn{ from{opacity:0; transform:rotate(45deg) translate(6px,-6px);} to{opacity:1; transform:rotate(45deg) translate(0,0);} }
   @media (max-width:680px){
     .method-transfer__label, .method-transfer__heading, .method-transfer__intro, .method-transfer__closing{ text-align:left; }
     .method-transfer__stack{ padding-left:28px; gap:11px; }
     .method-transfer__stack::before{ left:9px; top:30px; bottom:30px; }
-    .method-transfer__stack::after{ left:1px; top:20px; width:16px; height:16px; }
+    .method-transfer__stack::after{ left:1px; bottom:20px; width:16px; height:16px; }
     .method-transfer__layer{ padding:15px 14px 16px; }
     .method-transfer__top{ gap:11px; }
     .method-transfer__layer--top{ width:calc(100% - 14px); margin-left:14px; }
@@ -665,16 +665,16 @@
         </p>
 
         <div class="method-transfer__stack" aria-label="ほぐす、巡らせる、温めるの順番">
-          <article class="method-transfer__layer method-transfer__layer--top">
+          <article class="method-transfer__layer method-transfer__layer--base">
             <div class="method-transfer__top">
-              <span class="method-transfer__num">03</span>
+              <span class="method-transfer__num">01</span>
               <div class="method-transfer__head">
-                <p class="method-transfer__en">Warm</p>
-                <h3>岩盤で奥から温め、巡りを深める</h3>
+                <p class="method-transfer__en">Release</p>
+                <h3>全身のこわばりと歪みをほどく</h3>
               </div>
             </div>
-            <p class="method-transfer__desc">そして岩盤ベッドで深部体温を上げ、ほぐし巡らせた状態を、奥からじんわり深めていく。</p>
-            <p class="method-transfer__sub">岩盤ベッド</p>
+            <p class="method-transfer__desc">まず全身整体で、こわばりと歪みを手技でほどく。力みが残ったままでは、巡りは動かない。</p>
+            <p class="method-transfer__sub">全身整体</p>
           </article>
 
           <article class="method-transfer__layer method-transfer__layer--mid">
@@ -689,16 +689,16 @@
             <p class="method-transfer__sub">全身鍼</p>
           </article>
 
-          <article class="method-transfer__layer method-transfer__layer--base">
+          <article class="method-transfer__layer method-transfer__layer--top">
             <div class="method-transfer__top">
-              <span class="method-transfer__num">01</span>
+              <span class="method-transfer__num">03</span>
               <div class="method-transfer__head">
-                <p class="method-transfer__en">Release</p>
-                <h3>全身のこわばりと歪みをほどく</h3>
+                <p class="method-transfer__en">Warm</p>
+                <h3>岩盤で奥から温め、巡りを深める</h3>
               </div>
             </div>
-            <p class="method-transfer__desc">まず全身整体で、こわばりと歪みを手技でほどく。力みが残ったままでは、巡りは動かない。</p>
-            <p class="method-transfer__sub">全身整体</p>
+            <p class="method-transfer__desc">そして岩盤ベッドで深部体温を上げ、ほぐし巡らせた状態を、奥からじんわり深めていく。</p>
+            <p class="method-transfer__sub">岩盤ベッド</p>
           </article>
         </div>
 
