@@ -4,6 +4,32 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>kuukan ｜ その不調に、名前がないだけ。</title>
+<!-- Meta Pixel Code (本番と同一ID=1482972990008620) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1482972990008620');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1482972990008620&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- Google tag (gtag.js) — 本番と同一 GA4=G-QC5TDF8DDG -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QC5TDF8DDG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QC5TDF8DDG');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://use.typekit.net" crossorigin />
@@ -765,7 +791,7 @@
           <div class="perk">
             <span class="perk__no">特典 1</span>
             <p class="perk__t">登録料 ¥10,000 ＋ 入会金 ¥20,000 → <b>¥0</b></p>
-
+            <p class="perk__d">当日ご入会で ・ <b class="perk__d-em">いつでも解約可能</b></p>
           </div>
           <div class="perk">
             <span class="perk__no">特典 2</span>
@@ -915,6 +941,18 @@
     });
     ['touchstart','click','scroll'].forEach(function(evt){
       document.addEventListener(evt, tryPlay, {once:true, passive:true});
+    });
+  })();
+</script>
+<script>
+  // 予約ボタン(→gyms.jp)クリックを"申込コンバージョン"として計測。Meta=Lead / GA4=booking_click。
+  // ※予約"完了"CVはgyms.jpの成果タグ(Schedule)側。
+  (function(){
+    document.querySelectorAll('a[href*="gyms.jp"]').forEach(function(a){
+      a.addEventListener('click', function(){
+        try{ if(window.fbq) fbq('track','Lead',{content_name:'reset_trial',language:'ja',value:7000,currency:'JPY'}); }catch(e){}
+        try{ if(window.gtag) gtag('event','booking_click',{language:'ja',service:'reset',value:7000,currency:'JPY'}); }catch(e){}
+      }, {passive:true});
     });
   })();
 </script>
