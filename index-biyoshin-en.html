@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>kuukan | Facial Acupuncture — Azabu, Tokyo</title>
-<meta name="description" content="Facial + full-body acupuncture in Azabu. Beauty released, not added — one nationally licensed practitioner works from the whole body to the face. First 90-minute session ¥5,000." />
+<meta name="description" content="Facial + full-body acupuncture in Azabu. Beauty released, not added — one nationally licensed practitioner works from the whole body to the face. First 90-minute session ¥7,000." />
 
 <!-- Meta Pixel Code (本番と同一ID=1482972990008620) -->
 <script>
@@ -413,6 +413,7 @@ src="https://www.facebook.com/tr?id=1482972990008620&ev=PageView&noscript=1"
   .perk__t{font-family:var(--gothic);font-size:14px;line-height:1.5;color:var(--cream);margin:0}
   .perk__t b{font-size:19px;color:#e7c178;font-weight:700;letter-spacing:.01em}
   .perk__d{font-family:var(--label);font-size:11.5px;letter-spacing:.02em;color:rgba(250,243,241,.55);margin-top:4px}
+  .perk__d-em{color:rgba(250,243,241,.82);font-weight:600}
   .perk__img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:8px;margin-top:12px}
   .offer__fine--incl{margin-top:14px}
 
@@ -774,7 +775,7 @@ src="https://www.facebook.com/tr?id=1482972990008620&ev=PageView&noscript=1"
         </div>
         <div class="offer__price">
           <span class="offer__through">Usually ¥27,000</span>
-          <span class="offer__now"><span class="offer__now-l">First session · 90 min</span><b class="js-price">¥5,000</b><span class="offer__now-t">(tax incl.)</span></span>
+          <span class="offer__now"><span class="offer__now-l">First session · 90 min</span><b class="js-price">¥7,000</b><span class="offer__now-t">(tax incl.)</span></span>
         </div>
         <div class="offer__perks">
           <p class="perks__head">Two bonuses, for now</p>
@@ -786,7 +787,8 @@ src="https://www.facebook.com/tr?id=1482972990008620&ev=PageView&noscript=1"
           <div class="perk">
             <span class="perk__no">Bonus 2</span>
             <p class="perk__t">Members get <b>unlimited</b> access to GYM CONCEPT</p>
-            <p class="perk__d">9:00–23:00</p>
+            <p class="perk__d">Beyond your treatment in a fully private room, <b class="perk__d-em">unlimited use of a gym just a 3-minute walk from kuukan.</b></p>
+            <p class="perk__d">A spacious floor, fully equipped — before work or after.</p>
             <div class="offer__collage offer__collage--perk">
               <img class="gc-recep-tall" src="img/gym-reception.jpg" alt="GYM CONCEPT reception" loading="lazy">
               <div class="split">
@@ -841,10 +843,8 @@ src="https://www.facebook.com/tr?id=1482972990008620&ev=PageView&noscript=1"
     <div class="wrap">
       <span class="sec__label reveal">FAQ</span>
       <div class="reveal">
-        <details class="qa"><summary><span class="qmark">Q</span>Does it hurt?</summary><p class="qa__a">We use needles finer than a hair, made for facial acupuncture. It's no more than a light prick — many people fall asleep partway through.</p></details>
         <details class="qa"><summary><span class="qmark">Q</span>Is there any bruising?</summary><p class="qa__a">Small bruising can occur on rare occasions. It fades naturally within a few days to about two weeks, so we recommend avoiding a session right before an important occasion.</p></details>
         <details class="qa"><summary><span class="qmark">Q</span>Can I keep my makeup on?</summary><p class="qa__a">Yes — we can work over makeup, and there's a space to touch it up afterwards.</p></details>
-        <details class="qa"><summary><span class="qmark">Q</span>How often should I come?</summary><p class="qa__a">Once every two to four weeks is a good guide. We'll suggest a rhythm that fits your condition.</p></details>
         <details class="qa"><summary><span class="qmark">Q</span>Is the practitioner male?</summary><p class="qa__a">Yes. Yuta Ichiki, our nationally licensed founder, handles everything from counselling to treatment. By appointment only, in a fully private room.</p></details>
         <details class="qa"><summary><span class="qmark">Q</span>Do I need a reservation?</summary><p class="qa__a">We're fully by appointment, and open slots are limited.</p></details>
       </div>
@@ -862,15 +862,15 @@ src="https://www.facebook.com/tr?id=1482972990008620&ev=PageView&noscript=1"
 
   <!-- 追従CTA(唯一) ------------------------------------------->
   <nav class="sticky-cta">
-    <a href="https://cl.gyms.jp/trial/CC4774539643/?clear_all=1" target="_blank" rel="noopener" aria-label="Book your first session, 90 minutes, 5000 yen">
+    <a href="https://cl.gyms.jp/trial/CC4774539643/?clear_all=1" target="_blank" rel="noopener" aria-label="Book your first session, 90 minutes, 7000 yen">
       Book your first session
-      <span class="price">90 min ／ <span class="js-price">¥5,000</span></span>
+      <span class="price">90 min ／ <span class="js-price">¥7,000</span></span>
     </a>
   </nav>
 
   <script>
-    // 価格の一元管理 — 広告(¥5,000)に合わせる。ここ1箇所で全反映
-    const TRIAL_PRICE = '¥5,000';
+    // 価格の一元管理(SPEC §6 {{TRIAL_PRICE}}) — ここ1箇所で全反映
+    const TRIAL_PRICE = '¥7,000';
     document.querySelectorAll('.js-price').forEach(el=>{ el.textContent = TRIAL_PRICE; });
 
     // スクロールフェード(モバイルの視差軽減設定でも動かす)
@@ -940,8 +940,8 @@ src="https://www.facebook.com/tr?id=1482972990008620&ev=PageView&noscript=1"
   (function(){
     document.querySelectorAll('a[href*="gyms.jp"]').forEach(function(a){
       a.addEventListener('click', function(){
-        try{ if(window.fbq) fbq('track','Lead',{content_name:'biyoshin_trial',language:'en',value:5000,currency:'JPY'}); }catch(e){}
-        try{ if(window.gtag) gtag('event','booking_click',{language:'en',service:'biyoshin',value:5000,currency:'JPY'}); }catch(e){}
+        try{ if(window.fbq) fbq('track','Lead',{content_name:'biyoshin_trial',language:'en',value:7000,currency:'JPY'}); }catch(e){}
+        try{ if(window.gtag) gtag('event','booking_click',{language:'en',service:'biyoshin',value:7000,currency:'JPY'}); }catch(e){}
       }, {passive:true});
     });
   })();
